@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Menu Sys";
+}
+
+<form style="margin-top: 50px;">
+    <div class="form-group">
+        <label for="nameInput">Name</label>
+        <input type="text" class="form-control" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name"/>
+    </div>
+    <div class="form-group">
+        <label for="menuSelect">Menu</label>
+        <select class="form-control" id="menuSelect">
+            <option>Tacos</option>
+            <option>Pizza</option>
+            <option>Lasagna</option>
+            <option>Wings</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="qtyInput">Qty.</label>
+        <input type="number" minValue="1" class="form-control" id="qtyInput" aria-describedby="emailHelp" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
