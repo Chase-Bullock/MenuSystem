@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "OrderInfo";
+}
+@model OrderModel
+
+<h2>Order Status</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Order</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Special Instructions</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.Name
+            </td>
+            <td>
+                @Model.Order
+            </td>
+            <td>
+                @Model.Quantity.ToString()
+            </td>
+            <td>
+                @Model.SpecialInstructions
+            </td>
+            <td>
+                @Model.Status
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+

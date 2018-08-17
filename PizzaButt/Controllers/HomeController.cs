@@ -18,7 +18,7 @@ namespace PizzaButt.Controllers
         [HttpPost]
         public IActionResult Index(OrderModel request)
         {
-            return View();
+            return RedirectToAction("OrderInfo", "Orders", new {orderId = 1});
         }
 
         public IActionResult Error()
