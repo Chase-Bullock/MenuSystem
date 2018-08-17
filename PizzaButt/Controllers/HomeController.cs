@@ -35,6 +35,12 @@ namespace PizzaButt.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Index(OrderModel request)
+        {
+            return RedirectToAction("OrderInfo", "Orders", new {orderId = 1});
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

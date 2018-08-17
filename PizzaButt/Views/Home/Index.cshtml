@@ -2,15 +2,16 @@
     ViewData["Title"] = "Menu Sys";
 }
 
-<form style="margin-top: 50px;">
+<form style="margin-top: 50px;" method="post">
     <div class="form-group">
         <label for="nameInput">Name</label>
-        <input type="text" class="form-control" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name"/>
+        <input type="text" class="form-control" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name" />
+        @Html.ValidationMessage("This field is required")
     </div>
     <div class="form-group">
         <label for="menuSelect">Menu</label>
-        <select class="form-control" id="menuSelect">
-            <option>Tacos</option>
+        <select class="form-control" id="menuSelect" name="order">
+            <option>Tacos (set of 3)</option>
             <option>Pizza</option>
             <option>Lasagna</option>
             <option>Wings</option>
@@ -18,7 +19,14 @@
     </div>
     <div class="form-group">
         <label for="qtyInput">Qty.</label>
-        <input type="number" minValue="1" class="form-control" id="qtyInput" aria-describedby="emailHelp" />
+        <input type="number" minValue="1" class="form-control" id="qtyInput" aria-describedby="emailHelp" name="quantity" />
+        @Html.ValidationMessage("This field is required")
+    </div>
+    <div class="form-group">
+        <label for="specialInstructionsInput">Special Instructions</label>
+        <textarea class="form-control" id="specialInstructionsInput" aria-describedby="emailHelp" name="specialInstructions">
+        </textarea>
+        @Html.ValidationMessage("This field is required")
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
