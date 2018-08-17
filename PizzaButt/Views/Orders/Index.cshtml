@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "Orders";
+}
+@model IEnumerable<OrderModel>
+
+<h2>Orders</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Order</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Special Instructions</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Order)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.SpecialInstructions)
+            </td>
+            <td>
+                <button type="button" class="btn btn-success">Complete Order</button>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
