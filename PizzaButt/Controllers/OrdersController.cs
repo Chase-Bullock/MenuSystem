@@ -9,46 +9,30 @@ namespace PizzaButt.Controllers
 {
     public class OrdersController : Controller
     {
-        public IActionResult Index()
+        private readonly IPizzaRepository pizzaRepository;
+
+        public OrdersController(IPizzaRepository pizzaRepository)
         {
-            var orders = new List<OrderModel>
-            {
-                new OrderModel
-                {
-                    Name = "Tyler de Arrigunaga",
-                    Order = "Tacos (3)",
-                    Quantity = 2,
-                    SpecialInstructions = "No Cilantro"
-                }
-            };
+            this.pizzaRepository = pizzaRepository;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var orders = await pizzaRepository.GetOrders();
             return View(orders);
         }
 
-        public IActionResult OrderInfo([FromQuery] long orderId)
+        public async Task<IActionResult> OrderInfo([FromQuery] string orderId)
         {
-            var order1 = new OrderModel
-            {
-                Id = 1,
-                Name = "Tyler de Arrigunaga",
-                Order = "Tacos (3)",
-                Quantity = 2,
-                SpecialInstructions = "No Cilantro",
-                Status = "Pending"
-            };
-            var order2 = new OrderModel
-            {
-                Id = 1,
-                Name = "Tyler de Arrigunaga",
-                Order = "Tacos (3)",
-                Quantity = 2,
-                SpecialInstructions = "No Cilantro",
-                Status = "Complete"
-            };
-            var orderDict = new Dictionary<long, OrderModel>();
-            orderDict.Add(1, order1);
-            orderDict.Add(2, order2);
-            var order = orderDict[orderId];
+            var order = await pizzaRepository.GetOrder(orderId);
             return View(order);
+        }
+
+        public async Task<IActionResult> Complete([FromQuery] string orderId)
+        {
+            var order = await pizzaRepository.GetOrder(orderId);
+            order.Status = "Complete";
+            await pizzaRepository.UpdateOrder(order);
+            return Redirect("Index");
         }
     }
 }

@@ -33,7 +33,7 @@
                 @Html.DisplayFor(model => item.SpecialInstructions)
             </td>
             <td>
-                <button type="button" class="btn btn-success">Complete Order</button>
+                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Complete", "Orders", new { orderId = item.Id.ToString() })'">Complete Order</button>
             </td>
         </tr>
         }

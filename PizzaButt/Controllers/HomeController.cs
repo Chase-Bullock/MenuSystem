@@ -36,9 +36,10 @@ namespace PizzaButt.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(OrderModel request)
+        public async Task<IActionResult> Index(OrderModel request)
         {
-            return RedirectToAction("OrderInfo", "Orders", new {orderId = 1});
+            var orderId = await pizzaRepository.SendOrder(request);
+            return RedirectToAction("OrderInfo", "Orders", new {orderId = orderId});
         }
 
         public IActionResult Error()

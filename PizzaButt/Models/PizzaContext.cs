@@ -22,7 +22,15 @@ namespace PizzaButt.Models
         {
             get
             {
-                return _database.GetCollection<MenuItem>("PizzaButt");
+                return _database.GetCollection<MenuItem>("MenuItem");
+            }
+        }
+
+        public IMongoCollection<OrderModel> Orders
+        {
+            get
+            {
+                return _database.GetCollection<OrderModel>("Order");
             }
         }
     }
