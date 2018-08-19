@@ -19,51 +19,67 @@
             <th scope="col">Quantity</th>
             <th scope="col">Special Instructions</th>
             <th scope="col">Order Time</th>
+            <th scope="col">Complete Time</th>
             <th scope="col">Status</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>
-                @Model.Name
-            </td>
-            <td>
-                @Model.Order
-            </td>
-            <td>
-                @{ var last = Model.Toppings.Last();}
-                @foreach (var topping in Model.Toppings)
-                {
-                    if (topping == last)
-                    {
-                        <Text>@topping</Text>
-                    }
-                    else
-                    {
-                        <Text>@topping, </Text>
-                    }
-                }
-            </td>
-            @if (Model.Size != null)
+    <tr>
+        <td>
+            @Model.Name
+        </td>
+        <td>
+            @Model.Order
+        </td>
+        <td>
+            @{ var last = Model.Toppings.Last();}
+            @foreach (var topping in Model.Toppings)
             {
-                <td>
-                    @Model.Size
-                </td>
+                if (topping == last)
+                {
+                    <Text>@topping</Text>
+                }
+                else
+                {
+                    <Text>@topping, </Text>
+                }
             }
+        </td>
+        @if (Model.Size != null)
+        {
             <td>
-                @Model.Quantity.ToString()
+                @Model.Size
             </td>
-            <td>
-                @Model.SpecialInstructions
-            </td>
-            <td>
-                @Model.CreateTime.ToLocalTime()
-            </td>
-            <td>
-                @Model.Status
-            </td>
-        </tr>
+        }
+        <td>
+            @Model.Quantity.ToString()
+        </td>
+        <td>
+            @Model.SpecialInstructions
+        </td>
+        <td>
+            @Model.CreateTime.ToLocalTime()
+        </td>
+        <td>
+            @{
+                var ogTime = "0005-12-31 18:00:00.000";
+                var checkTime = DateTime.Parse(ogTime);
+            }
+            @if (Model.CompleteTime >
+                 checkTime)
+            {
+                @Model.CompleteTime.ToLocalTime()
+            }
+        </td>
+        <td>
+            @Model.Status
+        </td>
+    </tr>
     </tbody>
 </table>
-
+<div class="row">
+    <div class="col-md-offset-11">
+        <button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Cancel", "Orders", new {orderId = Model.Id.ToString()})'">Cancel Order</button>
+    </div>
+</div>
 

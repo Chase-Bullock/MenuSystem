@@ -35,5 +35,13 @@ namespace PizzaButt.Controllers
             await pizzaRepository.UpdateOrder(order);
             return Redirect("Status");
         }
+        
+        public async Task<IActionResult> Cancel([FromQuery] string orderId)
+        {
+            var order = await pizzaRepository.GetOrder(orderId);
+            order.Status = "Canceled";
+            await pizzaRepository.UpdateOrder(order);
+            return RedirectToAction("OrderInfo", "Orders", new {orderId = orderId});
+        }
     }
 }

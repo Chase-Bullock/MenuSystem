@@ -27,5 +27,6 @@ namespace PizzaButt.Models
         public DateTime CreateTime { get; set; }
         [BsonElement("CompleteTime")]
         public DateTime CompleteTime { get; set; }
+        
     }
 }
