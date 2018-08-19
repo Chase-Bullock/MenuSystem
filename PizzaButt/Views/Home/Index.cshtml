@@ -5,7 +5,7 @@
 
 <div>
     <div class="row" style="margin-top: 25px;">
-        <div class="form-group col-md-offset-4 col-md-4">
+        <div class="form-group col-md-4 offset-md-4">
             <header style="font-size: 36px; font-weight: 700; text-align: center">Place an order </header>
         </div>
     </div>
@@ -15,7 +15,7 @@
     @*          NAME          *@
     @**************************@
     <div class="row">
-        <div class="form-group col-md-offset-4 col-md-4">
+        <div class="form-group offset-md-4 col-md-4">
             <label for="nameInput">Name</label>
             <input type="text" class="form-control" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name"/>
             @Html.ValidationMessage("This field is required")
@@ -25,7 +25,7 @@
     @*       MENUITEMS        *@
     @**************************@
     <div class="row">
-        <div class="form-group col-md-offset-4 col-md-4">
+        <div class="form-group offset-md-4 col-md-4">
             <label for="menuSelect">Menu</label>
             <select class="form-control" id="menuSelect" name="order">
                 <option>--</option>
@@ -40,10 +40,10 @@
     @*      TACOSAUCES        *@
     @**************************@
     <div class="row">
-        <div id="sauceForTaco" class="form-group col-md-offset-4 col-md-4">
+        <div id="sauceForTaco" class="form-group offset-md-4 col-md-4">
             <label>Taco Sauces</label>
             <div class="row">
-                <label class="checkbox-inline col-md-offset-1 col-md-5"><input name="toppings" type="checkbox" value="Hot Sauce"/>Hot Sauce (VERY HOT!)</label>
+                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Hot Sauce"/>Hot Sauce (VERY HOT!)</label>
                 <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Salsa Verde"/>Salsa Verde</label>
             </div>
         </div>
@@ -52,14 +52,14 @@
     @*      TACOEXTRAS        *@
     @**************************@
     <div class="row">
-        <div id="extrasForTaco" class="form-group col-md-offset-4 col-md-4">
+        <div id="extrasForTaco" class="form-group offset-md-4 col-md-4">
             <label>Taco Extras</label>
             <div class="row">
-                <label class="checkbox-inline col-md-offset-1 col-md-5"><input name="toppings" type="checkbox" value="Cheese"/>Cheese</label>
+                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Cheese"/>Cheese</label>
                 <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Lettuce"/>Lettuce</label>
             </div>
             <div class="row">
-                <label class="checkbox-inline col-md-offset-1 col-md-5"><input name="toppings" type="checkbox" value="Jalepenos"/>Jalapeños</label>
+                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Jalepenos"/>Jalapeños</label>
             </div>
         </div>
     </div>
@@ -67,10 +67,10 @@
     @*        PIZZASIZE       *@
     @**************************@
     <div class="row">
-        <div id="sizesForPizza" class="form-group col-md-offset-4 col-md-4">
+        <div id="sizesForPizza" class="form-group offset-md-4 col-md-4">
             <label for="sizesForPizza">Pizza Size</label>
             <div class="row">
-                <label class="radio-inline col-md-offset-1"><input value="Small" type="radio" name="size"/>Small</label>
+                <label class="radio-inline offset-md-1"><input value="Small" type="radio" name="size"/>Small</label>
                 <label class="radio-inline"><input value="Medium" type="radio" name="size"/>Medium</label>
                 <label class="radio-inline"><input value="Large" type="radio" name="size"/>Large</label>
             </div>
@@ -80,32 +80,32 @@
     @*     PIZZATOPPINGS      *@
     @**************************@
     <div class="row">
-        <div id="toppingsForPizza" class="form-group col-md-offset-4 col-md-4">
+        <div id="toppingsForPizza" class="form-group offset-md-4 col-md-4">
             <label>Pizza Toppings</label>
             <label>Meats</label>
             <div class="row">
-                <label class="checkbox-inline col-md-offset-1 col-md-5"><input name="toppings" type="checkbox" value="Extra Cheese"/>Extra Cheese</label>
+                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Extra Cheese"/>Extra Cheese</label>
                 <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Pepperoni"/>Pepperoni</label>
             </div>
             <div class="row">
-                <label class="checkbox-inline col-md-offset-1 col-md-5"><input name="toppings" type="checkbox" value="Beef"/>Beef</label>
+                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Beef"/>Beef</label>
                 <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Canadian Bacon"/>Canadian Bacon</label>
             </div>
             <div class="row">
-                <label class="checkbox-inline col-md-offset-1 col-md-5"><input name="toppings" type="checkbox" value="Bacon"/>Bacon</label>
+                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Bacon"/>Bacon</label>
             </div>
             <div>
                 <label>Non-meats</label>
                 <div class="row">
-                    <label class="checkbox-inline col-md-offset-1 col-md-5"><input name="toppings" type="checkbox" value="Pineapple"/>Pineapple</label>
+                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Pineapple"/>Pineapple</label>
                     <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Jalepenos"/>Jalapeños</label>
                 </div>
                 <div class="row">
-                    <label class="checkbox-inline col-md-offset-1 col-md-5"><input name="toppings" type="checkbox" value="Hot Sauce"/>Hot Sauce (VERY HOT!)</label>
+                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Hot Sauce"/>Hot Sauce (VERY HOT!)</label>
                     <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Salsa Verde"/>Salsa Verde</label>
                 </div>
                 <div class="row">
-                    <label class="checkbox-inline col-md-offset-1 col-md-5"><input name="toppings" type="checkbox" value="Onions"/>Onions</label>
+                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Onions"/>Onions</label>
                 </div>
             </div>
         </div>
@@ -114,7 +114,7 @@
 @*       QUANTITY         *@
 @**************************@
 <div class="row">
-    <div class="form-group col-md-offset-4 col-md-4">
+    <div class="form-group offset-md-4 col-md-4">
         <label for="qtyInput">Qty.</label>
         <input type="number" minValue="1" class="form-control" id="qtyInput" aria-describedby="emailHelp" name="quantity"/>
         @Html.ValidationMessage("This field is required")
@@ -124,7 +124,7 @@
 @*        COMMENTS        *@
 @**************************@
 <div class="row">
-    <div class="form-group col-md-offset-4 col-md-4">
+    <div class="form-group offset-md-4 col-md-4">
         <div class="form-group">
             <label for="specialInstructionsInput">Special Instructions</label>
             <textarea class="form-control" id="specialInstructionsInput" aria-describedby="emailHelp" name="specialInstructions">
@@ -137,7 +137,7 @@
 @*        SUBMIT          *@
 @**************************@
 <div class="row">
-    <div class="form-group col-md-offset-4 col-md-4">
+    <div class="form-group offset-md-4 col-md-4">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </div>

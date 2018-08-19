@@ -1,0 +1,11 @@
+{
+  "name": "PizzaButt",
+  "version": "0.0.2",
+  "devDependencies": {
+    "gulp": "3.9.1",
+    "gulp-concat": "^2.6.1",
+    "jquery": "3.3.1",
+    "popper.js": "1.12.9",
+    "bootstrap": "4.1.3"
+  }
+}
