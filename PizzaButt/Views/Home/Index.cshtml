@@ -16,7 +16,7 @@
     @**************************@
     <div class="row">
         <div class="form-group offset-md-4 col-md-4">
-            <label for="nameInput">Name</label>
+            <label class="titleTag"for="nameInput">Name</label>
             <input type="text" class="form-control" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name"/>
             @Html.ValidationMessage("This field is required")
         </div>
@@ -26,7 +26,7 @@
     @**************************@
     <div class="row">
         <div class="form-group offset-md-4 col-md-4">
-            <label for="menuSelect">Menu</label>
+            <label class="titleTag" for="menuSelect">Menu</label>
             <select class="form-control" id="menuSelect" name="order">
                 <option>--</option>
                 @foreach (var item in Model)
@@ -41,7 +41,7 @@
     @**************************@
     <div class="row">
         <div id="sauceForTaco" class="form-group offset-md-4 col-md-4">
-            <label>Taco Sauces</label>
+            <label class="titleTag">Taco Sauces</label>
             <div class="row">
                 <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Hot Sauce"/>Hot Sauce (VERY HOT!)</label>
                 <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Salsa Verde"/>Salsa Verde</label>
@@ -53,7 +53,7 @@
     @**************************@
     <div class="row">
         <div id="extrasForTaco" class="form-group offset-md-4 col-md-4">
-            <label>Taco Extras</label>
+            <label class="titleTag">Taco Extras</label>
             <div class="row">
                 <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Cheese"/>Cheese</label>
                 <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Lettuce"/>Lettuce</label>
@@ -68,11 +68,11 @@
     @**************************@
     <div class="row">
         <div id="sizesForPizza" class="form-group offset-md-4 col-md-4">
-            <label for="sizesForPizza">Pizza Size</label>
+            <label class="titleTag" for="sizesForPizza">Pizza Size</label>
             <div class="row">
-                <label class="radio-inline offset-md-1"><input value="Small" type="radio" name="size"/>Small</label>
-                <label class="radio-inline"><input value="Medium" type="radio" name="size"/>Medium</label>
-                <label class="radio-inline"><input value="Large" type="radio" name="size"/>Large</label>
+                <label class="radio-inline offset-md-1 col-md-3"><input value="Small" type="radio" name="size"/>Small</label>
+                <label class="radio-inline col-md-4"><input value="Medium" type="radio" name="size"/>Medium</label>
+                <label class="radio-inline col-md-4"><input value="Large" type="radio" name="size"/>Large</label>
             </div>
         </div>
     </div>
@@ -81,8 +81,8 @@
     @**************************@
     <div class="row">
         <div id="toppingsForPizza" class="form-group offset-md-4 col-md-4">
-            <label>Pizza Toppings</label>
-            <label>Meats</label>
+            <label class="titleTag">Pizza Toppings</label>
+            <label class="titleTag">Meats</label>
             <div class="row">
                 <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Extra Cheese"/>Extra Cheese</label>
                 <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Pepperoni"/>Pepperoni</label>
@@ -95,7 +95,7 @@
                 <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Bacon"/>Bacon</label>
             </div>
             <div>
-                <label>Non-meats</label>
+                <label class="titleTag">Non-meats</label>
                 <div class="row">
                     <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Pineapple"/>Pineapple</label>
                     <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Jalepenos"/>Jalapeños</label>
@@ -115,7 +115,7 @@
 @**************************@
 <div class="row">
     <div class="form-group offset-md-4 col-md-4">
-        <label for="qtyInput">Qty.</label>
+        <label class="titleTag" for="qtyInput">Qty.</label>
         <input type="number" minValue="1" class="form-control" id="qtyInput" aria-describedby="emailHelp" name="quantity"/>
         @Html.ValidationMessage("This field is required")
     </div>
@@ -126,7 +126,7 @@
 <div class="row">
     <div class="form-group offset-md-4 col-md-4">
         <div class="form-group">
-            <label for="specialInstructionsInput">Special Instructions</label>
+            <label class="titleTag" for="specialInstructionsInput">Special Instructions</label>
             <textarea class="form-control" id="specialInstructionsInput" aria-describedby="emailHelp" name="specialInstructions">
         </textarea>
             @Html.ValidationMessage("This field is required")
