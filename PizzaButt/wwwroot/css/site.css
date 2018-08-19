@@ -33,3 +33,23 @@
         display: none;
     }
 }
+
+#sauceForTaco {
+    display: none;
+}
+
+#extrasForTaco {
+    display: none;
+}
+
+#labelForTaco {
+    display: none;
+}
+
+ #toppingsForPizza {
+     display: none;
+ }
+ 
+ #sizesForPizza {
+     display: none;
+ }

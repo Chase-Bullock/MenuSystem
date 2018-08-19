@@ -15,7 +15,7 @@ namespace PizzaButt.Controllers
         {
             this.pizzaRepository = pizzaRepository;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Status()
         {
             var orders = await pizzaRepository.GetOrders();
             return View(orders);
@@ -30,9 +30,10 @@ namespace PizzaButt.Controllers
         public async Task<IActionResult> Complete([FromQuery] string orderId)
         {
             var order = await pizzaRepository.GetOrder(orderId);
+            order.CompleteTime = DateTime.UtcNow;
             order.Status = "Complete";
             await pizzaRepository.UpdateOrder(order);
-            return Redirect("Index");
+            return Redirect("Status");
         }
     }
 }

@@ -11,8 +11,14 @@
         <tr>
             <th scope="col">Name</th>
             <th scope="col">Order</th>
+            <th scope="col">Toppings</th>
+            @if (Model.Size != null)
+            {
+            <th scope="col">Size</th>
+            }
             <th scope="col">Quantity</th>
             <th scope="col">Special Instructions</th>
+            <th scope="col">Order Time</th>
             <th scope="col">Status</th>
         </tr>
     </thead>
@@ -25,10 +31,33 @@
                 @Model.Order
             </td>
             <td>
+                @{ var last = Model.Toppings.Last();}
+                @foreach (var topping in Model.Toppings)
+                {
+                    if (topping == last)
+                    {
+                        <Text>@topping</Text>
+                    }
+                    else
+                    {
+                        <Text>@topping, </Text>
+                    }
+                }
+            </td>
+            @if (Model.Size != null)
+            {
+                <td>
+                    @Model.Size
+                </td>
+            }
+            <td>
                 @Model.Quantity.ToString()
             </td>
             <td>
                 @Model.SpecialInstructions
+            </td>
+            <td>
+                @Model.CreateTime.ToLocalTime()
             </td>
             <td>
                 @Model.Status

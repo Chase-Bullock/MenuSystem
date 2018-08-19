@@ -9,9 +9,6 @@ namespace PizzaButt.Models
         [BsonId]
         public ObjectId Id { get; set; }
 
-        [BsonElement("ItemId")]
-        public int ItemId { get; set; }
-
         [BsonElement("Name")]
         public string Name { get; set; }
     }

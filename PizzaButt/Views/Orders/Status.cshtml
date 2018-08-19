@@ -11,6 +11,8 @@
         <tr>
             <th scope="col">Name</th>
             <th scope="col">Order</th>
+            <th scope="col">Size</th>
+            <th scope="col">Toppings</th>
             <th scope="col">Quantity</th>
             <th scope="col">Special Instructions</th>
             <th scope="col"></th>
@@ -25,6 +27,12 @@
             </td>
             <td>
                 @Html.DisplayFor(model => item.Order)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Size)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Toppings)
             </td>
             <td>
                 @Html.DisplayFor(model => item.Quantity)

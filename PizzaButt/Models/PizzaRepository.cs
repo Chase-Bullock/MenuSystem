@@ -30,24 +30,33 @@ namespace PizzaButt.Models
             }
         }
 
-        public async Task<MenuItem> GetMenuItem(int id)
+        public async Task<MenuItem> GetMenuItem(string id)
         {
+            ObjectId internalId = GetInternalId(id);
             try
             {
-                return await context.MenuItems
-                                .Find(menuItem => menuItem.ItemId == id)
-                                .FirstOrDefaultAsync();
+                return (await context.MenuItems.FindAsync(o => o.Id == internalId)).FirstOrDefault();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+        
+        private ObjectId GetInternalId(string id)
+        {
+            ObjectId internalId;
+            if (!ObjectId.TryParse(id, out internalId))
+                internalId = ObjectId.Empty;
+
+            return internalId;
+        }
 
         public async Task<string> SendOrder(OrderModel model)
         {
             try
             {
+                model.CreateTime = DateTime.UtcNow;
                 model.Status = "Pending";
                 await context.Orders.InsertOneAsync(model);
                 return model.Id.ToString();
@@ -61,10 +70,10 @@ namespace PizzaButt.Models
 
         public async Task<OrderModel> GetOrder(string id)
         {
-            var objId = new ObjectId(id);
+            ObjectId internalId = GetInternalId(id);
             try
             {
-                return (await context.Orders.FindAsync(o => o.Id == objId)).FirstOrDefault();
+                return (await context.Orders.FindAsync(o => o.Id == internalId)).FirstOrDefault();
             }
             catch(Exception ex)
             {

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using PizzaButt.Models;
 
@@ -25,14 +26,15 @@ namespace PizzaButt.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<MenuItem> GetItemById(int id)
+        public async Task<MenuItem> GetItemById(string id)
         {
             return await pizzaRepository.GetMenuItem(id) ?? new MenuItem();
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var options = await pizzaRepository.GetMenuItems();
+            return View(options);
         }
 
         [HttpPost]
