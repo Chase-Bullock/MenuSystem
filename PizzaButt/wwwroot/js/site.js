@@ -41,3 +41,16 @@ if (window.location.pathname != '/'){
     $('.activeNav').css("display", "flex");
     $('.activeNav').fadeIn();
 }
+
+if (window.location.pathname == '/Orders/Status') {
+    var time = new Date().getTime();
+    $(document.body).bind("mousemove keypress", function () {
+        time = new Date().getTime();
+    });
+
+    setInterval(function () {
+        if (new Date().getTime() - time >= 60000) {
+            window.location.reload(true);
+        }
+    }, 1000);
+}
