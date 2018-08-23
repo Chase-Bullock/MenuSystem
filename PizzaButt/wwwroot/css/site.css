@@ -40,6 +40,58 @@ html,body{
     }
 }
 
+/* -------HEADER------- */
+
+header {
+    background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(../images/pizza.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(../images/pizza.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    background-attachment: fixed;
+    max-width: 100%;
+}
+
+.hero-text-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+a:link,
+a:visited {
+    color: #8f1496;
+    text-decoration: none;
+    padding-bottom: 1px;
+    border-bottom: 1px solid transparent;
+    -webkit-transition: border-bottom 0.2s, color 0.2s;
+    transition: border-bottom 0.2s, color 0.2s;
+}
+
+a:hover,
+a:active {
+    color: #555;
+
+    border-bottom: 1px solid #8f1496;
+}
+
+.order-section {
+    background-color: #e5e5e5;
+}
+
+.order-status {
+    background-color: #e5e5e5;
+}
+
+.scrollable {
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 #sauceForTaco {
     display: none;
 }
@@ -57,5 +109,9 @@ html,body{
  }
  
  #sizesForPizza {
+     display: none;
+ }
+ 
+ .activeNav {
      display: none;
  }

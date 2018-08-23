@@ -25,3 +25,19 @@ $('#menuSelect').on('change', function(e) {
         $('#sizesForPizza').fadeOut();
     }
 });
+
+$('.js--scroll-to-order').click(function () {
+    $('html, body').animate({scrollTop: $('.js--order-section').offset().top}, 1000);
+});
+
+$('.activateNav').click(function (e) {
+    e.preventDefault();
+
+    $('.orderForm').submit();
+    
+})
+
+if (window.location.pathname != '/'){
+    $('.activeNav').css("display", "flex");
+    $('.activeNav').fadeIn();
+}

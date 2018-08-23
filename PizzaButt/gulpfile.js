@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const concat = require('gulp-concat');
 
 const vendorStyles = [
-    "node_modules/bootstrap/dist/css/bootstrap.min.css"
+    "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css"
 ];
 const vendorScripts = [
     "node_modules/jquery/dist/jquery.min.js",

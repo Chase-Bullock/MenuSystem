@@ -4,6 +4,7 @@
 }
 @model OrderModel
 
+<div class="order-status">
 <h2 style="margin-top: 50px">Order Status</h2>
 
 <table class="table">
@@ -81,5 +82,6 @@
     <div class="offset-md-11">
         <button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Cancel", "Orders", new {orderId = Model.Id.ToString()})'">Cancel Order</button>
     </div>
+</div>
 </div>
 
