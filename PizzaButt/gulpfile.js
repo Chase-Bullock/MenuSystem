@@ -2,12 +2,14 @@ const gulp = require('gulp');
 const concat = require('gulp-concat');
 
 const vendorStyles = [
-    "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css"
+    "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+    "node_modules/animate.css/animate.min.css"
 ];
 const vendorScripts = [
     "node_modules/jquery/dist/jquery.min.js",
     "node_modules/popper.js/dist/umd/popper.min.js",
-    "node_modules/bootstrap/dist/js/bootstrap.min.js"
+    "node_modules/bootstrap/dist/js/bootstrap.min.js",
+    "node_modules/waypoints/lib/jquery.waypoints.js"
 ];
 
 gulp.task('default', ['build-vendor']);

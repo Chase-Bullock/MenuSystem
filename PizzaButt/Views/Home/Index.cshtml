@@ -3,11 +3,26 @@
 }
 @model IEnumerable<MenuItem>
 
+
 <header>
+    <nav class="navbar navbar-expand-lg homeNav navbar-primary">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 16px; font-size: 18px;" asp-controller="Home" asp-action="Index">Cathedral Pizza</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Orders" asp-action="Status">Orders</a>
+            </li>
+        </ul>
+    </nav>
+
     <div class="hero-text-box">
-        <h1 style="color: #fff; font-size: 72px; font-weight: 300">Cathedral Pizza</h1>
-        <h2 style="color: #fff; font-weight: 300;">Thank you for being a part of our team</h2>
-        <button type="button" class="btn btn-primary btn-lg js--scroll-to-order" style="margin-top: 10px; position: relative; top: 50%; left: 33%;" href="#">Place order</button>
+        <h1 style="color: #fff; font-size: 72px; font-weight: 300" class="animated fadeInLeft">Cathedral Pizza</h1>
+        <h2 style="color: #fff; font-weight: 300;" class="animated fadeInLeft">Thank you for being a part of our team</h2>
+        <button type="button" class="btn btn-primary btn-lg js--scroll-to-order animated fadeIn" style="margin-top: 10px; position: relative; top: 50%; left: 33%;" href="#">Place order</button>
     </div>
 </header>
 

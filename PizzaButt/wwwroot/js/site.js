@@ -30,17 +30,27 @@ $('.js--scroll-to-order').click(function () {
     $('html, body').animate({scrollTop: $('.js--order-section').offset().top}, 1000);
 });
 
+$('.order-section').waypoint(function(direction) {
+    $('.order-section').addClass('animated fadeIn');
+}, {
+    offset: '30%'
+});
+
 $('.activateNav').click(function (e) {
     e.preventDefault();
 
     $('.orderForm').submit();
     
-})
+});
 
-if (window.location.pathname != '/'){
-    $('.activeNav').css("display", "flex");
-    $('.activeNav').fadeIn();
+if (window.location.pathname !== '/'){
+    $('.activeNav').css("display", "flex").fadeIn();
 }
+
+if (window.location.pathname === '/'){
+    $('.homeNav').css("display", "flex").fadeIn();
+}
+
 
 if (window.location.pathname == '/Orders/Status') {
     var time = new Date().getTime();

@@ -115,3 +115,28 @@ a:active {
  .activeNav {
      display: none;
  }
+
+.homeNav {
+    display: none;
+}
+
+
+.js--order-section
+{
+    opacity: 0;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+}
+
+.js--order-section.animated {
+    opacity: 1;
+}
+
+.sticky .main-nav li a:link,
+.sticky .main-nav li a:visited {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #8f1496;
+}
