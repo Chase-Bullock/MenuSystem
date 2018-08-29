@@ -65,9 +65,25 @@
         <div class="row">
             <div id="sauceForTaco" class="form-group offset-md-4 col-md-4">
                 <label class="titleTag">Taco Sauces</label>
-                <div class="row">
-                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Hot Sauce"/>Hot Sauce (VERY HOT!)</label>
-                    <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Salsa Verde"/>Salsa Verde</label>
+                <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                    <div class="offset-md-1 col-md-5">
+                        <div class="pretty p-icon p-smooth">
+                            <input name="toppings" type="checkbox" value="Hot Sauce"/>
+                        <div class="state p-primary">
+                            <i class="icon fa fa-check"></i>
+                        <label>Hot Sauce (VERY HOT!)</label>
+                            </div>
+                        </div>
+                    </div>
+                            <div class="col-md-5">
+                                <div class="pretty p-icon p-smooth">
+                                    <input name="toppings" type="checkbox" value="Salsa Verde"/>
+                                    <div class="state p-primary">
+                                        <i class="icon fa fa-check"></i>
+                                        <label>Salsa Verde</label>
+                                    </div>
+                                </div>
+                            </div>
                 </div>
             </div>
         </div>
@@ -77,14 +93,38 @@
         <div class="row">
             <div id="extrasForTaco" class="form-group offset-md-4 col-md-4">
                 <label class="titleTag">Taco Extras</label>
-                <div class="row">
-                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Cheese"/>Cheese</label>
-                    <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Lettuce"/>Lettuce</label>
+            <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                <div class="offset-md-1 col-md-5">
+                    <div class="pretty p-icon p-smooth">
+                        <input name="toppings" type="checkbox" value="Cheese"/>
+                        <div class="state p-primary">
+                            <i class="icon fa fa-check"></i>
+                        <label>Cheese</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="row">
-                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Jalepenos"/>Jalapeños</label>
-                </div>
-            </div>
+                        <div class="col-md-5">
+                        <div class="pretty p-icon p-smooth">
+                            <input name="toppings" type="checkbox" value="Lettuce"/>
+                            <div class="state p-primary">
+                                <i class="icon fa fa-check"></i>
+                                <label>Lettuce</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                            <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                            <div class="offset-md-1 col-md-5">
+                                <div class="pretty p-icon p-smooth">
+                                <input name="toppings" type="checkbox" value="Jalepenos"/>
+                                <div class="state p-primary">
+                                    <i class="icon fa fa-check"></i>
+                                    <label>Jalapeños</label>
+                                    </div>
+                                </div>
+                            </div>
+                                </div>
+                            </div>
         </div>
         @**************************@
         @*        PIZZASIZE       *@
@@ -93,9 +133,30 @@
             <div id="sizesForPizza" class="form-group offset-md-4 col-md-4">
                 <label class="titleTag" for="sizesForPizza">Pizza Size</label>
                 <div class="row">
-                    <label class="radio-inline offset-md-1 col-md-3"><input value="Small" type="radio" name="size"/>Small</label>
-                    <label class="radio-inline col-md-4"><input value="Medium" type="radio" name="size"/>Medium</label>
-                    <label class="radio-inline col-md-4"><input value="Large" type="radio" name="size"/>Large</label>
+                    <div class="offset-md-1 col-md-3">
+                        <div class="pretty p-default p-round">
+                            <input value="Small" type="radio" name="size"/>
+                            <div class="state p-primary-o">
+                                <label>Small</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="pretty p-default p-round">
+                            <input value="Medium" type="radio" name="size"/>
+                            <div class="state p-primary-o">
+                                <label>Medium</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="pretty p-default p-round">
+                    <input value="Large" type="radio" name="size"/>
+                            <div class="state p-primary-o">
+                                <label>Large</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,32 +167,112 @@
             <div id="toppingsForPizza" class="form-group offset-md-4 col-md-4">
                 <label class="titleTag">Pizza Toppings</label>
                 <label class="titleTag">Meats</label>
-                <div class="row">
-                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Extra Cheese"/>Extra Cheese</label>
-                    <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Pepperoni"/>Pepperoni</label>
-                </div>
-                <div class="row">
-                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Beef"/>Beef</label>
-                    <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Canadian Bacon"/>Canadian Bacon</label>
-                </div>
-                <div class="row">
-                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Bacon"/>Bacon</label>
-                </div>
-                <div>
-                    <label class="titleTag">Non-meats</label>
-                    <div class="row">
-                        <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Pineapple"/>Pineapple</label>
-                        <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Jalepenos"/>Jalapeños</label>
+                <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                    <div class="offset-md-1 col-md-5">
+                        <div class="pretty p-icon p-smooth">
+                            <input name="toppings" type="checkbox" value="Extra Cheese"/>
+                            <div class="state p-primary">
+                                <i class="icon fa fa-check"></i>
+                                <label>Extra Cheese</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row">
-                        <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Hot Sauce"/>Hot Sauce (VERY HOT!)</label>
-                        <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Salsa Verde"/>Salsa Verde</label>
+                    <div class="col-md-5">
+                        <div class="pretty p-icon p-smooth">
+                            <input name="toppings" type="checkbox" value="Pepperoni"/>
+                            <div class="state p-primary">
+                                <i class="icon fa fa-check"></i>
+                                <label>Pepperoni</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row">
-                        <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Onions"/>Onions</label>
+                    </div>
+                <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                    <div class="offset-1 col-md-5">
+                        <div class="pretty p-icon p-smooth">
+                            <input name="toppings" type="checkbox" value="Beef"/>
+                            <div class="state p-primary">
+                                <i class="icon fa fa-check"></i>
+                                <label>Beef</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="pretty p-icon p-smooth">
+                            <input name="toppings" type="checkbox" value="Canadian Bacon"/>
+                            <div class="state p-primary">
+                                <i class="icon fa fa-check"></i>
+                                <label>Canadian Bacon</label>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                    <div class="offset-1 col-md-5">
+                        <div class="pretty p-icon p-smooth">
+                            <input name="toppings" type="checkbox" value="Bacon"/>
+                            <div class="state p-primary">
+                                <i class="icon fa fa-check"></i>
+                                <label>Bacon</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                    <div>
+                        <label class="titleTag">Non-meats</label>
+                        <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                            <div class="offset-1 col-md-5">
+                                <div class="pretty p-icon p-smooth">
+                                    <input name="toppings" type="checkbox" value="Pineapple"/>
+                                    <div class="state p-primary">
+                                        <i class="icon fa fa-check"></i>
+                                        <label>Pineapple</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="pretty p-icon p-smooth">
+                            <input name="toppings" type="checkbox" value="Jalepenos"/>
+                                    <div class="state p-primary">
+                                        <i class="icon fa fa-check"></i>
+                                        <label>Jalapeños</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                            <div class="offset-1 col-md-5">
+                                <div class="pretty p-icon p-smooth">
+                            <input name="toppings" type="checkbox" value="Hot Sauce"/>
+                                    <div class="state p-primary">
+                                        <i class="icon fa fa-check"></i>
+                                        <label>Hot Sauce (VERY HOT!)</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="pretty p-icon p-smooth">
+                            <input name="toppings" type="checkbox" value="Salsa Verde"/>
+                                    <div class="state p-primary">
+                                        <i class="icon fa fa-check"></i>
+                                        <label>Salsa Verde</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                            <div class="offset-1 col-md-5">
+                                <div class="pretty p-icon p-smooth">
+                            <input name="toppings" type="checkbox" value="Onions"/>
+                                    <div class="state p-primary">
+                                        <i class="icon fa fa-check"></i>
+                                        <label>Onions</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
         @**************************@
         @*       QUANTITY         *@

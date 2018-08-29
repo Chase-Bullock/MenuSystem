@@ -63,7 +63,7 @@ header {
 
 a:link,
 a:visited {
-    color: #8f1496;
+    color: #54075B;
     text-decoration: none;
     padding-bottom: 1px;
     border-bottom: 1px solid transparent;
@@ -75,7 +75,7 @@ a:hover,
 a:active {
     color: #555;
 
-    border-bottom: 1px solid #8f1496;
+    border-bottom: 1px solid #54075B;
 }
 
 .order-section {
@@ -120,6 +120,9 @@ a:active {
     display: none;
 }
 
+#pretty--color-primary {
+    color: #54075B;
+}
 
 .js--order-section
 {
@@ -138,5 +141,5 @@ a:active {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #8f1496;
+    background-color: #54075B;
 }
