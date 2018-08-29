@@ -40,7 +40,7 @@
         <div class="row">
             <div class="form-group offset-md-4 col-md-4">
                 <label class="titleTag"for="nameInput">Name</label>
-                <input type="text" class="form-control" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name"/>
+                <input type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name"/>
                 @Html.ValidationMessage("This field is required")
             </div>
         </div>
@@ -50,13 +50,16 @@
         <div class="row">
             <div class="form-group offset-md-4 col-md-4">
                 <label class="titleTag" for="menuSelect">Menu</label>
-                <select class="form-control" id="menuSelect" name="order">
-                    <option>--</option>
-                    @foreach (var item in Model)
-                    {
-                        <option value="@item.Name">@Html.DisplayFor(model => item.Name)</option>
-                    }
-                </select>
+                <div class="selectdiv">
+                    <select class="form-control" id="menuSelect" name="order">
+                        <option>--</option>
+                        @foreach (var item in Model)
+                        {
+                            <option value="@item.Name">@Html.DisplayFor(model => item.Name)</option>
+                        }
+                    </select>
+
+                </div>
             </div>
         </div>
         @**************************@

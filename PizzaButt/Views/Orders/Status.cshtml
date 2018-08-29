@@ -15,6 +15,8 @@
             <th scope="col">Toppings</th>
             <th scope="col">Quantity</th>
             <th scope="col">Special Instructions</th>
+            <th scope="col">Order Time</th>
+            <th scope="col">Status</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -23,22 +25,46 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(model => item.Name)
+                @item.Name
             </td>
             <td>
-                @Html.DisplayFor(model => item.Order)
+                @item.Order
             </td>
             <td>
-                @Html.DisplayFor(model => item.Size)
+                @if (item.Size == null)
+                {
+                    <Text>N/A</Text>
+                }
+                else
+                {
+                    <Text>@item.Size</Text>
+                }
             </td>
             <td>
-                @Html.DisplayFor(model => item.Toppings)
+                @{ var last = item.Toppings.Last();}
+                @foreach (var topping in item.Toppings)
+                {
+                    if (topping == last)
+                    {
+                        <Text>@topping</Text>
+                    }
+                    else
+                    {
+                        <Text>@topping, </Text>
+                    }
+                }
             </td>
             <td>
-                @Html.DisplayFor(model => item.Quantity)
+                @item.Quantity
             </td>
             <td>
-                @Html.DisplayFor(model => item.SpecialInstructions)
+                @item.SpecialInstructions
+            </td>
+            <td>
+                @item.CreateTime.ToLocalTime()
+            </td>
+            <td>
+                @item.Status
             </td>
             <td>
                 <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Complete", "Orders", new { orderId = item.Id.ToString() })'">Complete Order</button>

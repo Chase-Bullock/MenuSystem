@@ -20,8 +20,9 @@
             <th scope="col">Quantity</th>
             <th scope="col">Special Instructions</th>
             <th scope="col">Order Time</th>
-            <th scope="col">Complete Time</th>
+@*            <th scope="col">Complete Time</th>*@
             <th scope="col">Status</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -61,27 +62,24 @@
         <td>
             @Model.CreateTime.ToLocalTime()
         </td>
-        <td>
-            @{
-                var ogTime = "0005-12-31 18:00:00.000";
-                var checkTime = DateTime.Parse(ogTime);
-            }
-            @if (Model.CompleteTime >
-                 checkTime)
-            {
-                @Model.CompleteTime.ToLocalTime()
-            }
-        </td>
+@*        <td>*@
+@*            @{*@
+@*                var ogTime = "0005-12-31 18:00:00.000";*@
+@*                var checkTime = DateTime.Parse(ogTime);*@
+@*            }*@
+@*            @if (Model.CompleteTime >*@
+@*                 checkTime)*@
+@*            {*@
+@*                @Model.CompleteTime.ToLocalTime()*@
+@*            }*@
+@*        </td>*@
         <td>
             @Model.Status
+        </td>
+        <td>
+            <button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Cancel", "Orders", new {orderId = Model.Id.ToString()})'">Cancel Order</button>
         </td>
     </tr>
     </tbody>
 </table>
-<div class="row">
-    <div class="offset-md-11">
-        <button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Cancel", "Orders", new {orderId = Model.Id.ToString()})'">Cancel Order</button>
-    </div>
 </div>
-</div>
-
