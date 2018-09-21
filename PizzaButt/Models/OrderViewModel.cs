@@ -6,8 +6,11 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace PizzaButt.Models
 {
-    public class OrderModel
+    public class OrderViewModel
     {
+
+        public List<MenuItem> MenuItems { get; set; }
+
         [BsonId]
         public ObjectId Id { get; set; }
         
@@ -41,10 +44,10 @@ namespace PizzaButt.Models
         public string Status { get; set; }
         
         [BsonElement("CreateTime")]
-        public DateTime CreateTime { get; set; }
+        public string CreateTime { get; set; }
         
         [BsonElement("CompleteTime")]
-        public DateTime CompleteTime { get; set; }
+        public string CompleteTime { get; set; }
         
     }
 }

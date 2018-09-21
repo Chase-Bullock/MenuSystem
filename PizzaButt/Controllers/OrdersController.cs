@@ -30,11 +30,28 @@ namespace PizzaButt.Controllers
         public async Task<IActionResult> Complete([FromQuery] string orderId)
         {
             var order = await pizzaRepository.GetOrder(orderId);
-            order.CompleteTime = DateTime.UtcNow;
+            order.CompleteTime = DateTime.Now;
             order.Status = "Complete";
             await pizzaRepository.UpdateOrder(order);
             return Redirect("Status");
         }
+        
+        public async Task<IActionResult> Start([FromQuery] string orderId)
+        {
+            var order = await pizzaRepository.GetOrder(orderId);
+            order.Status = "Started";
+            await pizzaRepository.UpdateOrder(order);
+            return Redirect("Status");
+        }
+
+        public async Task<IActionResult> ReOpen([FromQuery] string orderId)
+        {
+            var order = await pizzaRepository.GetOrder(orderId);
+            order.Status = "Started";
+            await pizzaRepository.UpdateOrder(order);
+            return Redirect("Status");
+        }
+
         
         public async Task<IActionResult> Cancel([FromQuery] string orderId)
         {

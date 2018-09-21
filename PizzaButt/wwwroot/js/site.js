@@ -1,8 +1,12 @@
 ﻿// Write your JavaScript code.
 
+
+//////////////////////////// MENUITEM SELECT ////////////////////////////
+
 $('#menuSelect').on('change', function(e) {
     var val = $(this).val();
     console.log(val);
+    $('.toppings').prop('checked', false);
     if (val === 'Taco') {
         $('#toppingsForPizza').fadeOut();
         $('#sizesForPizza').fadeOut();
@@ -26,6 +30,8 @@ $('#menuSelect').on('change', function(e) {
     }
 });
 
+//////////////////////////// SCROLL TO ORDER ////////////////////////////
+
 $('.js--scroll-to-order').click(function () {
     $('html, body').animate({scrollTop: $('.js--order-section').offset().top}, 1000);
 });
@@ -36,12 +42,7 @@ $('.order-section').waypoint(function(direction) {
     offset: '30%'
 });
 
-$('.activateNav').click(function (e) {
-    e.preventDefault();
-
-    $('.orderForm').submit();
-    
-});
+//////////////////////////// CHANGE HEADER ////////////////////////////
 
 if (window.location.pathname !== '/'){
     $('.activeNav').css("display", "flex").fadeIn();
@@ -52,15 +53,38 @@ if (window.location.pathname === '/'){
 }
 
 
-if (window.location.pathname == '/Orders/Status') {
-    var time = new Date().getTime();
-    $(document.body).bind("mousemove keypress", function () {
-        time = new Date().getTime();
-    });
+//////////////////////////// COMMENT / SPECIAL INSTRUCTIONS FOR ORDER ////////////////////////////
 
-    setInterval(function () {
-        if (new Date().getTime() - time >= 60000) {
-            window.location.reload(true);
-        }
-    }, 1000);
-}
+$('textarea').keyup(function () {
+    var tlength = $(this).val().length;
+    $(this).val($(this).val().substring(0, 355));
+    var tlength = $(this).val().length;
+    remain = maxchars - parseInt(tlength);
+    $('#remain').text(remain);
+});
+
+//////////////////////////// SUBMIT ORDER ////////////////////////////
+
+// $('.activateNav').click(function (e) {
+//     e.preventDefault();
+//
+//     $('.orderForm').submit();
+//
+// });
+//
+
+
+//////////////////////////// OLD WAY TO REFRESH PAGE(NEW WAY NOT IMPLEMENTED) ////////////////////////////
+
+//if (window.location.pathname === '/Orders/Status') {
+//    var time = new Date().getTime();
+//    $(document.body).bind("mousemove keypress", function () {
+//        time = new Date().getTime();
+//    });
+
+//    setInterval(function () {
+//        if (new Date().getTime() - time >= 12000) {
+//            window.location.reload(true);
+//        }
+//    }, 1000);
+//}

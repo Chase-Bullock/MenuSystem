@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -56,7 +57,9 @@ namespace PizzaButt.Models
         {
             try
             {
-                model.CreateTime = DateTime.UtcNow;
+                const string FMT = "O";
+                var CreateTime = DateTime.Now;
+                model.CreateTime = CreateTime;
                 model.Status = "Pending";
                 await context.Orders.InsertOneAsync(model);
                 return model.Id.ToString();
@@ -74,6 +77,7 @@ namespace PizzaButt.Models
             try
             {
                 return (await context.Orders.FindAsync(o => o.Id == internalId)).FirstOrDefault();
+  
             }
             catch(Exception ex)
             {
@@ -86,7 +90,8 @@ namespace PizzaButt.Models
         {
             try
             {
-                return (await context.Orders.FindAsync(o => o.Status != "Complete")).ToList();
+                return (await context.Orders.FindAsync(o => o.CompleteTime > (DateTime.Now.Date.AddDays(-1)) || o.CompleteTime ==  DateTime.Parse("01/01/0001")
+                                                            )).ToList();
             }
             catch (Exception ex)
             {

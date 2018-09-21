@@ -4,10 +4,87 @@
 }
 @model IEnumerable<OrderModel>
 
-<h1 style=" text-align: center;">Orders</h1>
+    <h1 style="text-align: center;">Pending Orders</h1>
 
 <table class="table" style="width: 80%; margin: auto;">
     <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Order</th>
+        <th scope="col">Size</th>
+        <th scope="col">Toppings</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Special Instructions</th>
+        <th scope="col">Order Time</th>
+        <th scope="col">Status</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        if (item.Status == "Pending")
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Order
+                </td>
+                <td>
+                    @if (item.Size == null)
+                    {
+                        <Text>N/A</Text>
+                    }
+                    else
+                    {
+                        <Text>@item.Size</Text>
+                    }
+                </td>
+                <td>
+                    @{
+                        if (item.Toppings != null)
+                        {
+                            var last = item.Toppings.Last();
+                            foreach (var topping in item.Toppings)
+                            {
+                                if (topping == last)
+                                {
+                                    <Text>@topping</Text>
+                                }
+                                else
+                                {
+                                    <Text>@topping, </Text>
+                                }
+                            }
+                        }
+                    }
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+                <td>
+                    @item.SpecialInstructions
+                </td>
+                <td>
+                    @item.CreateTime
+                </td>
+                <td>
+                    @item.Status
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success" onclick="location.href = '@Url.Action("Start", "Orders", new {orderId = item.Id.ToString()})'">Start Order</button>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+<h1 style="text-align: center;">Started Orders</h1>
+
+    <table class="table" style="width: 80%; margin: auto;">
+        <thead>
         <tr>
             <th scope="col">Name</th>
             <th scope="col">Order</th>
@@ -19,58 +96,148 @@
             <th scope="col">Status</th>
             <th scope="col"></th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @item.Name
-            </td>
-            <td>
-                @item.Order
-            </td>
-            <td>
-                @if (item.Size == null)
-                {
-                    <Text>N/A</Text>
-                }
-                else
-                {
-                    <Text>@item.Size</Text>
-                }
-            </td>
-            <td>
-                @{ var last = item.Toppings.Last();}
-                @foreach (var topping in item.Toppings)
-                {
-                    if (topping == last)
-                    {
-                        <Text>@topping</Text>
-                    }
-                    else
-                    {
-                        <Text>@topping, </Text>
-                    }
-                }
-            </td>
-            <td>
-                @item.Quantity
-            </td>
-            <td>
-                @item.SpecialInstructions
-            </td>
-            <td>
-                @item.CreateTime.ToLocalTime()
-            </td>
-            <td>
-                @item.Status
-            </td>
-            <td>
-                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Complete", "Orders", new { orderId = item.Id.ToString() })'">Complete Order</button>
-            </td>
-        </tr>
+            if (item.Status == "Started")
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Order
+                    </td>
+                    <td>
+                        @if (item.Size == null)
+                        {
+                            <Text>N/A</Text>
+                        }
+                        else
+                        {
+                            <Text>@item.Size</Text>
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (item.Toppings != null)
+                            {
+                                var last = item.Toppings.Last();
+                                foreach (var topping in item.Toppings)
+                                {
+                                    if (topping == last)
+                                    {
+                                        <Text>@topping</Text>
+                                    }
+                                    else
+                                    {
+                                        <Text>@topping, </Text>
+                                    }
+                                }
+                            }
+                        }
+                    </td>
+                    <td>
+                        @item.Quantity
+                    </td>
+                    <td>
+                        @item.SpecialInstructions
+                    </td>
+                    <td>
+                        @item.CreateTime
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-success" onclick="location.href = '@Url.Action("Complete", "Orders", new {orderId = item.Id.ToString()})'">Complete Order</button>
+                    </td>
+                </tr>
+            }
         }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+}
 
+<h1 style="text-align: center;">Completed Orders</h1>
+
+    <table class="table" style="width: 80%; margin: auto;">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Order</th>
+            <th scope="col">Size</th>
+            <th scope="col">Toppings</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Special Instructions</th>
+            <th scope="col">Order Time</th>
+            <th scope="col">Status</th>
+            <th scope="col">Complete Time</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.Status == "Complete")
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Order
+                    </td>
+                    <td>
+                        @if (item.Size == null)
+                        {
+                            <Text>N/A</Text>
+                        }
+                        else
+                        {
+                            <Text>@item.Size</Text>
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (item.Toppings != null)
+                            {
+                                var last = item.Toppings.Last();
+                                foreach (var topping in item.Toppings)
+                                {
+                                    if (topping == last)
+                                    {
+                                        <Text>@topping</Text>
+                                    }
+                                    else
+                                    {
+                                        <Text>@topping, </Text>
+                                    }
+                                }
+                            }
+                        }
+                    </td>
+                    <td>
+                        @item.Quantity
+                    </td>
+                    <td>
+                        @item.SpecialInstructions
+                    </td>
+                    <td>
+                        @item.CreateTime
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        @item.CompleteTime
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-success" onclick="location.href = '@Url.Action("ReOpen", "Orders", new {orderId = item.Id.ToString()})'">Reopen Order</button>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>

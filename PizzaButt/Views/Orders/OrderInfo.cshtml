@@ -34,8 +34,10 @@
             @Model.Order
         </td>
         <td>
-            @{ var last = Model.Toppings.Last();}
-            @foreach (var topping in Model.Toppings)
+            @if (Model.Toppings != null)
+            {
+            var last = Model.Toppings.Last();
+            foreach (var topping in Model.Toppings)
             {
                 if (topping == last)
                 {
@@ -45,6 +47,7 @@
                 {
                     <Text>@topping, </Text>
                 }
+            }
             }
         </td>
         @if (Model.Size != null)
@@ -60,7 +63,7 @@
             @Model.SpecialInstructions
         </td>
         <td>
-            @Model.CreateTime.ToLocalTime()
+            @Model.CreateTime
         </td>
 @*        <td>*@
 @*            @{*@

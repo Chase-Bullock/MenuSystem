@@ -32,15 +32,15 @@
             <h3 style="font-size: 36px; font-weight: 700; text-align: center">Place an order </h3>
         </div>
     </div>
-
-    <form style="margin-top: 25px;" class="orderForm" method="post">
+    
+    <form style="margin-top: 25px;" class="orderForm" id="orderForm" method="post">
         @**************************@
         @*          NAME          *@
         @**************************@
         <div class="row">
             <div class="form-group offset-md-4 col-md-4">
                 <label class="titleTag"for="nameInput">Name</label>
-                <input type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name"/>
+                <input type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name" required/>
                 @Html.ValidationMessage("This field is required")
             </div>
         </div>
@@ -51,14 +51,13 @@
             <div class="form-group offset-md-4 col-md-4">
                 <label class="titleTag" for="menuSelect">Menu</label>
                 <div class="selectdiv">
-                    <select class="form-control" id="menuSelect" name="order">
-                        <option>--</option>
+                    <select required class="form-control" id="menuSelect" name="order">
+                        <option disabled selected hidden> -- </option>
                         @foreach (var item in Model)
                         {
                             <option value="@item.Name">@Html.DisplayFor(model => item.Name)</option>
                         }
                     </select>
-
                 </div>
             </div>
         </div>
@@ -71,22 +70,22 @@
                 <div class="row" style="margin-top: 6px; margin-bottom: 6px">
                     <div class="offset-md-1 col-md-5">
                         <div class="pretty p-icon p-smooth">
-                            <input name="toppings" type="checkbox" value="Hot Sauce"/>
-                        <div class="state p-primary">
-                            <i class="icon fa fa-check"></i>
-                        <label>Hot Sauce (VERY HOT!)</label>
+                            <input name="toppings" class="toppings" type="checkbox" value="Hot Sauce"/>
+                            <div class="state p-primary">
+                                <i class="icon fa fa-check"></i>
+                                <label>Hot Sauce (VERY HOT!)</label>
                             </div>
                         </div>
                     </div>
-                            <div class="col-md-5">
-                                <div class="pretty p-icon p-smooth">
-                                    <input name="toppings" type="checkbox" value="Salsa Verde"/>
-                                    <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
-                                        <label>Salsa Verde</label>
-                                    </div>
-                                </div>
+                    <div class="col-md-5">
+                        <div class="pretty p-icon p-smooth">
+                            <input name="toppings" class="toppings" type="checkbox" value="Salsa Verde"/>
+                            <div class="state p-primary">
+                                <i class="icon fa fa-check"></i>
+                                <label>Salsa Verde</label>
                             </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,38 +95,38 @@
         <div class="row">
             <div id="extrasForTaco" class="form-group offset-md-4 col-md-4">
                 <label class="titleTag">Taco Extras</label>
-            <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-                <div class="offset-md-1 col-md-5">
-                    <div class="pretty p-icon p-smooth">
-                        <input name="toppings" type="checkbox" value="Cheese"/>
-                        <div class="state p-primary">
-                            <i class="icon fa fa-check"></i>
-                        <label>Cheese</label>
+                <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                    <div class="offset-md-1 col-md-5">
+                        <div class="pretty p-icon p-smooth">
+                            <input name="toppings" class="toppings" type="checkbox" value="Cheese"/>
+                            <div class="state p-primary">
+                                <i class="icon fa fa-check"></i>
+                                <label>Cheese</label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                        <div class="col-md-5">
+                    <div class="col-md-5">
                         <div class="pretty p-icon p-smooth">
-                            <input name="toppings" type="checkbox" value="Lettuce"/>
+                            <input name="toppings" class="toppings" type="checkbox" value="Lettuce"/>
                             <div class="state p-primary">
                                 <i class="icon fa fa-check"></i>
                                 <label>Lettuce</label>
-                                </div>
                             </div>
                         </div>
                     </div>
-                            <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-                            <div class="offset-md-1 col-md-5">
-                                <div class="pretty p-icon p-smooth">
-                                <input name="toppings" type="checkbox" value="Jalepenos"/>
-                                <div class="state p-primary">
-                                    <i class="icon fa fa-check"></i>
-                                    <label>Jalapeños</label>
-                                    </div>
-                                </div>
+                </div>
+                <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                    <div class="offset-md-1 col-md-5">
+                        <div class="pretty p-icon p-smooth">
+                            <input name="toppings" class="toppings" type="checkbox" value="Jalepenos"/>
+                            <div class="state p-primary">
+                                <i class="icon fa fa-check"></i>
+                                <label>Jalapeños</label>
                             </div>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         @**************************@
         @*        PIZZASIZE       *@
@@ -138,7 +137,7 @@
                 <div class="row">
                     <div class="offset-md-1 col-md-3">
                         <div class="pretty p-default p-round">
-                            <input value="Small" type="radio" name="size"/>
+                            <input value="Small" class="toppings" type="radio" name="size"/>
                             <div class="state p-primary-o">
                                 <label>Small</label>
                             </div>
@@ -146,7 +145,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="pretty p-default p-round">
-                            <input value="Medium" type="radio" name="size"/>
+                            <input value="Medium" class="toppings" type="radio" name="size"/>
                             <div class="state p-primary-o">
                                 <label>Medium</label>
                             </div>
@@ -154,7 +153,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="pretty p-default p-round">
-                    <input value="Large" type="radio" name="size"/>
+                            <input value="Large" class="toppings" type="radio" name="size"/>
                             <div class="state p-primary-o">
                                 <label>Large</label>
                             </div>
@@ -173,7 +172,7 @@
                 <div class="row" style="margin-top: 6px; margin-bottom: 6px">
                     <div class="offset-md-1 col-md-5">
                         <div class="pretty p-icon p-smooth">
-                            <input name="toppings" type="checkbox" value="Extra Cheese"/>
+                            <input name="toppings" class="toppings" type="checkbox" value="Extra Cheese"/>
                             <div class="state p-primary">
                                 <i class="icon fa fa-check"></i>
                                 <label>Extra Cheese</label>
@@ -182,18 +181,18 @@
                     </div>
                     <div class="col-md-5">
                         <div class="pretty p-icon p-smooth">
-                            <input name="toppings" type="checkbox" value="Pepperoni"/>
+                            <input name="toppings" class="toppings" type="checkbox" value="Pepperoni"/>
                             <div class="state p-primary">
                                 <i class="icon fa fa-check"></i>
                                 <label>Pepperoni</label>
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
                 <div class="row" style="margin-top: 6px; margin-bottom: 6px">
                     <div class="offset-1 col-md-5">
                         <div class="pretty p-icon p-smooth">
-                            <input name="toppings" type="checkbox" value="Beef"/>
+                            <input name="toppings" class="toppings" type="checkbox" value="Beef"/>
                             <div class="state p-primary">
                                 <i class="icon fa fa-check"></i>
                                 <label>Beef</label>
@@ -202,18 +201,18 @@
                     </div>
                     <div class="col-md-5">
                         <div class="pretty p-icon p-smooth">
-                            <input name="toppings" type="checkbox" value="Canadian Bacon"/>
+                            <input name="toppings" class="toppings" type="checkbox" value="Canadian Bacon"/>
                             <div class="state p-primary">
                                 <i class="icon fa fa-check"></i>
                                 <label>Canadian Bacon</label>
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
                 <div class="row" style="margin-top: 6px; margin-bottom: 6px">
                     <div class="offset-1 col-md-5">
                         <div class="pretty p-icon p-smooth">
-                            <input name="toppings" type="checkbox" value="Bacon"/>
+                            <input name="toppings" class="toppings" type="checkbox" value="Bacon"/>
                             <div class="state p-primary">
                                 <i class="icon fa fa-check"></i>
                                 <label>Bacon</label>
@@ -221,61 +220,61 @@
                         </div>
                     </div>
                 </div>
-                    <div>
-                        <label class="titleTag">Non-meats</label>
-                        <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-                            <div class="offset-1 col-md-5">
-                                <div class="pretty p-icon p-smooth">
-                                    <input name="toppings" type="checkbox" value="Pineapple"/>
-                                    <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
-                                        <label>Pineapple</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="pretty p-icon p-smooth">
-                            <input name="toppings" type="checkbox" value="Jalepenos"/>
-                                    <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
-                                        <label>Jalapeños</label>
-                                    </div>
+                <div>
+                    <label class="titleTag">Non-meats</label>
+                    <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                        <div class="offset-1 col-md-5">
+                            <div class="pretty p-icon p-smooth">
+                                <input name="toppings" class="toppings" type="checkbox" value="Pineapple"/>
+                                <div class="state p-primary">
+                                    <i class="icon fa fa-check"></i>
+                                    <label>Pineapple</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-                            <div class="offset-1 col-md-5">
-                                <div class="pretty p-icon p-smooth">
-                            <input name="toppings" type="checkbox" value="Hot Sauce"/>
-                                    <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
-                                        <label>Hot Sauce (VERY HOT!)</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="pretty p-icon p-smooth">
-                            <input name="toppings" type="checkbox" value="Salsa Verde"/>
-                                    <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
-                                        <label>Salsa Verde</label>
-                                    </div>
+                        <div class="col-md-5">
+                            <div class="pretty p-icon p-smooth">
+                                <input name="toppings" class="toppings" type="checkbox" value="Jalepenos"/>
+                                <div class="state p-primary">
+                                    <i class="icon fa fa-check"></i>
+                                    <label>Jalapeños</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-                            <div class="offset-1 col-md-5">
-                                <div class="pretty p-icon p-smooth">
-                            <input name="toppings" type="checkbox" value="Onions"/>
-                                    <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
-                                        <label>Onions</label>
-                                    </div>
+                    </div>
+                    <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                        <div class="offset-1 col-md-5">
+                            <div class="pretty p-icon p-smooth">
+                                <input name="toppings" class="toppings" type="checkbox" value="Hot Sauce"/>
+                                <div class="state p-primary">
+                                    <i class="icon fa fa-check"></i>
+                                    <label>Hot Sauce (VERY HOT!)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="pretty p-icon p-smooth">
+                                <input name="toppings" class="toppings" type="checkbox" value="Salsa Verde"/>
+                                <div class="state p-primary">
+                                    <i class="icon fa fa-check"></i>
+                                    <label>Salsa Verde</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                        <div class="offset-1 col-md-5">
+                            <div class="pretty p-icon p-smooth">
+                                <input name="toppings" class="toppings" type="checkbox" value="Onions"/>
+                                <div class="state p-primary">
+                                    <i class="icon fa fa-check"></i>
+                                    <label>Onions</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
         @**************************@
         @*       QUANTITY         *@
@@ -283,7 +282,7 @@
         <div class="row">
             <div class="form-group offset-md-4 col-md-4">
                 <label class="titleTag" for="qtyInput">Qty.</label>
-                <input type="number" minValue="1" class="form-control" id="qtyInput" aria-describedby="emailHelp" name="quantity"/>
+                <input type="number" minValue="1" class="form-control" id="qtyInput" aria-describedby="emailHelp" name="quantity" required="true"/>
                 @Html.ValidationMessage("This field is required")
             </div>
         </div>
@@ -295,8 +294,7 @@
                 <div class="form-group">
                     <label class="titleTag" for="specialInstructionsInput">Special Instructions</label>
                     <textarea class="form-control" id="specialInstructionsInput" aria-describedby="emailHelp" name="specialInstructions">
-        </textarea>
-                    @Html.ValidationMessage("This field is required")
+                </textarea>
                 </div>
             </div>
         </div>
@@ -305,7 +303,7 @@
         @**************************@
         <div class="row">
             <div class="form-group offset-md-4 col-md-4">
-                <button type="button" id="activateNav" class="btn btn-primary activateNav">Submit</button>
+                <button type="submit" id="activateNav" class="btn btn-primary activateNav">Submit</button>
             </div>
         </div>
     </form>

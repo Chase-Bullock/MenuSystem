@@ -33,6 +33,7 @@ namespace PizzaButt
             });
 
             services.AddTransient<IPizzaRepository, PizzaRepository>();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +41,6 @@ namespace PizzaButt
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else

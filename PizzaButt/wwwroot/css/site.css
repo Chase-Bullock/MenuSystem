@@ -11,36 +11,11 @@ html,body{
     padding-right: 15px;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
 .titleTag {
     font-weight: bold;
 }
 
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
-
-/* QR code generator */
-#qrCode {
-    margin: 15px;
-}
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
-}
-
-/* -------HEADER------- */
+/* ------- HEADER ------- */
 
 header {
     background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(../images/pizza.jpg);
@@ -61,6 +36,26 @@ header {
     transform: translate(-50%, -50%);
 }
 
+/* ------- BOOTSTRAP OVERRIDE ------ */
+
+.bg-primary {
+    background-color: #54075B !important;
+}
+
+/* ------- NAV ------ */
+
+.activeNav {
+    display: none;
+}
+
+.homeNav {
+    display: none;
+}
+
+
+/* ------- LINKS ------- */
+
+
 a:link,
 a:visited {
     color: #54075B;
@@ -78,6 +73,10 @@ a:active {
     border-bottom: 1px solid #54075B;
 }
 
+
+/* ------- ORDER SECTION ------- */
+
+
 .order-section {
     background-color: #e5e5e5;
 }
@@ -86,10 +85,8 @@ a:active {
     background-color: #e5e5e5;
 }
 
-.bg-primary {
-    background-color: #54075B !important;
-}
 
+/* ------- DROPDOWN BOX ------ */
 .selectdiv:after {
     content: '\f078';
     font: normal normal normal 17px/1 FontAwesome;
@@ -105,7 +102,6 @@ a:active {
     pointer-events: none;
 }
 
-/* IE11 hide native button (thanks Matt!) */
 select::-ms-expand {
     display: none;
 }
@@ -121,7 +117,7 @@ select::-ms-expand {
     height: calc(2.0625rem + 2px);
     float: right;
     margin: 5px 0px;
-    padding: 0px 24px;
+    padding: 0px 7px;
     font-size: 16px;
     line-height: 1.75;
     color: #333;
@@ -137,6 +133,8 @@ select::-ms-expand {
     overflow-y: scroll;
     overflow-x: hidden;
 }
+
+/*------ TOPPINGS HIDE FOR JAVASCRIPT ------*/
 
 #sauceForTaco {
     display: none;
@@ -158,17 +156,14 @@ select::-ms-expand {
      display: none;
  }
  
- .activeNav {
-     display: none;
- }
-
-.homeNav {
-    display: none;
-}
-
+/* ------- CHECKBOX LIBRARY OVERRIDE ------- */
+ 
 #pretty--color-primary {
     color: #54075B;
 }
+
+
+/* ------ JAVASCRIPT ANIMATIONS ------- */
 
 .js--order-section
 {
