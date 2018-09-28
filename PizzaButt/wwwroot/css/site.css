@@ -134,6 +134,19 @@ select::-ms-expand {
     overflow-x: hidden;
 }
 
+/*------ TABLES ------*/
+.tablez {
+    background-color: rgb(240, 240, 240);
+    padding: 15px;
+    border: 1px solid #c8ced3;
+    border-radius: .25rem;
+    -webkit-box-shadow: 0px 1px 6px -1px rgba(120,120,120,1);
+    -moz-box-shadow: 0px 1px 6px -1px rgba(120,120,120,1);
+    box-shadow: 0px 1px 6px -1px rgba(120,120,120,1);
+}
+
+
+
 /*------ TOPPINGS HIDE FOR JAVASCRIPT ------*/
 
 #sauceForTaco {
@@ -155,6 +168,8 @@ select::-ms-expand {
  #sizesForPizza {
      display: none;
  }
+ 
+ 
  
 /* ------- CHECKBOX LIBRARY OVERRIDE ------- */
  

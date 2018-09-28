@@ -24,17 +24,16 @@
         </li>
     </ul>
 </nav>
-<div>
+<div style="height: 100%;">
     @RenderBody()
-
 </div>
 
-<hr/>
-<div style="position: absolute; left: 0; font-size: 14px; bottom: 0; width: 100%; ">
-<footer>
-    <p>&copy; 2018 - Cathedral Pizza</p>
-</footer>
-</div>
+@* <div style="position: absolute; left: 0; font-size: 14px; bottom: 0; width: 100%;"> *@
+@*     <hr/> *@
+@*     <footer> *@
+@*         <p>&copy; 2018 - Cathedral Pizza</p> *@
+@*     </footer> *@
+@* </div> *@
 @RenderSection("Scripts", required: false)
 <script src="~/vendor.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>

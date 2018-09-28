@@ -106,7 +106,9 @@ namespace PizzaButt.Models
             {
                 await context.Orders.UpdateOneAsync(
                     Builders<OrderModel>.Filter.Eq("Id", model.Id),
-                    Builders<OrderModel>.Update.Set("Status", model.Status)
+                    Builders<OrderModel>.Update
+                        .Set("Status", model.Status)
+                        .Set("CompleteTime", model.CompleteTime)
                 );
             }
             catch (Exception ex)

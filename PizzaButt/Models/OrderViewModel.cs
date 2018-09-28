@@ -9,7 +9,7 @@ namespace PizzaButt.Models
     public class OrderViewModel
     {
 
-        public List<MenuItem> MenuItems { get; set; }
+        public IEnumerable<MenuItem> MenuItems { get; set; }
 
         [BsonId]
         public ObjectId Id { get; set; }
@@ -44,10 +44,10 @@ namespace PizzaButt.Models
         public string Status { get; set; }
         
         [BsonElement("CreateTime")]
-        public string CreateTime { get; set; }
+        public DateTime CreateTime { get; set; }
         
         [BsonElement("CompleteTime")]
-        public string CompleteTime { get; set; }
+        public DateTime CompleteTime { get; set; }
         
     }
 }

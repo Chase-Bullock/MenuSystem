@@ -30,7 +30,7 @@ namespace PizzaButt.Controllers
         public async Task<IActionResult> Complete([FromQuery] string orderId)
         {
             var order = await pizzaRepository.GetOrder(orderId);
-            order.CompleteTime = DateTime.Now;
+            order.CompleteTime = DateTime.UtcNow;
             order.Status = "Complete";
             await pizzaRepository.UpdateOrder(order);
             return Redirect("Status");

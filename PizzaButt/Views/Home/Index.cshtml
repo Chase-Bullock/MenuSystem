@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Order Pizza";
 }
-@model IEnumerable<MenuItem>
+@model OrderViewModel
 
 
 <header>
@@ -39,8 +39,8 @@
         @**************************@
         <div class="row">
             <div class="form-group offset-md-4 col-md-4">
-                <label class="titleTag"for="nameInput">Name</label>
-                <input type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name" required/>
+                <label asp-for="Name" class="titleTag">Name</label>
+                <input asp-for="Name" type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name" required/>
                 @Html.ValidationMessage("This field is required")
             </div>
         </div>
@@ -49,11 +49,11 @@
         @**************************@
         <div class="row">
             <div class="form-group offset-md-4 col-md-4">
-                <label class="titleTag" for="menuSelect">Menu</label>
+                <label asp-for="Order" class="titleTag" for="menuSelect">Menu</label>
                 <div class="selectdiv">
-                    <select required class="form-control" id="menuSelect" name="order">
+                    <select asp-for="Order" required class="form-control" id="menuSelect" name="order">
                         <option disabled selected hidden> -- </option>
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.MenuItems)
                         {
                             <option value="@item.Name">@Html.DisplayFor(model => item.Name)</option>
                         }
@@ -133,7 +133,7 @@
         @**************************@
         <div class="row">
             <div id="sizesForPizza" class="form-group offset-md-4 col-md-4">
-                <label class="titleTag" for="sizesForPizza">Pizza Size</label>
+                <label asp-for="Size" class="titleTag" for="sizesForPizza">Pizza Size</label>
                 <div class="row">
                     <div class="offset-md-1 col-md-3">
                         <div class="pretty p-default p-round">

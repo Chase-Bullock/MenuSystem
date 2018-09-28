@@ -34,7 +34,11 @@ namespace PizzaButt.Controllers
         public async Task<IActionResult> Index()
         {
             var options = await pizzaRepository.GetMenuItems();
-            return View(options);
+            var orderView = new OrderViewModel
+            {
+                MenuItems = options
+            };
+            return View(orderView);
         }
 
         [HttpPost]
@@ -43,7 +47,11 @@ namespace PizzaButt.Controllers
             if (!ModelState.IsValid)
             {
                 var options = await pizzaRepository.GetMenuItems();
-                return View(options);
+                var orderView = new OrderViewModel
+                {
+                    MenuItems = options
+                };
+                return View(orderView);
             }
             
             var orderId = await pizzaRepository.SendOrder(request);
