@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const concat = require('gulp-concat');
 
 const vendorStyles = [
-    "node_modules/animate.css/animate.min.css",
+    "node_modules/animate.css/animate.min.css"
 ];
 const vendorScripts = [
     "node_modules/jquery/dist/jquery.min.js",

@@ -57,7 +57,6 @@ namespace PizzaButt.Models
         {
             try
             {
-                const string FMT = "O";
                 var CreateTime = DateTime.Now;
                 model.CreateTime = CreateTime;
                 model.Status = "Pending";
