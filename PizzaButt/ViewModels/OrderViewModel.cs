@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using PizzaButt.Models;
 
-namespace PizzaButt.Models
+namespace PizzaButt.ViewModels
 {
     public class OrderViewModel
     {
@@ -24,14 +25,16 @@ namespace PizzaButt.Models
         [BsonElement("Order")]
         public string Order { get; set; }
         
-        [Range(1, 100)]
+
         [BsonElement("Size")]
+        [Required]
         public string Size { get; set; }
         
         [BsonElement("Toppings")]
         public List<string> Toppings { get; set; }
         
         [BsonRequired]
+        [Range(1, 100)]
         [Required]
         [BsonElement("Quantity")]
         public int Quantity { get; set; }

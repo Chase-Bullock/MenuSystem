@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -6,21 +7,16 @@ using PizzaButt.Models;
 
 namespace PizzaButt.Hubs
 {
-    public class ChatHub : Hub
+    public class OrderHub : Hub
     {
-        public override async Task OnConnectedAsync()
+        public async Task UpdateOrder()
         {
-            await Clients.All.SendAsync("SendAction", "connected");
+            await Clients.All.SendAsync("RecieveOrder");
         }
 
-        public override async Task OnDisconnectedAsync(Exception ex)
-        {
-            await Clients.All.SendAsync("SendAction", "disconnected");
-        }
-
-        public async Task Send(OrderModel order)
-        {
-            await Clients.All.SendAsync("SendMessage", order.Name, order);
-        }
+        //public async Task ReceiveOrder()
+        //{
+        //    await Clients.All.SendAsync("RecieveOrder");
+        //}
     }
 }

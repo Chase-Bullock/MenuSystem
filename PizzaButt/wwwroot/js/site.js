@@ -5,7 +5,6 @@
 
 $('#menuSelect').on('change', function(e) {
     var val = $(this).val();
-    console.log(val);
     $('.toppings').prop('checked', false);
     if (val === 'Taco') {
         $('#toppingsForPizza').fadeOut();
@@ -84,7 +83,7 @@ $('textarea').keyup(function () {
 
 //    setInterval(function () {
 //        if (new Date().getTime() - time >= 12000) {
-//            window.location.reload(true);
+//           window.location.reload(true);
 //        }
 //    }, 1000);
 //}
