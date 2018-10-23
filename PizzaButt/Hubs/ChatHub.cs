@@ -18,5 +18,10 @@ namespace PizzaButt.Hubs
             await Clients.All.SendAsync("ReceiveOrder");
         }
 
+        public async Task UpdateStatus()
+        {
+            await Clients.All.SendAsync("ReceiveStatus");
+        }
+
     }
 }

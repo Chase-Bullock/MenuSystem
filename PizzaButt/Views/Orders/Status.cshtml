@@ -75,7 +75,7 @@
                                 @item.Status
                             </td>
                             <td>
-                                <button type="button" class="btn btn-success" onclick="location.href = '@Url.Action("Start", "Orders", new {orderId = item.Id.ToString()})'">Start Order</button>
+                                <button type="button" class="btn btn-success statusChangeButton" onclick="location.href = '@Url.Action("Start", "Orders", new {orderId = item.Id.ToString()})'">Start Order</button>
                             </td>
                         </tr>
                     }
@@ -154,7 +154,7 @@
                                 @item.Status
                             </td>
                             <td>
-                                <button type="button" class="btn btn-success" onclick="location.href = '@Url.Action("Complete", "Orders", new {orderId = item.Id.ToString()})'">Complete Order</button>
+                                <button type="button" class="btn btn-success statusChangeButton" onclick="location.href = '@Url.Action("Complete", "Orders", new {orderId = item.Id.ToString()})'">Complete Order</button>
                             </td>
                         </tr>
                     }
@@ -238,7 +238,7 @@
                                 @item.CompleteTime
                             </td>
                             <td>
-                                <button type="button" class="btn btn-success" onclick="location.href = '@Url.Action("ReOpen", "Orders", new {orderId = item.Id.ToString()})'">Reopen Order</button>
+                                <button type="button" class="btn btn-success statusChangeButton" onclick="location.href = '@Url.Action("ReOpen", "Orders", new {orderId = item.Id.ToString()})'">Reopen Order</button>
                             </td>
                         </tr>
                     }

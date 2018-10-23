@@ -57,7 +57,6 @@ if (window.location.pathname === '/'){
 $('textarea').keyup(function () {
     var tlength = $(this).val().length;
     $(this).val($(this).val().substring(0, 355));
-    var tlength = $(this).val().length;
     remain = maxchars - parseInt(tlength);
     $('#remain').text(remain);
 });
