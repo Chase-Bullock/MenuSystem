@@ -79,17 +79,14 @@ a:active {
 
 .order-section {
   background-color: #e5e5e5;
-  display: flex;
-  flex-direction: row;
-  justify-content:space-between;
 }
 
 .order-status {
     background-color: #e5e5e5;
 }
 
-.order-section-bottom {
-}
+/*.order-section-bottom {
+}*/
 
 /* ------- DROPDOWN BOX ------ */
 .selectdiv:after {
