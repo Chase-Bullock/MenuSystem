@@ -63,19 +63,18 @@
 </header>
 <div>
   <div class="order-section scrollable js--order-section">
-    <div class="row" style="margin-top: 40px; flex:5;">
-      <div class="form-group" style="margin-left:4rem; margin-top:10rem;">
-        <h3 style="font-size: 1.5rem; font-weight: 700; text-align: center">Made to order, fresh, for you </h3>
+    <div class="row" style="margin-top: 25px;">
+      <div class="form-group col-md-4 offset-md-4">
+        <h3 style="font-size: 36px; font-weight: 700; text-align: center">Place an order </h3>
       </div>
     </div>
-
     <form style="margin-top: 70px; flex: 10;" class="orderForm" id="orderForm" method="post">
       @**************************@
       @*          NAME          *@
       @**************************@
       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
       <div class="row">
-        <div class="form-group offset-md-1 col-md-6">
+        <div class="form-group col-md-4 offset-md-4">
           <label asp-for="Name" class="titleTag">Name</label>
           <input asp-for="Name" type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name" required />
           <span asp-validation-for="Name" class="text-danger"></span>
@@ -85,7 +84,7 @@
       @*       MENUITEMS        *@
       @**************************@
       <div class="row">
-        <div class="form-group offset-md-1 col-md-6">
+        <div class="form-group col-md-4 offset-md-4">
           <label asp-for="Order" class="titleTag" for="menuSelect">Menu</label>
           <div class="selectdiv">
             <select asp-for="Order" required class="form-control" id="menuSelect" name="order">
@@ -103,7 +102,7 @@
       @*      TACOSAUCES        *@
       @**************************@
       <div class="row">
-        <div id="sauceForTaco" class="form-group offset-md-1 col-md-6">
+        <div id="sauceForTaco" class="form-group col-md-4 offset-md-4">
           <label class="titleTag">Taco Sauces</label>
           <div class="row" style="margin-top: 6px; margin-bottom: 6px">
             <div class="offset-md-1 col-md-5">
@@ -131,7 +130,7 @@
       @*      TACOEXTRAS        *@
       @**************************@
       <div class="row">
-        <div id="extrasForTaco" class="form-group offset-md-1 col-md-6">
+        <div id="extrasForTaco" class="form-group col-md-4 offset-md-4">
           <label class="titleTag">Taco Extras</label>
           <div class="row" style="margin-top: 6px; margin-bottom: 6px">
             <div class="offset-md-1 col-md-5">
@@ -170,7 +169,7 @@
       @*        PIZZASIZE       *@
       @**************************@
       <div class="row">
-        <div id="sizesForPizza" class="form-group offset-md-1 col-md-6">
+        <div id="sizesForPizza" class="form-group col-md-4 offset-md-4">
           <label asp-for="Size" class="titleTag" for="sizesForPizza">Pizza Size</label>
           <div class="row">
             <div class="offset-md-1 col-md-3">
@@ -204,7 +203,7 @@
       @*     PIZZATOPPINGS      *@
       @**************************@
       <div class="row">
-        <div id="toppingsForPizza" class="form-group offset-md-1 col-md-6">
+        <div id="toppingsForPizza" class="form-group col-md-4 offset-md-4">
           <label class="titleTag">Pizza Toppings</label>
           <label class="titleTag">Meats</label>
           <div class="row" style="margin-top: 6px; margin-bottom: 6px">
@@ -318,7 +317,7 @@
       @*       QUANTITY         *@
       @**************************@
       <div class="row">
-        <div class="form-group offset-md-1 col-md-6">
+        <div class="form-group col-md-4 offset-md-4">
           <label asp-for="Quantity" class="titleTag" for="qtyInput">Quantity</label>
           <input type="number" minValue="1" class="form-control" id="qtyInput" aria-describedby="emailHelp" name="quantity" required="true" />
           <span asp-validation-for="Quantity" class="text-danger"></span>
@@ -329,7 +328,7 @@
       @*        COMMENTS        *@
       @**************************@
       <div class="row">
-        <div class="form-group offset-md-1 col-md-6">
+        <div class="form-group col-md-4 offset-md-4">
           <div class="form-group">
             <label class="titleTag" for="specialInstructionsInput">Special Instructions</label>
             <textarea class="form-control" id="specialInstructionsInput" aria-describedby="emailHelp" name="specialInstructions">
@@ -341,14 +340,11 @@
       @*        SUBMIT          *@
       @**************************@
       <div class="row">
-        <div class="form-group offset-md-1 col-md-6">
+        <div class="form-group col-md-4 offset-md-4">
           <button type="submit" id="activateNav" class="btn btn-primary activateNav">Submit</button>
         </div>
       </div>
     </form>
-    <div style="flex:1;" >
-      <img style="height: 300px; width:auto;" src="~/images/fresh.jpg"/>
-    </div>
   </div>
 </div>
 <script src="~/lib/signalr/signalr.js"></script>
