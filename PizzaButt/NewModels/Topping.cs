@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PizzaButt
+namespace PizzaButt.NewModels
 {
     public partial class Topping
     {

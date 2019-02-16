@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PizzaButt.Hubs;
 using PizzaButt.Models;
+using PizzaButt.NewModels;
 using System;
 
 namespace PizzaButt
@@ -56,6 +57,7 @@ namespace PizzaButt
             });
 
             services.AddTransient<IPizzaRepository, PizzaRepository>();
+            services.AddTransient<ICathedralKitchenRepository, CathedralKitchenRepository>();
             services.AddSignalR();
         }
 

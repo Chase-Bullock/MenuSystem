@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using PizzaButt.Models;
+//using PizzaButt.Models;
+using PizzaButt.NewModels;
 using PizzaButt.ViewModels;
 using PizzaButt.ViewModels.AccountViewModels;
 
@@ -16,28 +17,30 @@ namespace PizzaButt.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IPizzaRepository pizzaRepository;
+        //private readonly IPizzaRepository pizzaRepository;
+        private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
 
-        public HomeController(IPizzaRepository pizzaRepository)
+        public HomeController(ICathedralKitchenRepository cathedralKitchenRepository)
         {
-            this.pizzaRepository = pizzaRepository;
+            _cathedralKitchenRepository = cathedralKitchenRepository;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<MenuItem>> GetAllItems()
+        public IEnumerable<MenuItem> GetAllItems()
         {
-            return await pizzaRepository.GetMenuItems();
+            return _cathedralKitchenRepository.GetMenuItems();
         }
 
         [HttpGet("{id}")]
-        public async Task<MenuItem> GetItemById(string id)
+        public MenuItem GetItemById(long id)
         {
-            return await pizzaRepository.GetMenuItem(id) ?? new MenuItem();
+            return _cathedralKitchenRepository.GetMenuItem(id) ?? new MenuItem();
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var options = await pizzaRepository.GetActiveMenuItems();
+            //FIX ORDER VIEW MODEL
+            var options = _cathedralKitchenRepository.GetActiveMenuItems();
             var orderView = new OrderViewModel
             {
                 MenuItems = options
@@ -46,11 +49,11 @@ namespace PizzaButt.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(OrderModel request)
+        public IActionResult Index(Order request)
         {
             if (!ModelState.IsValid)
             {
-                var options = await pizzaRepository.GetActiveMenuItems();
+                var options = _cathedralKitchenRepository.GetActiveMenuItems();
                 var orderView = new OrderViewModel
                 {
                     MenuItems = options
@@ -58,7 +61,7 @@ namespace PizzaButt.Controllers
                 return View(orderView);
             }
             
-            var orderId = await pizzaRepository.SendOrder(request);
+            var orderId = _cathedralKitchenRepository.SendOrder(request);
             return RedirectToAction("OrderInfo", "Orders", new {orderId = orderId});
 
         }
