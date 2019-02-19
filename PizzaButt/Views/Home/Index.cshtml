@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Order Pizza";
 }
-@model OrderViewModel
+@model HomePageViewModel
 
 
 <header>
@@ -27,7 +27,7 @@
         }
       </ul>
         @using Microsoft.AspNetCore.Identity
-        @using PizzaButt.Models
+        @using PizzaButt.NewModels
 
         @inject SignInManager<ApplicationUser> SignInManager
         @inject UserManager<ApplicationUser> UserManager
@@ -203,116 +203,42 @@
       @*     PIZZATOPPINGS      *@
       @**************************@
       <div class="row">
-        <div id="toppingsForPizza" class="form-group col-md-4 offset-md-4">
-          <label class="titleTag">Pizza Toppings</label>
-          <label class="titleTag">Meats</label>
-          <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-            <div class="offset-md-1 col-md-5">
-              <div class="pretty p-icon p-smooth">
-                <input name="toppings" class="toppings" type="checkbox" value="Extra Cheese" />
-                <div class="state p-primary">
-                  <i class="icon fa fa-check"></i>
-                  <label>Extra Cheese</label>
-                </div>
+          <div id="toppingsForPizza" class="form-group col-md-4 offset-md-4">
+              <label class="titleTag">Pizza Toppings</label>
+              <label class="titleTag">Meats</label>
+              <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                  @{ var count = 0; }
+                  @foreach (var item in Model.PizzaToppings)
+                  {
+                      count += 1;
+                      @if (count % 2 == 0)
+                      {
+                          <div class="col-md-5">
+                              <div class="pretty p-icon p-smooth">
+                                  <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
+                                  <div class="state p-primary">
+                                      <i class="icon fa fa-check"></i>
+                                      <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                                  </div>
+                              </div>
+                          </div>
+                      }
+                      else
+                      {
+                          <div class="offset-1 col-md-5">
+                              <div class="pretty p-icon p-smooth">
+                                  <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
+                                  <div class="state p-primary">
+                                      <i class="icon fa fa-check"></i>
+                                      <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                                  </div>
+                              </div>
+                          </div>
+                      }
+                  }
               </div>
-            </div>
-            <div class="col-md-5">
-              <div class="pretty p-icon p-smooth">
-                <input name="toppings" class="toppings" type="checkbox" value="Pepperoni" />
-                <div class="state p-primary">
-                  <i class="icon fa fa-check"></i>
-                  <label>Pepperoni</label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-            <div class="offset-1 col-md-5">
-              <div class="pretty p-icon p-smooth">
-                <input name="toppings" class="toppings" type="checkbox" value="Beef" />
-                <div class="state p-primary">
-                  <i class="icon fa fa-check"></i>
-                  <label>Beef</label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-5">
-              <div class="pretty p-icon p-smooth">
-                <input name="toppings" class="toppings" type="checkbox" value="Canadian Bacon" />
-                <div class="state p-primary">
-                  <i class="icon fa fa-check"></i>
-                  <label>Canadian Bacon</label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-            <div class="offset-1 col-md-5">
-              <div class="pretty p-icon p-smooth">
-                <input name="toppings" class="toppings" type="checkbox" value="Bacon" />
-                <div class="state p-primary">
-                  <i class="icon fa fa-check"></i>
-                  <label>Bacon</label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <label class="titleTag">Non-meats</label>
-            <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-              <div class="offset-1 col-md-5">
-                <div class="pretty p-icon p-smooth">
-                  <input name="toppings" class="toppings" type="checkbox" value="Pineapple" />
-                  <div class="state p-primary">
-                    <i class="icon fa fa-check"></i>
-                    <label>Pineapple</label>
                   </div>
-                </div>
               </div>
-              <div class="col-md-5">
-                <div class="pretty p-icon p-smooth">
-                  <input name="toppings" class="toppings" type="checkbox" value="Jalepenos" />
-                  <div class="state p-primary">
-                    <i class="icon fa fa-check"></i>
-                    <label>Jalapeños</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-              <div class="offset-1 col-md-5">
-                <div class="pretty p-icon p-smooth">
-                  <input name="toppings" class="toppings" type="checkbox" value="Hot Sauce" />
-                  <div class="state p-primary">
-                    <i class="icon fa fa-check"></i>
-                    <label>Hot Sauce (VERY HOT!)</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-5">
-                <div class="pretty p-icon p-smooth">
-                  <input name="toppings" class="toppings" type="checkbox" value="Salsa Verde" />
-                  <div class="state p-primary">
-                    <i class="icon fa fa-check"></i>
-                    <label>Salsa Verde</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-              <div class="offset-1 col-md-5">
-                <div class="pretty p-icon p-smooth">
-                  <input name="toppings" class="toppings" type="checkbox" value="Onions" />
-                  <div class="state p-primary">
-                    <i class="icon fa fa-check"></i>
-                    <label>Onions</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       @**************************@
       @*       QUANTITY         *@
       @**************************@

@@ -58,6 +58,7 @@ namespace PizzaButt
 
             services.AddTransient<IPizzaRepository, PizzaRepository>();
             services.AddTransient<ICathedralKitchenRepository, CathedralKitchenRepository>();
+            services.AddTransient<CathedralKitchenContext, CathedralKitchenContext>();
             services.AddSignalR();
         }
 

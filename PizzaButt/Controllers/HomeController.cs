@@ -19,10 +19,12 @@ namespace PizzaButt.Controllers
     {
         //private readonly IPizzaRepository pizzaRepository;
         private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
+        private readonly CathedralKitchenContext _ctx;
 
-        public HomeController(ICathedralKitchenRepository cathedralKitchenRepository)
+        public HomeController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx)
         {
             _cathedralKitchenRepository = cathedralKitchenRepository;
+            _ctx = ctx;
         }
 
         [HttpGet]
@@ -40,10 +42,13 @@ namespace PizzaButt.Controllers
         public IActionResult Index()
         {
             //FIX ORDER VIEW MODEL
-            var options = _cathedralKitchenRepository.GetActiveMenuItems();
-            var orderView = new OrderViewModel
+            var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
+            var Toppings = _ctx.Topping.ToList();
+
+            var orderView = new HomePageViewModel
             {
-                MenuItems = options
+                MenuItems = menuItems,
+                PizzaToppings = Toppings
             };
             return View(orderView);
         }
