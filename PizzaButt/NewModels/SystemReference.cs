@@ -3,20 +3,17 @@ using System.Collections.Generic;
 
 namespace PizzaButt.NewModels
 {
-    public partial class Person
+    public partial class SystemReference
     {
-        public Person()
+        public SystemReference()
         {
-            User = new HashSet<User>();
+            Topping = new HashSet<Topping>();
         }
 
         public long Id { get; set; }
-        public string Home { get; set; }
-        public string Work { get; set; }
-        public string Cell { get; set; }
-        public string Email { get; set; }
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
+        public string Name { get; set; }
+        public string MainValue { get; set; }
+        public string AltValue { get; set; }
         public bool Active { get; set; }
         public DateTime? CreateTime { get; set; }
         public long? CreateBy { get; set; }
@@ -25,6 +22,6 @@ namespace PizzaButt.NewModels
         public DateTime? DeleteTime { get; set; }
         public long? DeleteBy { get; set; }
 
-        public virtual ICollection<User> User { get; set; }
+        public virtual ICollection<Topping> Topping { get; set; }
     }
 }

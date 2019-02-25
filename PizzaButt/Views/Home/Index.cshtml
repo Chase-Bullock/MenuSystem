@@ -105,24 +105,36 @@
         <div id="sauceForTaco" class="form-group col-md-4 offset-md-4">
           <label class="titleTag">Taco Sauces</label>
           <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-            <div class="offset-md-1 col-md-5">
-              <div class="pretty p-icon p-smooth">
-                <input name="toppings" class="toppings" type="checkbox" value="Hot Sauce" />
-                <div class="state p-primary">
-                  <i class="icon fa fa-check"></i>
-                  <label>Hot Sauce (VERY HOT!)</label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-5">
-              <div class="pretty p-icon p-smooth">
-                <input name="toppings" class="toppings" type="checkbox" value="Salsa Verde" />
-                <div class="state p-primary">
-                  <i class="icon fa fa-check"></i>
-                  <label>Salsa Verde</label>
-                </div>
-              </div>
-            </div>
+              @{ var tacoSauceCount = 0; }
+              @{ var tacoSauces = Model.TacoToppings.Where(x => x.ToppingType.MainValue == "Sauce"); }
+              @foreach (var item in tacoSauces)
+              {
+                  tacoSauceCount += 1;
+                  @if (tacoSauceCount % 2 == 0)
+                  {
+                      <div class="col-md-5">
+                          <div class="pretty p-icon p-smooth">
+                              <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
+                              <div class="state p-primary">
+                                  <i class="icon fa fa-check"></i>
+                                  <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                              </div>
+                          </div>
+                      </div>
+                  }
+                  else
+                  {
+                      <div class="offset-1 col-md-5">
+                          <div class="pretty p-icon p-smooth">
+                              <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
+                              <div class="state p-primary">
+                                  <i class="icon fa fa-check"></i>
+                                  <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                              </div>
+                          </div>
+                      </div>
+                  }
+              }
           </div>
         </div>
       </div>
@@ -133,35 +145,37 @@
         <div id="extrasForTaco" class="form-group col-md-4 offset-md-4">
           <label class="titleTag">Taco Extras</label>
           <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-            <div class="offset-md-1 col-md-5">
-              <div class="pretty p-icon p-smooth">
-                <input name="toppings" class="toppings" type="checkbox" value="Cheese" />
-                <div class="state p-primary">
-                  <i class="icon fa fa-check"></i>
-                  <label>Cheese</label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-5">
-              <div class="pretty p-icon p-smooth">
-                <input name="toppings" class="toppings" type="checkbox" value="Lettuce" />
-                <div class="state p-primary">
-                  <i class="icon fa fa-check"></i>
-                  <label>Lettuce</label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-            <div class="offset-md-1 col-md-5">
-              <div class="pretty p-icon p-smooth">
-                <input name="toppings" class="toppings" type="checkbox" value="Jalepenos" />
-                <div class="state p-primary">
-                  <i class="icon fa fa-check"></i>
-                  <label>Jalapeños</label>
-                </div>
-              </div>
-            </div>
+              @{ var tacoCount = 0; }
+              @{ var tacoToppings = Model.TacoToppings.Where(x => x.ToppingType.MainValue == "Topping"); }
+                          @foreach (var item in tacoToppings)
+                          {
+                              tacoCount += 1;
+                              @if (tacoCount % 2 == 0)
+                              {
+                      <div class="col-md-5">
+                          <div class="pretty p-icon p-smooth">
+                              <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
+                              <div class="state p-primary">
+                                  <i class="icon fa fa-check"></i>
+                                  <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                              </div>
+                          </div>
+                      </div>
+                  }
+                  else
+                  {
+                      <div class="offset-1 col-md-5">
+                          <div class="pretty p-icon p-smooth">
+                              <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
+                              <div class="state p-primary">
+                                  <i class="icon fa fa-check"></i>
+                                  <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                              </div>
+                          </div>
+                      </div>
+                  }
+              }
+
           </div>
         </div>
       </div>
@@ -205,40 +219,78 @@
       <div class="row">
           <div id="toppingsForPizza" class="form-group col-md-4 offset-md-4">
               <label class="titleTag">Pizza Toppings</label>
-              <label class="titleTag">Meats</label>
-              <div class="row" style="margin-top: 6px; margin-bottom: 6px">
-                  @{ var count = 0; }
-                  @foreach (var item in Model.PizzaToppings)
-                  {
-                      count += 1;
-                      @if (count % 2 == 0)
+              <div>
+                  <label class="titleTag">Meats</label>
+                  <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                      @{ var pizzaCount = 0; }
+                      @{ var pizzaMeatToppings = Model.PizzaToppings.Where(x => x.ToppingType.MainValue == "Meat"); }
+                      @foreach (var item in pizzaMeatToppings)
                       {
-                          <div class="col-md-5">
-                              <div class="pretty p-icon p-smooth">
-                                  <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
-                                  <div class="state p-primary">
-                                      <i class="icon fa fa-check"></i>
-                                      <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                          pizzaCount += 1;
+                          @if (pizzaCount % 2 == 0)
+                          {
+                              <div class="col-md-5">
+                                  <div class="pretty p-icon p-smooth">
+                                      <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
+                                      <div class="state p-primary">
+                                          <i class="icon fa fa-check"></i>
+                                          <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                                      </div>
                                   </div>
                               </div>
-                          </div>
-                      }
-                      else
-                      {
-                          <div class="offset-1 col-md-5">
-                              <div class="pretty p-icon p-smooth">
-                                  <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
-                                  <div class="state p-primary">
-                                      <i class="icon fa fa-check"></i>
-                                      <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                          }
+                          else
+                          {
+                              <div class="offset-1 col-md-5">
+                                  <div class="pretty p-icon p-smooth">
+                                      <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
+                                      <div class="state p-primary">
+                                          <i class="icon fa fa-check"></i>
+                                          <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                                      </div>
                                   </div>
                               </div>
-                          </div>
+                          }
                       }
-                  }
-              </div>
                   </div>
               </div>
+              <div>
+                  <label class="titleTag">Meats</label>
+                  <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                      @{ var pizzaOtherCount = 0; }
+                      @{ var pizzaOtherToppings = Model.PizzaToppings.Where(x => x.ToppingType.MainValue == "Other"); }
+                      @foreach (var item in pizzaOtherToppings)
+                      {
+                          pizzaOtherCount += 1;
+                          @if (pizzaOtherCount % 2 == 0)
+                          {
+                              <div class="col-md-5">
+                                  <div class="pretty p-icon p-smooth">
+                                      <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
+                                      <div class="state p-primary">
+                                          <i class="icon fa fa-check"></i>
+                                          <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                                      </div>
+                                  </div>
+                              </div>
+                          }
+                          else
+                          {
+                              <div class="offset-1 col-md-5">
+                                  <div class="pretty p-icon p-smooth">
+                                      <input name="toppings" class="toppings" type="checkbox" value="@item.Id" />
+                                      <div class="state p-primary">
+                                          <i class="icon fa fa-check"></i>
+                                          <label>@Html.DisplayFor(model => item.ToppingName)</label>
+                                      </div>
+                                  </div>
+                              </div>
+                          }
+                      }
+                  </div>
+              </div>
+          </div>
+      </div>
       @**************************@
       @*       QUANTITY         *@
       @**************************@

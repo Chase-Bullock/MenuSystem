@@ -5,6 +5,11 @@ namespace PizzaButt.NewModels
 {
     public partial class Order
     {
+        public Order()
+        {
+            OrderOrderItem = new HashSet<OrderOrderItem>();
+        }
+
         public long Id { get; set; }
         public string Note { get; set; }
         public long OrderStatusId { get; set; }
@@ -16,7 +21,9 @@ namespace PizzaButt.NewModels
         public long UpdateBy { get; set; }
         public DateTime? DeleteTime { get; set; }
         public long? DeleteBy { get; set; }
+        public List<OrderItem> OrderItems { get; set; }
 
         public virtual OrderStatus OrderStatus { get; set; }
+        public virtual ICollection<OrderOrderItem> OrderOrderItem { get; set; }
     }
 }

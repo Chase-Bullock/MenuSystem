@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 //using PizzaButt.Models;
@@ -43,31 +44,63 @@ namespace PizzaButt.Controllers
         {
             //FIX ORDER VIEW MODEL
             var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
-            var Toppings = _ctx.Topping.ToList();
+            var pizzaToppings = _ctx.Topping.Include(y => y.ToppingType);
+            var filteredPizzaToppings = pizzaToppings.Where(x => x.ToppingType.Name == "Pizza");
+            var tacoToppings = _ctx.Topping.Include(y => y.ToppingType);
+            var filteredTacoToppings = tacoToppings.Where(x => x.ToppingType.Name == "Taco");
 
             var orderView = new HomePageViewModel
             {
                 MenuItems = menuItems,
-                PizzaToppings = Toppings
+                PizzaToppings = filteredPizzaToppings,
+                TacoToppings = tacoToppings
             };
             return View(orderView);
         }
 
         [HttpPost]
-        public IActionResult Index(Order request)
+        public IActionResult Index(HomePageViewModel request)
         {
-            if (!ModelState.IsValid)
+            var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
+            var pizzaToppings = _ctx.Topping.Include(y => y.ToppingType);
+            var filteredPizzaToppings = pizzaToppings.Where(x => x.ToppingType.Name == "Pizza");
+            var tacoToppings = _ctx.Topping.Include(y => y.ToppingType);
+            var filteredTacoToppings = tacoToppings.Where(x => x.ToppingType.Name == "Taco");
+
+            var orderView = new HomePageViewModel
             {
-                var options = _cathedralKitchenRepository.GetActiveMenuItems();
-                var orderView = new OrderViewModel
-                {
-                    MenuItems = options
+                MenuItems = menuItems,
+                PizzaToppings = filteredPizzaToppings,
+                TacoToppings = tacoToppings
+            };
+
+            if (orderView.Order == null)
+            {
+                orderView.Order = new Order() {
+                    CreateBy = 1,
+                    UpdateBy = 1,
+                    CreateTime = DateTime.UtcNow,
+                    UpdateTime = DateTime.UtcNow,
+                    CustomerName = request.Name,
+                    Note = request.SpecialInstructions,
+                    OrderStatusId = _ctx.OrderStatus.First(x => x.Status == "Pending").Id
                 };
-                return View(orderView);
             }
-            
-            var orderId = _cathedralKitchenRepository.SendOrder(request);
-            return RedirectToAction("OrderInfo", "Orders", new {orderId = orderId});
+
+            OrderItem orderItem = new OrderItem
+            {
+                CreateBy = 1,
+                UpdateBy = 1,
+                CreateTime = DateTime.UtcNow,
+                UpdateTime = DateTime.UtcNow,
+                MenuItemId = request.OrderItem.MenuItemId,
+                OrderItemTopping = request.Toppings,
+                Quantity = request.Quantity,
+                Size = request.Size
+            };
+
+            orderView.Order.OrderItems.Add(request.OrderItem);
+            return View(orderView);
 
         }
 
