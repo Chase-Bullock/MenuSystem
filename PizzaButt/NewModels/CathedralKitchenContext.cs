@@ -22,6 +22,7 @@ namespace PizzaButt.NewModels
         public virtual DbSet<OrderOrderItem> OrderOrderItem { get; set; }
         public virtual DbSet<OrderStatus> OrderStatus { get; set; }
         public virtual DbSet<Person> Person { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<SystemReference> SystemReference { get; set; }
         public virtual DbSet<Topping> Topping { get; set; }
         public virtual DbSet<ToppingType> ToppingType { get; set; }
@@ -76,15 +77,9 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<OrderItem>(entity =>
             {
-                entity.Property(e => e.CreateBy).HasColumnType("datetime");
-
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
-                entity.Property(e => e.DeleteBy).HasColumnType("datetime");
-
                 entity.Property(e => e.DeleteTime).HasColumnType("datetime");
-
-                entity.Property(e => e.UpdateBy).HasColumnType("datetime");
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
@@ -179,6 +174,25 @@ namespace PizzaButt.NewModels
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.Work).HasMaxLength(20);
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteTime).HasColumnType("datetime");
+
+                entity.Property(e => e.RoleName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<SystemReference>(entity =>

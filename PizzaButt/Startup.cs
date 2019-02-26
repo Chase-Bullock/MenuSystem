@@ -25,6 +25,8 @@ namespace PizzaButt
         {
             services.AddMongoIdentityProvider<ApplicationUser>();
 
+            services.AddSession();
+
             services.AddMvc();
 
             services.Configure<Settings>(options =>
@@ -74,6 +76,7 @@ namespace PizzaButt
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseSession();
             app.UseStaticFiles();
             app.UseAuthentication();
 

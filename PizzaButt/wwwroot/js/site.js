@@ -5,6 +5,7 @@
 
 $('#menuSelect').on('change', function(e) {
     var val = $(this).val();
+    console.log(val);
     $('.toppings').prop('checked', false);
     if (val === 'Taco') {
         $('#toppingsForPizza').fadeOut();

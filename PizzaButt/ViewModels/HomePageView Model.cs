@@ -21,11 +21,12 @@ namespace PizzaButt.ViewModels
         
         public Order Order { get; set; }
         
+        public string ItemName { get; set; }
 
         [Required]
         public long Size { get; set; }
         
-        public List<OrderItemTopping> Toppings { get; set; }
+        public List<long> Toppings { get; set; }
         
 
         [Range(1, 100)]

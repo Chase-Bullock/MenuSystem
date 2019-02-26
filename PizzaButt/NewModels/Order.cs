@@ -21,7 +21,6 @@ namespace PizzaButt.NewModels
         public long UpdateBy { get; set; }
         public DateTime? DeleteTime { get; set; }
         public long? DeleteBy { get; set; }
-        public List<OrderItem> OrderItems { get; set; }
 
         public virtual OrderStatus OrderStatus { get; set; }
         public virtual ICollection<OrderOrderItem> OrderOrderItem { get; set; }
