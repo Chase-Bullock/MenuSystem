@@ -9,7 +9,9 @@ namespace PizzaButt.NewModels
         IEnumerable<MenuItem> GetActiveMenuItems();
         MenuItem GetMenuItem(long id);
         string SendOrder(Order model);
-        void CreateMenuItem(MenuItem model);
+        string StartOrder(Order model);
+        string CancelOrder(Order model);
+        string CreateMenuItem(MenuItem model);
         Order GetOrder(long id);
         IEnumerable<Order> GetOrders();
         void CompleteOrder(Order model);

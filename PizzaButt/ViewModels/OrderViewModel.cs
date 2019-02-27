@@ -12,6 +12,8 @@ namespace PizzaButt.ViewModels
 
         public IEnumerable<MenuItem> MenuItems { get; set; }
 
+        public List<OrderItem> OrderItems { get; set; }
+
         [BsonId]
         public ObjectId Id { get; set; }
         

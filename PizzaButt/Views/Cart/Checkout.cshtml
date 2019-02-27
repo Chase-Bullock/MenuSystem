@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Order Pizza";
+}
+@model HomePageViewModel
+
+
+    <nav class="navbar navbar-expand-lg homeNav navbar-primary">
+      <ul class="nav navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 16px; font-size: 18px;" asp-controller="Home" asp-action="Index">Cathedral Pizza</a>
+        </li>
+        <li class="nav-item">
+          <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        @if (SignInManager.IsSignedIn(User))
+        {
+          <li class="nav-item">
+            <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Orders" asp-action="Status">Orders</a>
+          </li>
+          <li class="nav-item">
+            <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Orders" asp-action="Menu">Today's Menu</a>
+          </li>
+          <li class="nav-item">
+            <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Orders" asp-action="CreateItem">Add Item to menu</a>
+          </li>
+        }
+      </ul>
+        @using Microsoft.AspNetCore.Identity
+        @using PizzaButt.NewModels
+
+        @inject SignInManager<ApplicationUser> SignInManager
+        @inject UserManager<ApplicationUser> UserManager
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Account" asp-action="Logout" method="post">Log out</a>
+                    </li>
+                </ul>
+            </form>
+        }
+        else
+        {
+            <ul class="nav navbar-nav ml-auto">
+                @*<li><a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>*@
+                <li><a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
+            </ul>
+        }
+
+    </nav>
+
+<div class="order-section scrollable js--order-section">
+    <div class="row" style="margin-top: 25px;">
+        <div class="form-group col-md-4 offset-md-4">
+            <h3 style="font-size: 36px; font-weight: 700; text-align: center">Checkout</h3>
+        </div>
+    </div>
+    <div class="row">
+    <form style="margin-top: 70px;" class="orderForm col-8" id="orderForm" method="post">
+        @**************************@
+        @*          NAME          *@
+        @**************************@
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="form-group col-md-6 offset-md-4">
+                <label asp-for="Name" class="titleTag">Name</label>
+                <input asp-for="Name" type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        @**************************@
+        @*        COMMENTS        *@
+        @**************************@
+        <div class="row">
+            <div class="form-group col-md-6 offset-md-4">
+                <div class="form-group">
+                    <label class="titleTag" for="specialInstructionsInput">Special Instructions</label>
+                    <textarea class="form-control" id="specialInstructionsInput" aria-describedby="emailHelp" name="specialInstructions">
+                </textarea>
+                </div>
+            </div>
+        </div>
+        @**************************@
+        @*        SUBMIT          *@
+        @**************************@
+        <div class="row">
+            <div class="form-group col-md-6 offset-md-4">
+                <button type="submit" id="activateNav" class="btn btn-primary activateNav">Place Order</button>
+            </div>
+        </div>
+    </form>
+    </div>
+    </div>
+<script src="~/lib/signalr/signalr.js"></script>
+<script src="~/js/chat.js"></script>

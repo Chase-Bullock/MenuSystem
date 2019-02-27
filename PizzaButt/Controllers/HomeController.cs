@@ -66,52 +66,6 @@ namespace PizzaButt.Controllers
             return View(orderView);
         }
 
-        //[HttpPost]
-        //public IActionResult Index(HomePageViewModel request)
-        //{
-        //    var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
-        //    var pizzaToppings = _ctx.Topping.Include(y => y.ToppingType);
-        //    var filteredPizzaToppings = pizzaToppings.Where(x => x.ToppingType.Name == "Pizza");
-        //    var tacoToppings = _ctx.Topping.Include(y => y.ToppingType);
-        //    var filteredTacoToppings = tacoToppings.Where(x => x.ToppingType.Name == "Taco");
-
-        //    var orderView = new HomePageViewModel
-        //    {
-        //        MenuItems = menuItems,
-        //        PizzaToppings = filteredPizzaToppings,
-        //        TacoToppings = tacoToppings
-        //    };
-
-        //    if (orderView.Order == null)
-        //    {
-        //        orderView.Order = new Order() {
-        //            CreateBy = 1,
-        //            UpdateBy = 1,
-        //            CreateTime = DateTime.UtcNow,
-        //            UpdateTime = DateTime.UtcNow,
-        //            CustomerName = request.Name,
-        //            Note = request.SpecialInstructions,
-        //            OrderStatusId = _ctx.OrderStatus.First(x => x.Status == "Pending").Id
-        //        };
-        //    }
-
-        //    OrderItem orderItem = new OrderItem
-        //    {
-        //        CreateBy = 1,
-        //        UpdateBy = 1,
-        //        CreateTime = DateTime.UtcNow,
-        //        UpdateTime = DateTime.UtcNow,
-        //        MenuItemId = request.OrderItem.MenuItemId,
-        //        OrderItemTopping = request.Toppings,
-        //        Quantity = request.Quantity,
-        //        Size = request.Size
-        //    };
-
-        //   orderView.OrderItems.Add(request.OrderItem);
-        //    return View(orderView);
-
-        //}
-
         [HttpPost]
         public IActionResult Index(HomePageViewModel request)
         {
@@ -121,6 +75,7 @@ namespace PizzaButt.Controllers
             var selectedToppings = toppings.Where(x => request.Toppings.Contains(x.Id)).ToList();
 
             var selectedToppingsViewModels = new List<ToppingsViewModel>();
+
             foreach(var selectedTopping in selectedToppings)
             {
                 ToppingsViewModel topping = new ToppingsViewModel
@@ -147,10 +102,10 @@ namespace PizzaButt.Controllers
             else
             {
                 List<OrderItemViewModel> cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
-                long index = isExist(selectedItemViewModel.Id);
+                long index = isExist(selectedItemViewModel.Id, selectedToppingsViewModels);
                 if (index != -1)
                 {
-                    cart[(int)index].Quantity++;
+                    cart[(int)index].Quantity += request.Quantity;
                 }
                 else
                 {
@@ -168,17 +123,66 @@ namespace PizzaButt.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private int isExist(long id)
+        private int isExist(long id, List<ToppingsViewModel> toppingsViewModels)
         {
             List<OrderItemViewModel> cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             for (int i = 0; i < cart.Count; i++)
             {
                 if (cart[i].MenuItem.Id.Equals(id))
                 {
-                    return i;
+                    if (cart[i].Toppings.Count() == toppingsViewModels.Count() && cart[i].Toppings.Except(toppingsViewModels).Any())
+                    {
+                        return i;
+                    }
                 }
             }
             return -1;
         }
     }
 }
+
+//[HttpPost]
+//public IActionResult Index(HomePageViewModel request)
+//{
+//    var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
+//    var pizzaToppings = _ctx.Topping.Include(y => y.ToppingType);
+//    var filteredPizzaToppings = pizzaToppings.Where(x => x.ToppingType.Name == "Pizza");
+//    var tacoToppings = _ctx.Topping.Include(y => y.ToppingType);
+//    var filteredTacoToppings = tacoToppings.Where(x => x.ToppingType.Name == "Taco");
+
+//    var orderView = new HomePageViewModel
+//    {
+//        MenuItems = menuItems,
+//        PizzaToppings = filteredPizzaToppings,
+//        TacoToppings = tacoToppings
+//    };
+
+//    if (orderView.Order == null)
+//    {
+//        orderView.Order = new Order() {
+//            CreateBy = 1,
+//            UpdateBy = 1,
+//            CreateTime = DateTime.UtcNow,
+//            UpdateTime = DateTime.UtcNow,
+//            CustomerName = request.Name,
+//            Note = request.SpecialInstructions,
+//            OrderStatusId = _ctx.OrderStatus.First(x => x.Status == "Pending").Id
+//        };
+//    }
+
+//    OrderItem orderItem = new OrderItem
+//    {
+//        CreateBy = 1,
+//        UpdateBy = 1,
+//        CreateTime = DateTime.UtcNow,
+//        UpdateTime = DateTime.UtcNow,
+//        MenuItemId = request.OrderItem.MenuItemId,
+//        OrderItemTopping = request.Toppings,
+//        Quantity = request.Quantity,
+//        Size = request.Size
+//    };
+
+//   orderView.OrderItems.Add(request.OrderItem);
+//    return View(orderView);
+
+//}

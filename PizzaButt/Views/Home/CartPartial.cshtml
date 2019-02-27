@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Order Pizza";
+}
+@model HomePageViewModel
+
+
+<div style="border:solid; border-color:black; height:600px">
+    <h3 style="font-size: 36px; font-weight: 700; text-align: center; border-bottom:solid;">Cart</h3>
+    <div style="display:flex; flex-direction: column; height:540px; justify-content: space-between;">
+        <table style="flex:10; display:flex; justify-content:center;">
+            @foreach (var item in ViewBag.cart)
+        {
+            <tr style="margin-bottom: 15px">
+                <td>@item.Quantity</td>
+                @foreach(var topping in item.Toppings)
+                {
+                <td>@topping.Name</td>
+                }
+                <td style="font-weight: 500" ;>@item.MenuItem.Name</td>
+                <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.MenuItem.Id">Remove</a></td>
+            </tr>
+        }
+        </table>
+        <div style="flex:1">
+                <a style="color: #fff; align-items:center; justify-content:center;" asp-controller="cart" asp-action="checkout" class="btn btn-primary">Place order</a>
+        </div>
+    </div>
+</div>
+<script src="~/lib/signalr/signalr.js"></script>
+<script src="~/js/chat.js"></script>

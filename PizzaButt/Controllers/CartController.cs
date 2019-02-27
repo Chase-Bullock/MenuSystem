@@ -22,8 +22,8 @@ namespace PizzaButt.Controllers
             _ctx = ctx;
         }
 
-        [Route("index")]
-        public IActionResult Index()
+        [Route("checkout")]
+        public IActionResult Checkout()
         {
             var cart = SessionHelper.GetObjectFromJson<List<OrderItem>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
@@ -64,7 +64,7 @@ namespace PizzaButt.Controllers
             int index = isExist(id);
             cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
 
         private int isExist(long id)

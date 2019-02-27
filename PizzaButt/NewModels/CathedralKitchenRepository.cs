@@ -66,12 +66,13 @@ namespace PizzaButt.NewModels
             return internalId;
         }
 
-        public void CreateMenuItem(MenuItem model)
+        public string CreateMenuItem(MenuItem model)
         {
             try
             {
                 context.MenuItem.Add(model);
                 context.SaveChanges();
+                return model.Name.ToString();
             }
             catch (Exception ex)
             {
@@ -84,10 +85,27 @@ namespace PizzaButt.NewModels
         {
             try
             {
-                var CreateTime = DateTime.Now;
+                var CreateTime = DateTime.UtcNow;
                 model.CreateTime = CreateTime;
                 model.OrderStatusId = context.OrderStatus.SingleOrDefault(x => x.Status == "Pending").Id;
                 context.Order.Add(model);
+                context.SaveChanges();
+                return model.Id.ToString();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public string StartOrder(Order model)
+        {
+            try
+            {
+                model.OrderStatusId = context.OrderStatus.SingleOrDefault(x => x.Status == "Started").Id;
+                context.Order.Add(model);
+                context.SaveChanges();
                 return model.Id.ToString();
             }
             catch (Exception ex)
@@ -144,6 +162,25 @@ namespace PizzaButt.NewModels
             }
         }
 
+        public string CancelOrder(Order model)
+        {
+            try
+            {
+                var result = context.Order.SingleOrDefault(x => x.Id == model.Id);
+                {
+                    result.OrderStatusId = context.OrderStatus.SingleOrDefault(x => x.Status == "Canceled").Id;
+                    result.CompleteTime = DateTime.UtcNow;
+                    context.SaveChanges();
+                    return model.Id.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public void UpdateMenu(List<MenuItem> model)
         {
             try
@@ -153,6 +190,7 @@ namespace PizzaButt.NewModels
                     var result = context.MenuItem.SingleOrDefault(i => i.Id == x.Id);
                     result.Active = true;
                 }
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
