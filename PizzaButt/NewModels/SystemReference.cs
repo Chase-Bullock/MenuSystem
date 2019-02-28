@@ -14,7 +14,7 @@ namespace PizzaButt.NewModels
         public string Name { get; set; }
         public string MainValue { get; set; }
         public string AltValue { get; set; }
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
         public DateTime? CreateTime { get; set; }
         public long? CreateBy { get; set; }
         public DateTime? UpdateTime { get; set; }

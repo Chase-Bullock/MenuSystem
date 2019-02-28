@@ -6,7 +6,7 @@ namespace PizzaButt.NewModels
     public partial class User
     {
         public long Id { get; set; }
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
         public DateTime CreateTime { get; set; }
         public long CreateBy { get; set; }
         public DateTime UpdateTime { get; set; }

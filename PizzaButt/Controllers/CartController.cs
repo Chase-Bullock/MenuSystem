@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PizzaButt.Helpers;
 using PizzaButt.NewModels;
-
+using PizzaButt.ViewModels;
 
 namespace PizzaButt.Controllers
 {
@@ -25,8 +25,67 @@ namespace PizzaButt.Controllers
         [Route("checkout")]
         public IActionResult Checkout()
         {
-            var cart = SessionHelper.GetObjectFromJson<List<OrderItem>>(HttpContext.Session, "cart");
+            var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
+
+            var order = new Order
+            {
+                OrderStatusId = _ctx.OrderStatus.SingleOrDefault(x => x.Status == "Pending").Id,
+                CustomerName = "Placeholder",
+                Note = "Also a placeholder",
+                CreateBy = 1,
+                UpdateBy = 1,
+                CreateTime = DateTime.UtcNow,
+                UpdateTime = DateTime.UtcNow
+            };
+
+            _ctx.Order.Add(order);
+            _ctx.SaveChanges();
+
+            foreach(var item in cart)
+            {
+                var orderItem = new OrderItem
+                {
+                    MenuItemId = item.MenuItem.Id,
+                    Quantity = item.Quantity,
+                    CreateBy = 1,
+                    UpdateBy = 1,
+                    CreateTime = DateTime.UtcNow,
+                    UpdateTime = DateTime.UtcNow
+                };
+                _ctx.OrderItem.Add(orderItem);
+                _ctx.SaveChanges();
+
+                foreach(var topping in item.Toppings)
+                {
+                    var toppingItem = new OrderItemTopping
+                    {
+                        OrderItemId = orderItem.Id,
+                        ToppingId = topping.Id,
+                        CreateBy = 1,
+                        UpdateBy = 1,
+                        CreateTime = DateTime.UtcNow,
+                        UpdateTime = DateTime.UtcNow
+                    };
+                    _ctx.OrderItemTopping.Add(toppingItem);
+                }
+                _ctx.SaveChanges();
+
+                var orderOrderItem = new OrderOrderItem
+                {
+                    OrderItemId = orderItem.Id,
+                    OrderId = order.Id,
+                    CreateBy = 1,
+                    UpdateBy = 1,
+                    CreateTime = DateTime.UtcNow,
+                    UpdateTime = DateTime.UtcNow
+                };
+
+                _ctx.OrderOrderItem.Add(orderOrderItem);
+                _ctx.SaveChanges();
+            }
+
+
             return View();
         }
 

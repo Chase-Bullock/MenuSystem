@@ -130,7 +130,7 @@ namespace PizzaButt.Controllers
             {
                 if (cart[i].MenuItem.Id.Equals(id))
                 {
-                    if (cart[i].Toppings.Count() == toppingsViewModels.Count() && cart[i].Toppings.Except(toppingsViewModels).Any())
+                    if (cart[i].Toppings.Count() == toppingsViewModels.Count() && !cart[i].Toppings.Except(toppingsViewModels).Any())
                     {
                         return i;
                     }

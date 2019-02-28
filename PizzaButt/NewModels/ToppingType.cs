@@ -7,7 +7,7 @@ namespace PizzaButt.NewModels
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
         public DateTime CreateTime { get; set; }
         public long CreateBy { get; set; }
         public DateTime UpdateTime { get; set; }

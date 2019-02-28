@@ -21,6 +21,7 @@ namespace PizzaButt.NewModels
         public long CreateBy { get; set; }
         public DateTime? DeleteTime { get; set; }
         public long? DeleteBy { get; set; }
+        public bool? Active { get; set; }
 
         public virtual MenuItem MenuItem { get; set; }
         public virtual ICollection<OrderItemTopping> OrderItemTopping { get; set; }

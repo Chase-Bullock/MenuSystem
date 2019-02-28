@@ -43,6 +43,10 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<MenuItem>(entity =>
             {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.Name)
@@ -54,6 +58,10 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<Order>(entity =>
             {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.CompleteTime).HasColumnType("datetime");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
@@ -77,6 +85,10 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<OrderItem>(entity =>
             {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.DeleteTime).HasColumnType("datetime");
@@ -92,7 +104,9 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<OrderItemTopping>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
@@ -115,7 +129,9 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<OrderOrderItem>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
@@ -138,6 +154,10 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<OrderStatus>(entity =>
             {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.DeleteTime).HasColumnType("datetime");
@@ -151,7 +171,9 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<Person>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Cell).HasMaxLength(20);
 
@@ -178,8 +200,6 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<Role>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Active)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
@@ -197,7 +217,9 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<SystemReference>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.AltValue).HasMaxLength(100);
 
@@ -218,7 +240,9 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<Topping>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
@@ -238,7 +262,9 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<ToppingType>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
@@ -253,7 +279,9 @@ namespace PizzaButt.NewModels
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
