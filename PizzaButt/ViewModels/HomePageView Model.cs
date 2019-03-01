@@ -23,8 +23,7 @@ namespace PizzaButt.ViewModels
         
         public string ItemName { get; set; }
 
-        [Required]
-        public long Size { get; set; }
+        public long SizeId { get; set; }
         
         public List<long> Toppings { get; set; }
         

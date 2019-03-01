@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PizzaButt.Helpers;
 using PizzaButt.NewModels;
 using PizzaButt.ViewModels;
 
@@ -12,10 +14,12 @@ namespace PizzaButt.Controllers
     public class OrdersController : Controller
     {
         private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
+        private readonly CathedralKitchenContext _ctx;
 
-        public OrdersController(ICathedralKitchenRepository cathedralKitchenRepository)
+        public OrdersController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx)
         {
             _cathedralKitchenRepository = cathedralKitchenRepository;
+            _ctx = ctx;
         }
         [Authorize]
         public IActionResult Status()
@@ -24,10 +28,41 @@ namespace PizzaButt.Controllers
             return View(orders);
         }
 
-        public IActionResult OrderInfo([FromQuery] long orderId)
+        public IActionResult OrderInfo()
         {
-            var order = _cathedralKitchenRepository.GetOrder(orderId);
-            return View(order);
+            var orderId = SessionHelper.GetObjectFromJson<long>(HttpContext.Session, "orderId");
+
+            var order = _ctx.Order.Include(y => y.OrderOrderItem).Include(y => y.OrderStatus).FirstOrDefault(x => x.Id == orderId);
+            var orderItems = _ctx.OrderItem.Include(y => y.MenuItem).Include(y => y.OrderItemTopping).ThenInclude(y => y.Topping).Where(x => x.OrderOrderItem.Any(z => z.OrderId == order.Id)).ToList();
+            var orderItemsViewModel = new List<OrderItemViewModel>();
+
+            foreach(var orderItem in orderItems)
+            {
+                var orderItemViewModel = new OrderItemViewModel
+                {
+                    MenuItem = new MenuItemViewModel
+                    {
+                        Id = orderItem.MenuItem.Id,
+                        Name = orderItem.MenuItem.Name
+                    },
+                    OrderItemTopping = orderItem.OrderItemTopping.ToList(),
+                    Quantity = orderItem.Quantity,
+                    Size = _ctx.SystemReference.FirstOrDefault(x => x.Id == orderItem.SizeId)
+                };
+                orderItemsViewModel.Add(orderItemViewModel);
+            }
+
+            var orderViewModel = new OrderViewModel
+            {
+                Id = order.Id,
+                Status = order.OrderStatus.Status,
+                Note = order.Note,
+                OrderItems = orderItemsViewModel,
+                Name = order.CustomerName,
+                CreateTime = order.CreateTime
+            };
+
+            return View(orderViewModel);
         }
 
         [Authorize]
@@ -94,24 +129,22 @@ namespace PizzaButt.Controllers
 
         public IActionResult Start([FromQuery] long orderId)
         {
-            var order = _cathedralKitchenRepository.GetOrder(orderId);
-            _cathedralKitchenRepository.StartOrder(order);
+            _cathedralKitchenRepository.StartOrder(orderId);
             return Redirect("Status");
         }
 
         public IActionResult ReOpen([FromQuery] long orderId)
         {
-            var order = _cathedralKitchenRepository.GetOrder(orderId);
-            _cathedralKitchenRepository.StartOrder(order);
+            _cathedralKitchenRepository.StartOrder(orderId);
             return Redirect("Status");
         }
 
 
         public IActionResult Cancel([FromQuery] long orderId)
         {
-            var order = _cathedralKitchenRepository.GetOrder(orderId);
-            _cathedralKitchenRepository.CancelOrder(order);
-            return RedirectToAction("OrderInfo", "Orders", new { orderId });
+            _cathedralKitchenRepository.CancelOrder(orderId);
+            SessionHelper.Clear(HttpContext.Session);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

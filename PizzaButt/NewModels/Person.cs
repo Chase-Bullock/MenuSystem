@@ -5,11 +5,6 @@ namespace PizzaButt.NewModels
 {
     public partial class Person
     {
-        public Person()
-        {
-            User = new HashSet<User>();
-        }
-
         public long Id { get; set; }
         public string Home { get; set; }
         public string Work { get; set; }
@@ -24,7 +19,5 @@ namespace PizzaButt.NewModels
         public long? UpdateBy { get; set; }
         public DateTime? DeleteTime { get; set; }
         public long? DeleteBy { get; set; }
-
-        public virtual ICollection<User> User { get; set; }
     }
 }

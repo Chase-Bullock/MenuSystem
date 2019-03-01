@@ -66,6 +66,31 @@ namespace PizzaButt.Controllers
             return View(orderView);
         }
 
+        public IActionResult ShortendOrderView()
+        {
+            if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart") == null)
+            {
+                List<OrderItemViewModel> newCart = new List<OrderItemViewModel>();
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", newCart);
+            }
+            var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
+            ViewBag.cart = cart;
+            //FIX ORDER VIEW MODEL
+            var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
+            var pizzaToppings = _ctx.Topping.Include(y => y.ToppingType);
+            var filteredPizzaToppings = pizzaToppings.Where(x => x.ToppingType.Name == "Pizza");
+            var tacoToppings = _ctx.Topping.Include(y => y.ToppingType);
+            var filteredTacoToppings = tacoToppings.Where(x => x.ToppingType.Name == "Taco");
+
+            var orderView = new HomePageViewModel
+            {
+                MenuItems = menuItems,
+                PizzaToppings = filteredPizzaToppings,
+                TacoToppings = tacoToppings
+            };
+            return View(orderView);
+        }
+
         [HttpPost]
         public IActionResult Index(HomePageViewModel request)
         {
@@ -96,7 +121,7 @@ namespace PizzaButt.Controllers
             if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart") == null)
             {
                 List<OrderItemViewModel> cart = new List<OrderItemViewModel>();
-                cart.Add(new OrderItemViewModel { MenuItem = selectedItemViewModel, Toppings = selectedToppingsViewModels, Quantity = request.Quantity });
+                cart.Add(new OrderItemViewModel { MenuItem = selectedItemViewModel, Toppings = selectedToppingsViewModels, Quantity = request.Quantity, SizeId = request.SizeId });
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
             else
@@ -109,12 +134,12 @@ namespace PizzaButt.Controllers
                 }
                 else
                 {
-                    cart.Add(new OrderItemViewModel { MenuItem = selectedItemViewModel, Toppings = selectedToppingsViewModels, Quantity = 1 });
+                    cart.Add(new OrderItemViewModel { MenuItem = selectedItemViewModel, Toppings = selectedToppingsViewModels, Quantity = request.Quantity, SizeId = request.SizeId });
                 }
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("ShortendOrderView");
 
         }
 

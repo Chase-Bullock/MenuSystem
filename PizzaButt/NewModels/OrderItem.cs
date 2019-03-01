@@ -13,7 +13,7 @@ namespace PizzaButt.NewModels
 
         public long Id { get; set; }
         public long MenuItemId { get; set; }
-        public long? Size { get; set; }
+        public long? SizeId { get; set; }
         public int Quantity { get; set; }
         public DateTime UpdateTime { get; set; }
         public long UpdateBy { get; set; }

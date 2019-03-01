@@ -1,13 +1,15 @@
-﻿using AspNetCore.Identity.Mongo;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using PizzaButt.Hubs;
-using PizzaButt.Models;
 using PizzaButt.NewModels;
+using PizzaButt.Security;
 using System;
+using System.Text;
 
 namespace PizzaButt
 {
@@ -23,19 +25,10 @@ namespace PizzaButt
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMongoIdentityProvider<ApplicationUser>();
 
             services.AddSession();
 
             services.AddMvc();
-
-            services.Configure<Settings>(options =>
-            {
-                options.ConnectionString
-                    = Configuration.GetSection("MongoConnection:ConnectionString").Value;
-                options.Database
-                    = Configuration.GetSection("MongoConnection:Database").Value;
-            });
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -57,8 +50,31 @@ namespace PizzaButt
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
             });
+            services.AddTransient<IUserStore<User>, UserStore>();
+            services.AddTransient<IRoleStore<Role>, RoleStore>();
+            services.AddIdentity<User, Role>()
+                .AddDefaultTokenProviders();
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.ClaimsIssuer = Configuration["Jwt:Issuer"];
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SecurityKey"])),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
 
-            services.AddTransient<IPizzaRepository, PizzaRepository>();
             services.AddTransient<ICathedralKitchenRepository, CathedralKitchenRepository>();
             services.AddTransient<CathedralKitchenContext, CathedralKitchenContext>();
             services.AddSignalR();

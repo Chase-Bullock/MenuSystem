@@ -6,6 +6,10 @@ namespace PizzaButt.NewModels
     public partial class User
     {
         public long Id { get; set; }
+        public string Email { get; set; }
+        public string Hash { get; set; }
+        public bool HasTempPassword { get; set; }
+        public long PersonId { get; set; }
         public bool? Active { get; set; }
         public DateTime CreateTime { get; set; }
         public long CreateBy { get; set; }
@@ -13,9 +17,10 @@ namespace PizzaButt.NewModels
         public long UpdateBy { get; set; }
         public DateTime? DeleteTime { get; set; }
         public long? DeleteBy { get; set; }
-        public long PersonId { get; set; }
-        public string PasswordHash { get; set; }
 
-        public virtual Person Person { get; set; }
+        public void SetHash(string hash)
+        {
+            Hash = hash;
+        }
     }
 }

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using PizzaButt.Models;
 using PizzaButt.ViewModels.AccountViewModels;
 using PizzaButt.Controllers;
+using PizzaButt.NewModels;
 
 namespace Example.DefaultUser.Controllers
 {
@@ -20,13 +21,13 @@ namespace Example.DefaultUser.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly ILogger _logger;
 
         public AccountController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
             ILogger<AccountController> logger)
         {
             _userManager = userManager;
@@ -58,7 +59,7 @@ namespace Example.DefaultUser.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email.ToUpper(), model.Password, true, false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -103,13 +104,13 @@ namespace Example.DefaultUser.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new User { Email = model.Email.ToUpper() };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 

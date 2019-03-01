@@ -11,6 +11,7 @@
     <PackageReference Include="jQuery" Version="3.3.1" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.2">
       <PrivateAssets>all</PrivateAssets>
@@ -19,10 +20,6 @@
     <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.2" />
     <PackageReference Include="popper.js" Version="1.14.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\AspNetCore.Identity.Mongo\AspNetCore.Identity.Mongo.csproj" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />

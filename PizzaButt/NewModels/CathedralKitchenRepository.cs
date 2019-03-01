@@ -81,16 +81,18 @@ namespace PizzaButt.NewModels
             }
         }
 
-        public string SendOrder(Order model)
+        public string SendOrder(long orderId)
         {
             try
             {
-                var CreateTime = DateTime.UtcNow;
-                model.CreateTime = CreateTime;
-                model.OrderStatusId = context.OrderStatus.SingleOrDefault(x => x.Status == "Pending").Id;
-                context.Order.Add(model);
+                var result = context.Order.SingleOrDefault(x => x.Id == orderId);
+                var createTime = DateTime.UtcNow;
+                result.CreateTime = createTime;
+                result.UpdateTime = createTime;
+                result.OrderStatusId = context.OrderStatus.SingleOrDefault(x => x.Status == "Pending").Id;
+                context.Order.Add(result);
                 context.SaveChanges();
-                return model.Id.ToString();
+                return orderId.ToString();
             }
             catch (Exception ex)
             {
@@ -99,14 +101,16 @@ namespace PizzaButt.NewModels
             }
         }
 
-        public string StartOrder(Order model)
+        public string StartOrder(long orderId)
         {
             try
             {
-                model.OrderStatusId = context.OrderStatus.SingleOrDefault(x => x.Status == "Started").Id;
-                context.Order.Add(model);
+                var updateTime = DateTime.UtcNow;
+                var result = context.Order.SingleOrDefault(x => x.Id == orderId);
+                result.UpdateTime = updateTime;
+                result.OrderStatusId = context.OrderStatus.SingleOrDefault(x => x.Status == "Started").Id;
                 context.SaveChanges();
-                return model.Id.ToString();
+                return orderId.ToString();
             }
             catch (Exception ex)
             {
@@ -150,8 +154,10 @@ namespace PizzaButt.NewModels
             {
                 var result = context.Order.SingleOrDefault(x => x.Id == model.Id);
                 {
+                    var UpdateTime = DateTime.UtcNow;
                     result.OrderStatusId = context.OrderStatus.SingleOrDefault(x => x.Status == "Complete").Id;
-                    result.CompleteTime = DateTime.UtcNow;
+                    result.CompleteTime = UpdateTime;
+                    result.UpdateTime = UpdateTime;
                     context.SaveChanges();
                 }
             }
@@ -162,16 +168,17 @@ namespace PizzaButt.NewModels
             }
         }
 
-        public string CancelOrder(Order model)
+        public string CancelOrder(long orderId)
         {
             try
             {
-                var result = context.Order.SingleOrDefault(x => x.Id == model.Id);
+                var result = context.Order.SingleOrDefault(x => x.Id == orderId);
                 {
+                    var UpdateTime = DateTime.UtcNow;
                     result.OrderStatusId = context.OrderStatus.SingleOrDefault(x => x.Status == "Canceled").Id;
-                    result.CompleteTime = DateTime.UtcNow;
+                    result.UpdateTime = UpdateTime;
                     context.SaveChanges();
-                    return model.Id.ToString();
+                    return orderId.ToString();
                 }
             }
             catch (Exception ex)

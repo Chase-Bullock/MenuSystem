@@ -287,17 +287,11 @@ namespace PizzaButt.NewModels
 
                 entity.Property(e => e.DeleteTime).HasColumnType("datetime");
 
-                entity.Property(e => e.PasswordHash)
-                    .IsRequired()
-                    .HasMaxLength(10);
+                entity.Property(e => e.Email).HasMaxLength(255);
+
+                entity.Property(e => e.Hash).HasMaxLength(255);
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Person)
-                    .WithMany(p => p.User)
-                    .HasForeignKey(d => d.PersonId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_User_Person");
             });
         }
     }

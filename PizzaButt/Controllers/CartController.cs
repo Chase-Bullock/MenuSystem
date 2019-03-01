@@ -48,10 +48,12 @@ namespace PizzaButt.Controllers
                 {
                     MenuItemId = item.MenuItem.Id,
                     Quantity = item.Quantity,
+                    SizeId = item.SizeId,
                     CreateBy = 1,
                     UpdateBy = 1,
                     CreateTime = DateTime.UtcNow,
-                    UpdateTime = DateTime.UtcNow
+                    UpdateTime = DateTime.UtcNow,
+                    
                 };
                 _ctx.OrderItem.Add(orderItem);
                 _ctx.SaveChanges();
@@ -84,9 +86,13 @@ namespace PizzaButt.Controllers
                 _ctx.OrderOrderItem.Add(orderOrderItem);
                 _ctx.SaveChanges();
             }
+            if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "orderId") == null)
+            {
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "orderId", order.Id);
+            }
 
 
-            return View();
+            return RedirectToAction("OrderInfo", "Orders");
         }
 
         [Route("buy/{id}")]
