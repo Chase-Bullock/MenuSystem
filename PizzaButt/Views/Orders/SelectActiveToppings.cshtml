@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "OrderInfo";
+}
+@model SelectToppingViewModel
+
+<div class="order-status">
+    <h1 style="margin: 30px 0; text-align: center;">Todays Menu</h1>
+    <form style="margin-top: 25px;" class="orderForm" id="orderForm" method="post">
+        <div id="selectMenuItems" style="text-align: center" class="form-group offset-md-4 col-md-4">
+            <label class="titleTag">Select options for today's menu</label>
+            @foreach (var item in Model.Toppings)
+            {
+                <div class="row" style="margin-top: 8px; margin-bottom: 8px; text-align: left">
+                    <div class="offset-md-4 col-md-4">
+                        <div class="pretty p-icon p-smooth">
+                            <input name="toppingNames" class="toppingNames" type="checkbox" value="@item.ToppingName" />
+                            <div class="state p-primary">
+                                <i class="icon fa fa-check"></i>
+                                <label>@item.ToppingName</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div style="margin-top: 30px" class="form-group offset-md-4 col-md-4">
+                <button type="submit" style="margin-left:280px" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="~/lib/signalr/signalr.js"></script>
+<script src="~/js/status.js"></script>

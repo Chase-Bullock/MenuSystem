@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using PizzaButt.NewModels;
+using System.Collections.Generic;
 
 namespace PizzaButt.ViewModels
 {
@@ -6,6 +7,7 @@ namespace PizzaButt.ViewModels
     {
         public long Id { get; set; }
         public string Name { get; set; }
+        public List<SystemReference> ToppingTypes { get; set; }
 
         public override bool Equals(System.Object obj)
         {

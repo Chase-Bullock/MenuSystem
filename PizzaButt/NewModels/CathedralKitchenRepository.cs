@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using PizzaButt.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -80,6 +81,7 @@ namespace PizzaButt.NewModels
                 throw ex;
             }
         }
+
 
         public string SendOrder(long orderId)
         {
@@ -195,7 +197,25 @@ namespace PizzaButt.NewModels
                 foreach (var x in model)
                 {
                     var result = context.MenuItem.SingleOrDefault(i => i.Id == x.Id);
-                    result.Active = true;
+                    result.Active = x.Active;
+                }
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void UpdateToppings(List<Topping> model)
+        {
+            try
+            {
+                foreach (var x in model)
+                {
+                    var result = context.Topping.SingleOrDefault(i => i.Id == x.Id);
+                    result.Active = x.Active;
                 }
                 context.SaveChanges();
             }

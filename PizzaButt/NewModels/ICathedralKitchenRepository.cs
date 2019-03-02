@@ -16,5 +16,6 @@ namespace PizzaButt.NewModels
         IEnumerable<Order> GetOrders();
         void CompleteOrder(Order model);
         void UpdateMenu(List<MenuItem> model);
+        void UpdateToppings(List<Topping> model);
     }
 }

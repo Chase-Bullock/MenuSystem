@@ -10,6 +10,8 @@ $('#menuSelect').on('change', function(e) {
     if (val === 'Taco') {
         $('#toppingsForPizza').fadeOut();
         $('#sizesForPizza').fadeOut();
+        $('#extraSauceForOthers').fadeOut();
+        $('#extraForOthers').fadeOut();
         $('#sauceForTaco').fadeIn();
         $('#labelForTaco').fadeIn();
         $('#extrasForTaco').fadeIn();
@@ -18,13 +20,26 @@ $('#menuSelect').on('change', function(e) {
         $('#sauceForTaco').fadeOut();
         $('#labelForTaco').fadeOut();
         $('#extrasForTaco').fadeOut();
+        $('#extraSauceForOthers').fadeOut();
+        $('#extraForOthers').fadeOut();
         $('#toppingsForPizza').fadeIn();
         $('#sizesForPizza').fadeIn();
+    }
+    else if (val.length > 0) {
+        $('#sauceForTaco').fadeOut();
+        $('#labelForTaco').fadeOut();
+        $('#extrasForTaco').fadeOut();
+        $('#toppingsForPizza').fadeOut();
+        $('#sizesForPizza').fadeOut();
+        $('#extraSauceForOthers').fadeIn();
+        $('#extraForOthers').fadeIn();
     }
     else {
         $('#sauceForTaco').fadeOut();
         $('#labelForTaco').fadeOut();
         $('#extrasForTaco').fadeOut();
+        $('#extraSauceForOthers').fadeOut();
+        $('#extraForOthers').fadeOut();
         $('#toppingsForPizza').fadeOut();
         $('#sizesForPizza').fadeOut();
     }

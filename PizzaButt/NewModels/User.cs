@@ -17,7 +17,7 @@ namespace PizzaButt.NewModels
         public long UpdateBy { get; set; }
         public DateTime? DeleteTime { get; set; }
         public long? DeleteBy { get; set; }
-
+        
         public void SetHash(string hash)
         {
             Hash = hash;

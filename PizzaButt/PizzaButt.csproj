@@ -28,10 +28,16 @@
     <Folder Include="wwwroot\lib\%40aspnet\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="Views\Orders\SelectActiveToppings.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Orders\CreateTopping.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Orders\CreateItem.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Orders\Menu.cshtml">
+    <Content Update="Views\Orders\SelectActiveMenuItems.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

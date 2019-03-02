@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaButt.Helpers;
 using PizzaButt.NewModels;
+using PizzaButt.Services;
 using PizzaButt.ViewModels;
 
 namespace PizzaButt.Controllers
@@ -22,13 +23,13 @@ namespace PizzaButt.Controllers
             _ctx = ctx;
         }
         [Authorize]
-        public IActionResult Status()
+        public IActionResult StatusOfAllOrders()
         {
             var orders = _cathedralKitchenRepository.GetOrders();
             return View(orders);
         }
 
-        public IActionResult OrderInfo()
+        public IActionResult OrderInfoForCustomer()
         {
             var orderId = SessionHelper.GetObjectFromJson<long>(HttpContext.Session, "orderId");
 
@@ -66,23 +67,59 @@ namespace PizzaButt.Controllers
         }
 
         [Authorize]
-        public IActionResult Menu()
+        public IActionResult SelectActiveToppings()
         {
-            var orders = _cathedralKitchenRepository.GetMenuItems();
+            var toppings = _ctx.Topping;
+            var distinctToppings = toppings.DistinctBy(x => x.ToppingName).ToList();
+
+            var toppingsViewModel = new SelectToppingViewModel
+            {
+                Toppings = distinctToppings,
+            };
+            return View(toppingsViewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult SelectActiveToppings(SelectToppingViewModel selectedItems)
+        {
+            var items = _ctx.Topping;
+            List<Topping> allItems = items.ToList();
+
+            foreach (var x in allItems)
+            {
+                if (selectedItems.ToppingNames.Contains(x.ToppingName))
+                {
+                    x.Active = true;
+                }
+                else
+                {
+                    x.Active = false;
+                }
+            };
+
+            _cathedralKitchenRepository.UpdateToppings(allItems);
+            return Redirect("SelectActiveToppings");
+        }
+
+        [Authorize]
+        public IActionResult SelectActiveMenuItems()
+        {
+            var allItems = _cathedralKitchenRepository.GetMenuItems();
             var Menu = new MenuViewModel
             {
-                MenuItems = orders
+                MenuItems = allItems
             };
             return View(Menu);
         }
 
         [HttpPost]
-        public IActionResult Menu(MenuViewModel selectedItems)
+        public IActionResult SelectActiveMenuItems(MenuViewModel selectedItems)
         {
             var items = _cathedralKitchenRepository.GetMenuItems();
             List<MenuItem> allItems = items.ToList();
 
-            allItems.Where(x => selectedItems.MenuItemNames.Contains(x.Name) ? x.Active == true : x.Active == false).ToList();
+            //allItems.Where(x => selectedItems.MenuItemNames.Contains(x.Name) ? x.Active == true : x111.Active == false).ToList();
 
             foreach (var x in allItems)
             {
@@ -97,7 +134,7 @@ namespace PizzaButt.Controllers
             };
 
             _cathedralKitchenRepository.UpdateMenu(allItems);
-            return Redirect("Status");
+            return Redirect("SelectActiveMenuItems");
         }
 
         [Authorize]
@@ -107,17 +144,72 @@ namespace PizzaButt.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult CreateItem(CreateMenuItemViewModel newItem)
         {
             var newCreatedItem = new MenuItem
             {
                 Active = newItem.Active == "true" ? true : false,
-                Name = newItem.Name
+                Name = newItem.Name,
+                CreateBy = 1,
+                CreateTime = DateTime.UtcNow,
+                UpdateBy = 1,
+                UpdateTime = DateTime.UtcNow
             };
             var success = _cathedralKitchenRepository.CreateMenuItem(newCreatedItem);
             ViewBag.Create = success;
             return View();
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult CreateTopping()
+        {
+            var toppingTypes = _ctx.SystemReference.Where(x => x.AltValue == "Topping").ToList();
+
+            var toppingTypesViewModel = new CreateToppingViewModel
+            {
+                ToppingTypes = toppingTypes
+            };
+
+            return View(toppingTypesViewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreateTopping(CreateToppingViewModel newItem)
+        {
+            var newCreatedItem = new Topping
+            {
+                Active = newItem.Active == "true" ? true : false,
+                ToppingName = newItem.Name,
+                CreateBy = 1,
+                CreateTime = DateTime.UtcNow,
+                UpdateBy = 1,
+                UpdateTime = DateTime.UtcNow
+            };
+            _ctx.Topping.Add(newCreatedItem);
+            _ctx.SaveChanges();
+
+            foreach (var toppingTypeId in newItem.ToppingTypeIds)
+            {
+                var toppingSysRef = new ToppingSystemReference
+                {
+                    ToppingId = newCreatedItem.Id,
+                    ToppingTypeId = toppingTypeId,
+                    CreateBy = 1,
+                    CreateTime = DateTime.UtcNow,
+                    UpdateBy = 1,
+                    UpdateTime = DateTime.UtcNow
+                };
+                _ctx.ToppingSystemReference.Add(toppingSysRef);
+            }
+            _ctx.SaveChanges();
+            var success = newItem.Name.ToString();
+
+            ViewBag.Create = success;
+            return Redirect("CreateTopping");
         }
 
         public IActionResult Complete([FromQuery] long orderId)

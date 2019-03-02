@@ -25,7 +25,7 @@ namespace PizzaButt.NewModels
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<SystemReference> SystemReference { get; set; }
         public virtual DbSet<Topping> Topping { get; set; }
-        public virtual DbSet<ToppingType> ToppingType { get; set; }
+        public virtual DbSet<ToppingSystemReference> ToppingSystemReference { get; set; }
         public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -253,14 +253,9 @@ namespace PizzaButt.NewModels
                     .HasMaxLength(70);
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
-
-                entity.HasOne(d => d.ToppingType)
-                    .WithMany(p => p.Topping)
-                    .HasForeignKey(d => d.ToppingTypeId)
-                    .HasConstraintName("FK_Topping_ToppingType");
             });
 
-            modelBuilder.Entity<ToppingType>(entity =>
+            modelBuilder.Entity<ToppingSystemReference>(entity =>
             {
                 entity.Property(e => e.Active)
                     .IsRequired()
@@ -270,11 +265,19 @@ namespace PizzaButt.NewModels
 
                 entity.Property(e => e.DeleteTime).HasColumnType("datetime");
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(70);
-
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Topping)
+                    .WithMany(p => p.ToppingSystemReference)
+                    .HasForeignKey(d => d.ToppingId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ToppingSystemReference_Topping");
+
+                entity.HasOne(d => d.ToppingType)
+                    .WithMany(p => p.ToppingSystemReference)
+                    .HasForeignKey(d => d.ToppingTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ToppingSystemReference_SystemReference");
             });
 
             modelBuilder.Entity<User>(entity =>

@@ -11,8 +11,9 @@ namespace PizzaButt.ViewModels
     {
 
         public IEnumerable<MenuItem> MenuItems { get; set; }
-        public IEnumerable<Topping> TacoToppings { get; set; }
-        public IEnumerable<Topping> PizzaToppings { get; set; }
+        public IEnumerable<ToppingsViewModel> TacoToppings { get; set; }
+        public IEnumerable<ToppingsViewModel> PizzaToppings { get; set; }
+        public IEnumerable<ToppingsViewModel> AllToppings { get; set; }
         //public IEnumerable<Size> Sizes { get; set; }
 
         public long Id { get; set; }
@@ -26,6 +27,8 @@ namespace PizzaButt.ViewModels
         public long SizeId { get; set; }
         
         public List<long> Toppings { get; set; }
+
+        public bool UserLoggedIn { get; set; }
         
 
         [Range(1, 100)]

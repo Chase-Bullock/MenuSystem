@@ -160,6 +160,14 @@ select::-ms-expand {
     display: none;
 }
 
+#extraSauceForOthers {
+    display: none;
+}
+
+#extraForOthers {
+    display: none;
+}
+
 #extrasForTaco {
     display: none;
 }

@@ -52,16 +52,77 @@ namespace PizzaButt.Controllers
             ViewBag.cart = cart;
             //FIX ORDER VIEW MODEL
             var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
-            var pizzaToppings = _ctx.Topping.Include(y => y.ToppingType);
-            var filteredPizzaToppings = pizzaToppings.Where(x => x.ToppingType.Name == "Pizza");
-            var tacoToppings = _ctx.Topping.Include(y => y.ToppingType);
-            var filteredTacoToppings = tacoToppings.Where(x => x.ToppingType.Name == "Taco");
+            var toppings = _ctx.Topping.Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
+            var filteredPizzaToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Pizza"));
+            var filteredTacoToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Taco"));
+            bool isAuthenticated = User.Identity.IsAuthenticated;
+
+            var filteredPizzaToppingsViewModel = new List<ToppingsViewModel>();
+            var filteredTacoToppingsViewModel = new List<ToppingsViewModel>();
+            var allToppingsViewModel = new List<ToppingsViewModel>();
+
+            foreach (var topping in filteredPizzaToppings)
+            {
+                var toppingTypes = new List<SystemReference>();
+
+                foreach(var sysref in topping.ToppingSystemReference)
+                {
+                    toppingTypes.Add(sysref.ToppingType);
+                }
+                var toppingViewModel = new ToppingsViewModel
+                {
+                    Name = topping.ToppingName,
+                    ToppingTypes = toppingTypes,
+                    Id = topping.Id
+                };
+
+                filteredPizzaToppingsViewModel.Add(toppingViewModel);
+            };
+
+
+            foreach (var topping in filteredTacoToppings)
+            {
+                var toppingTypes = new List<SystemReference>();
+
+                foreach (var sysref in topping.ToppingSystemReference)
+                {
+                    toppingTypes.Add(sysref.ToppingType);
+                }
+                var toppingViewModel = new ToppingsViewModel
+                {
+                    Name = topping.ToppingName,
+                    ToppingTypes = toppingTypes,
+                    Id = topping.Id
+                };
+
+                filteredTacoToppingsViewModel.Add(toppingViewModel);
+            };
+
+            foreach (var topping in toppings)
+            {
+                var toppingTypes = new List<SystemReference>();
+
+                foreach (var sysref in topping.ToppingSystemReference)
+                {
+                    toppingTypes.Add(sysref.ToppingType);
+                }
+                var toppingViewModel = new ToppingsViewModel
+                {
+                    Name = topping.ToppingName,
+                    ToppingTypes = toppingTypes,
+                    Id = topping.Id
+                };
+
+                allToppingsViewModel.Add(toppingViewModel);
+            };
 
             var orderView = new HomePageViewModel
             {
                 MenuItems = menuItems,
-                PizzaToppings = filteredPizzaToppings,
-                TacoToppings = tacoToppings
+                UserLoggedIn = isAuthenticated,
+                PizzaToppings = filteredPizzaToppingsViewModel,
+                TacoToppings = filteredTacoToppingsViewModel,
+                AllToppings = allToppingsViewModel
             };
             return View(orderView);
         }
@@ -77,16 +138,77 @@ namespace PizzaButt.Controllers
             ViewBag.cart = cart;
             //FIX ORDER VIEW MODEL
             var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
-            var pizzaToppings = _ctx.Topping.Include(y => y.ToppingType);
-            var filteredPizzaToppings = pizzaToppings.Where(x => x.ToppingType.Name == "Pizza");
-            var tacoToppings = _ctx.Topping.Include(y => y.ToppingType);
-            var filteredTacoToppings = tacoToppings.Where(x => x.ToppingType.Name == "Taco");
+            var toppings = _ctx.Topping.Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
+            var filteredPizzaToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Pizza"));
+            var filteredTacoToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Taco"));
+            bool isAuthenticated = User.Identity.IsAuthenticated;
+
+            var filteredPizzaToppingsViewModel = new List<ToppingsViewModel>();
+            var filteredTacoToppingsViewModel = new List<ToppingsViewModel>();
+            var allToppingsViewModel = new List<ToppingsViewModel>();
+
+            foreach (var topping in filteredPizzaToppings)
+            {
+                var toppingTypes = new List<SystemReference>();
+
+                foreach (var sysref in topping.ToppingSystemReference)
+                {
+                    toppingTypes.Add(sysref.ToppingType);
+                }
+                var toppingViewModel = new ToppingsViewModel
+                {
+                    Name = topping.ToppingName,
+                    ToppingTypes = toppingTypes,
+                    Id = topping.Id
+                };
+
+                filteredPizzaToppingsViewModel.Add(toppingViewModel);
+            };
+
+
+            foreach (var topping in filteredTacoToppings)
+            {
+                var toppingTypes = new List<SystemReference>();
+
+                foreach (var sysref in topping.ToppingSystemReference)
+                {
+                    toppingTypes.Add(sysref.ToppingType);
+                }
+                var toppingViewModel = new ToppingsViewModel
+                {
+                    Name = topping.ToppingName,
+                    ToppingTypes = toppingTypes,
+                    Id = topping.Id
+                };
+
+                filteredTacoToppingsViewModel.Add(toppingViewModel);
+            };
+
+            foreach (var topping in toppings)
+            {
+                var toppingTypes = new List<SystemReference>();
+
+                foreach (var sysref in topping.ToppingSystemReference)
+                {
+                    toppingTypes.Add(sysref.ToppingType);
+                }
+                var toppingViewModel = new ToppingsViewModel
+                {
+                    Name = topping.ToppingName,
+                    ToppingTypes = toppingTypes,
+                    Id = topping.Id
+                };
+
+                allToppingsViewModel.Add(toppingViewModel);
+            };
 
             var orderView = new HomePageViewModel
             {
                 MenuItems = menuItems,
-                PizzaToppings = filteredPizzaToppings,
-                TacoToppings = tacoToppings
+                UserLoggedIn = isAuthenticated,
+                PizzaToppings = filteredPizzaToppingsViewModel,
+                TacoToppings = filteredTacoToppingsViewModel,
+                AllToppings = allToppingsViewModel
             };
             return View(orderView);
         }
@@ -98,7 +220,6 @@ namespace PizzaButt.Controllers
             var selectedItem = menuItems.First(x => x.Name == request.ItemName);
             var toppings = _ctx.Topping;
             var selectedToppings = toppings.Where(x => request.Toppings.Contains(x.Id)).ToList();
-
             var selectedToppingsViewModels = new List<ToppingsViewModel>();
 
             foreach(var selectedTopping in selectedToppings)

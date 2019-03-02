@@ -7,7 +7,7 @@ namespace PizzaButt.NewModels
     {
         public SystemReference()
         {
-            Topping = new HashSet<Topping>();
+            ToppingSystemReference = new HashSet<ToppingSystemReference>();
         }
 
         public long Id { get; set; }
@@ -22,6 +22,6 @@ namespace PizzaButt.NewModels
         public DateTime? DeleteTime { get; set; }
         public long? DeleteBy { get; set; }
 
-        public virtual ICollection<Topping> Topping { get; set; }
+        public virtual ICollection<ToppingSystemReference> ToppingSystemReference { get; set; }
     }
 }
