@@ -7,7 +7,7 @@ namespace PizzaButt.NewModels
     {
         public Order()
         {
-            OrderOrderItem = new HashSet<OrderOrderItem>();
+            OrderItem = new HashSet<OrderItem>();
         }
 
         public long Id { get; set; }
@@ -24,6 +24,6 @@ namespace PizzaButt.NewModels
         public bool? Active { get; set; }
 
         public virtual OrderStatus OrderStatus { get; set; }
-        public virtual ICollection<OrderOrderItem> OrderOrderItem { get; set; }
+        public virtual ICollection<OrderItem> OrderItem { get; set; }
     }
 }

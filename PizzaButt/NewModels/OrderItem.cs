@@ -8,11 +8,11 @@ namespace PizzaButt.NewModels
         public OrderItem()
         {
             OrderItemTopping = new HashSet<OrderItemTopping>();
-            OrderOrderItem = new HashSet<OrderOrderItem>();
         }
 
         public long Id { get; set; }
         public long MenuItemId { get; set; }
+        public long? OrderId { get; set; }
         public long? SizeId { get; set; }
         public int Quantity { get; set; }
         public DateTime UpdateTime { get; set; }
@@ -24,7 +24,7 @@ namespace PizzaButt.NewModels
         public bool? Active { get; set; }
 
         public virtual MenuItem MenuItem { get; set; }
+        public virtual Order Order { get; set; }
         public virtual ICollection<OrderItemTopping> OrderItemTopping { get; set; }
-        public virtual ICollection<OrderOrderItem> OrderOrderItem { get; set; }
     }
 }

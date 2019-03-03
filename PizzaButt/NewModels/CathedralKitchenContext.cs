@@ -19,7 +19,6 @@ namespace PizzaButt.NewModels
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderItem> OrderItem { get; set; }
         public virtual DbSet<OrderItemTopping> OrderItemTopping { get; set; }
-        public virtual DbSet<OrderOrderItem> OrderOrderItem { get; set; }
         public virtual DbSet<OrderStatus> OrderStatus { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Role> Role { get; set; }
@@ -100,6 +99,11 @@ namespace PizzaButt.NewModels
                     .HasForeignKey(d => d.MenuItemId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderItem_MenuItem");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderItem)
+                    .HasForeignKey(d => d.OrderId)
+                    .HasConstraintName("FK_OrderItem_Order");
             });
 
             modelBuilder.Entity<OrderItemTopping>(entity =>
@@ -125,31 +129,6 @@ namespace PizzaButt.NewModels
                     .HasForeignKey(d => d.ToppingId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderItemTopping_Topping");
-            });
-
-            modelBuilder.Entity<OrderOrderItem>(entity =>
-            {
-                entity.Property(e => e.Active)
-                    .IsRequired()
-                    .HasDefaultValueSql("((1))");
-
-                entity.Property(e => e.CreateTime).HasColumnType("datetime");
-
-                entity.Property(e => e.DeleteTime).HasColumnType("datetime");
-
-                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.OrderOrderItem)
-                    .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_OrderOrderItem_Order");
-
-                entity.HasOne(d => d.OrderItem)
-                    .WithMany(p => p.OrderOrderItem)
-                    .HasForeignKey(d => d.OrderItemId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_OrderOrderItem_OrderItem");
             });
 
             modelBuilder.Entity<OrderStatus>(entity =>

@@ -1,13 +1,103 @@
 ﻿
-@*@{
+@{
     ViewData["Title"] = "Orders";
 }
-@model IEnumerable<OrderModel>
+@model IEnumerable<OrderViewModel>
 
 <div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
     <div class="tablez" style="margin-top: 10px">
         <h1 style="text-align: center;">Pending Orders</h1>
-        <table class="table" style="width: 80%; margin: auto;">
+        @{var itemCount = 0; }
+        @foreach (var item in Model)
+        {
+            if (item.Status == "Pending")
+            {
+                itemCount += 1;
+                    <table class="table" style="width: 80%; margin: auto; table-layout: fixed; margin-bottom: 25px; @(itemCount % 2 == 0 ? "background-color:azure" : "background-color:white") ">
+                        <tr style="border-bottom:double">
+                            <th scope="col">Name</th>
+                            <td>@item.Name</td>
+                            <th scope="col">Order Time</th>
+                            <td>@item.CreateTime.ToLocalTime()</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Order</th>
+                            <th scope="col">Toppings</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Quantity</th>
+
+                        </tr>
+                        @foreach (var orderItem in item.OrderItems)
+                        {
+                            <tr>
+
+                                <td colspan="1">
+                                    @orderItem.MenuItem.Name
+                                </td>
+                                <td colspan="1" style="word-wrap:normal">
+                                    @if (orderItem.OrderItemTopping != null)
+                                    {
+                                        var last = orderItem.OrderItemTopping.Last();
+                                        foreach (var topping in orderItem.OrderItemTopping)
+                                        {
+                                            if (topping == last)
+                                            {
+                                                <Text>@topping.Topping.ToppingName</Text>
+                                            }
+                                            else
+                                            {
+                                                <Text>@topping.Topping.ToppingName, </Text>
+                                            }
+                                        }
+                                    }
+                                </td>
+                                @if (orderItem.Size != null)
+                                {
+                                    <td colspan="1">
+                                        @orderItem.Size.MainValue
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td colspan="1">N/A</td>
+                                }
+                                <td colspan="1">
+                                    @orderItem.Quantity.ToString()
+                                </td>
+
+                            </tr>
+                        }
+                        <tr style="border-top: double">
+
+                            <th scope="col">Complete Time</th>
+                            <td>
+                                @if (item.CompleteTime.ToLocalTime() > item.CreateTime)
+                                {
+                                    item.CompleteTime.ToLocalTime();
+                                }
+                                else
+                                {
+                                    <div>N/A</div>
+                                }
+                            </td>
+                            <th scope="col">Status</th>
+                            <td>
+                                @item.Status
+                            </td>
+                        </tr>
+                        <tr style="border-bottom:dotted">
+                            <th>Special Instructions</th>
+                            <td colspan="2" style="word-wrap:break-word">
+                                sdflkasjfldksajflksjdflksdjfsdflkasjfldksajflksjdflksdjfsdflkasjfldksajflksjdflksdjfsdflkasjfldksajflksjdflksdjf
+                            </td>
+                            <td colspan="1">
+                                <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Cancel", "Orders", new { orderId = item.Id })'">Cancel Order</button>
+                            </td>
+                        </tr>
+                    </table>
+            }
+        }
+        @*<table class="table" style="width: 80%; margin: auto;">
             <thead>
                 <tr>
                     <th scope="col">Name</th>
@@ -22,231 +112,230 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
-                {
-                    if (item.Status == "Pending")
-                    {
-                        <tr>
-                            <td>
-                                @item.Name
-                            </td>
-                            <td>
-                                @item.Order
-                            </td>
-                            <td>
-                                @if (item.Size == null)
-                                {
-                                    <Text>N/A</Text>
-                                }
-                                else
-                                {
-                                    <Text>@item.Size</Text>
-                                }
-                            </td>
-                            <td>
-                                @{
-                                    if (item.Toppings != null)
-                                    {
-                                        var last = item.Toppings.Last();
-                                        foreach (var topping in item.Toppings)
-                                        {
-                                            if (topping == last)
-                                            {
-                                                <Text>@topping</Text>
-                                            }
-                                            else
-                                            {
-                                                <Text>@topping, </Text>
-                                            }
-                                        }
-                                    }
-                                }
-                            </td>
-                            <td>
-                                @item.Quantity
-                            </td>
-                            <td>
-                                @item.SpecialInstructions
-                            </td>
-                            <td>
-                                @item.CreateTime
-                            </td>
-                            <td>
-                                @item.Status
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-success statusChangeButton" onclick="location.href = '@Url.Action("Start", "Orders", new {orderId = item.Id.ToString()})'">Start Order</button>
-                            </td>
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="tablez">
-        <h1 style="text-align: center;">Started Orders</h1>
 
-        <table class="table" style="width: 80%; margin: auto;">
-            <thead>
                 <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Order</th>
-                    <th scope="col">Size</th>
-                    <th scope="col">Toppings</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Special Instructions</th>
-                    <th scope="col">Order Time</th>
-                    <th scope="col">Status</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    if (item.Status == "Started")
-                    {
-                        <tr>
-                            <td>
-                                @item.Name
-                            </td>
-                            <td>
-                                @item.Order
-                            </td>
-                            <td>
-                                @if (item.Size == null)
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @foreach (var orderItem in item.OrderItems)
+                        {
+                        <td colspan="1">
+                            @orderItem.MenuItem.Name
+                        </td>
+                        <td colspan="1" style="word-wrap:normal">
+                            @if (orderItem.OrderItemTopping != null)
+                            {
+                                var last = orderItem.OrderItemTopping.Last();
+                                foreach (var topping in orderItem.OrderItemTopping)
                                 {
-                                    <Text>N/A</Text>
-                                }
-                                else
-                                {
-                                    <Text>@item.Size</Text>
-                                }
-                            </td>
-                            <td>
-                                @{
-                                    if (item.Toppings != null)
+                                    if (topping == last)
                                     {
-                                        var last = item.Toppings.Last();
-                                        foreach (var topping in item.Toppings)
+                                        <Text>@topping.Topping.ToppingName</Text>
+                                    }
+                                    else
+                                    {
+                                        <Text>@topping.Topping.ToppingName, </Text>
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>
+                            @if (orderItem.Size == null)
+                            {
+                                <Text>N/A</Text>
+                            }
+                            else
+                            {
+                                <Text>@orderItem.Size</Text>
+                            }
+                        </td>
+                    }
+                        <td>
+                            @item.Quantity
+                        </td>
+                        <td>
+                            @item.Note
+                        </td>
+                        <td>
+                            @item.CreateTime
+                        </td>
+                        <td>
+                            @item.Status
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success statusChangeButton" onclick="location.href = '@item.CreateTime'">Start Order</button>
+                        </td>
+                    </tr>
+                    }
+                    }
+                </tbody>
+            </table>
+        </div>*@
+        @*<div class="tablez">
+            <h1 style="text-align: center;">Started Orders</h1>
+
+            <table class="table" style="width: 80%; margin: auto;">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Order</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Toppings</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Special Instructions</th>
+                        <th scope="col">Order Time</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.Status == "Started")
+                        {
+                            <tr>
+                                <td>
+                                    @item.Name
+                                </td>
+                                <td>
+                                    @item.Order
+                                </td>
+                                <td>
+                                    @if (item.Size == null)
+                                    {
+                                        <Text>N/A</Text>
+                                    }
+                                    else
+                                    {
+                                        <Text>@item.Size</Text>
+                                    }
+                                </td>
+                                <td>
+                                    @{
+                                        if (item.Toppings != null)
                                         {
-                                            if (topping == last)
+                                            var last = item.Toppings.Last();
+                                            foreach (var topping in item.Toppings)
                                             {
-                                                <Text>@topping</Text>
-                                            }
-                                            else
-                                            {
-                                                <Text>@topping, </Text>
+                                                if (topping == last)
+                                                {
+                                                    <Text>@topping</Text>
+                                                }
+                                                else
+                                                {
+                                                    <Text>@topping, </Text>
+                                                }
                                             }
                                         }
                                     }
-                                }
-                            </td>
-                            <td>
-                                @item.Quantity
-                            </td>
-                            <td>
-                                @item.SpecialInstructions
-                            </td>
-                            <td>
-                                @item.CreateTime
-                            </td>
-                            <td>
-                                @item.Status
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-success statusChangeButton" onclick="location.href = '@Url.Action("Complete", "Orders", new {orderId = item.Id.ToString()})'">Complete Order</button>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>
+                                    @item.Quantity
+                                </td>
+                                <td>
+                                    @item.SpecialInstructions
+                                </td>
+                                <td>
+                                    @item.CreateTime
+                                </td>
+                                <td>
+                                    @item.Status
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-success statusChangeButton" onclick="location.href = '@Url.Action("Complete", "Orders", new {orderId = item.Id.ToString()})'">Complete Order</button>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
 
-    <div class="tablez" style="margin-bottom:30px">
-        <h1 style="text-align: center;">Completed Orders</h1>
+        <div class="tablez" style="margin-bottom:30px">
+            <h1 style="text-align: center;">Completed Orders</h1>
 
-        <table class="table" style="width: 80%; margin: auto;">
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Order</th>
-                    <th scope="col">Size</th>
-                    <th scope="col">Toppings</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Special Instructions</th>
-                    <th scope="col">Order Time</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Complete Time</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    if (item.Status == "Complete")
+            <table class="table" style="width: 80%; margin: auto;">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Order</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Toppings</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Special Instructions</th>
+                        <th scope="col">Order Time</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Complete Time</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @item.Name
-                            </td>
-                            <td>
-                                @item.Order
-                            </td>
-                            <td>
-                                @if (item.Size == null)
-                                {
-                                    <Text>N/A</Text>
-                                }
-                                else
-                                {
-                                    <Text>@item.Size</Text>
-                                }
-                            </td>
-                            <td>
-                                @{
-                                    if (item.Toppings != null)
+                        if (item.Status == "Complete")
+                        {
+                            <tr>
+                                <td>
+                                    @item.Name
+                                </td>
+                                <td>
+                                    @item.Order
+                                </td>
+                                <td>
+                                    @if (item.Size == null)
                                     {
-                                        var last = item.Toppings.Last();
-                                        foreach (var topping in item.Toppings)
+                                        <Text>N/A</Text>
+                                    }
+                                    else
+                                    {
+                                        <Text>@item.Size</Text>
+                                    }
+                                </td>
+                                <td>
+                                    @{
+                                        if (item.Toppings != null)
                                         {
-                                            if (topping == last)
+                                            var last = item.Toppings.Last();
+                                            foreach (var topping in item.Toppings)
                                             {
-                                                <Text>@topping</Text>
-                                            }
-                                            else
-                                            {
-                                                <Text>@topping, </Text>
+                                                if (topping == last)
+                                                {
+                                                    <Text>@topping</Text>
+                                                }
+                                                else
+                                                {
+                                                    <Text>@topping, </Text>
+                                                }
                                             }
                                         }
                                     }
-                                }
-                            </td>
-                            <td>
-                                @item.Quantity
-                            </td>
-                            <td>
-                                @item.SpecialInstructions
-                            </td>
-                            <td>
-                                @item.CreateTime
-                            </td>
-                            <td>
-                                @item.Status
-                            </td>
-                            <td>
-                                @item.CompleteTime
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-success statusChangeButton" onclick="location.href = '@Url.Action("ReOpen", "Orders", new {orderId = item.Id.ToString()})'">Reopen Order</button>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>
+                                    @item.Quantity
+                                </td>
+                                <td>
+                                    @item.SpecialInstructions
+                                </td>
+                                <td>
+                                    @item.CreateTime
+                                </td>
+                                <td>
+                                    @item.Status
+                                </td>
+                                <td>
+                                    @item.CompleteTime
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-success statusChangeButton" onclick="location.href = '@Url.Action("ReOpen", "Orders", new {orderId = item.Id.ToString()})'">Reopen Order</button>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>*@
     </div>
-</div>
-<script src="~/lib/signalr/signalr.js"></script>
-<script src="~/js/orders.js"></script>*@
+                <script src="~/lib/signalr/signalr.js"></script>
+                <script src="~/js/orders.js"></script>
 

@@ -25,19 +25,59 @@ namespace PizzaButt.Controllers
         [Authorize]
         public IActionResult StatusOfAllOrders()
         {
-            var orders = _cathedralKitchenRepository.GetOrders();
-            return View(orders);
+            var orders = _ctx.Order.Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus);
+            //var orderItems = _ctx.OrderItem.Include(y => y.MenuItem).Include(y => y.OrderItemTopping).ThenInclude(y => y.Topping).ToList();
+            var orderItemsViewModel = new Dictionary<long, List<OrderItemViewModel>>();
+            var ordersViewModel = new List<OrderViewModel>();
+
+            foreach (var order in orders)
+            {
+                foreach (var orderItem in order.OrderItem)
+                {
+                    var orderItemViewModel = new OrderItemViewModel
+                    {
+                        MenuItem = new MenuItemViewModel
+                        {
+                            Id = orderItem.MenuItem.Id,
+                            Name = orderItem.MenuItem.Name
+                        },
+                        OrderItemTopping = orderItem.OrderItemTopping.ToList(),
+                        Quantity = orderItem.Quantity,
+                        Size = _ctx.SystemReference.FirstOrDefault(x => x.Id == orderItem.SizeId)
+                    };
+                    if (!orderItemsViewModel.ContainsKey(order.Id))
+                    {
+                        orderItemsViewModel[order.Id] = new List<OrderItemViewModel>();
+                        orderItemsViewModel[order.Id].Add(orderItemViewModel);
+                    } else
+                    {
+                        orderItemsViewModel[order.Id].Add(orderItemViewModel);
+                    };
+                }
+                var orderViewModel = new OrderViewModel
+                {
+                    Id = order.Id,
+                    Status = order.OrderStatus.Status,
+                    Note = order.Note,
+                    OrderItems = orderItemsViewModel[order.Id] != null ? orderItemsViewModel.First(x => x.Key == order.Id).Value : new List<OrderItemViewModel>(),
+                    Name = order.CustomerName,
+                    CreateTime = order.CreateTime
+                };
+                ordersViewModel.Add(orderViewModel);
+
+            }
+            return View(ordersViewModel);
         }
 
         public IActionResult OrderInfoForCustomer()
         {
             var orderId = SessionHelper.GetObjectFromJson<long>(HttpContext.Session, "orderId");
 
-            var order = _ctx.Order.Include(y => y.OrderOrderItem).Include(y => y.OrderStatus).FirstOrDefault(x => x.Id == orderId);
-            var orderItems = _ctx.OrderItem.Include(y => y.MenuItem).Include(y => y.OrderItemTopping).ThenInclude(y => y.Topping).Where(x => x.OrderOrderItem.Any(z => z.OrderId == order.Id)).ToList();
+            var order = _ctx.Order.Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus).FirstOrDefault(x => x.Id == orderId);
+            //var orderItems = _ctx.OrderItem.Include(y => y.MenuItem).Include(y => y.OrderItemTopping).ThenInclude(y => y.Topping).Where(x => x.OrderOrderItem.Any(z => z.OrderId == order.Id)).ToList();
             var orderItemsViewModel = new List<OrderItemViewModel>();
 
-            foreach(var orderItem in orderItems)
+            foreach (var orderItem in order.OrderItem)
             {
                 var orderItemViewModel = new OrderItemViewModel
                 {

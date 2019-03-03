@@ -53,6 +53,7 @@ namespace PizzaButt.Controllers
                     UpdateBy = 1,
                     CreateTime = DateTime.UtcNow,
                     UpdateTime = DateTime.UtcNow,
+                    OrderId = order.Id
                     
                 };
                 _ctx.OrderItem.Add(orderItem);
@@ -72,19 +73,6 @@ namespace PizzaButt.Controllers
                     _ctx.OrderItemTopping.Add(toppingItem);
                 }
                 _ctx.SaveChanges();
-
-                var orderOrderItem = new OrderOrderItem
-                {
-                    OrderItemId = orderItem.Id,
-                    OrderId = order.Id,
-                    CreateBy = 1,
-                    UpdateBy = 1,
-                    CreateTime = DateTime.UtcNow,
-                    UpdateTime = DateTime.UtcNow
-                };
-
-                _ctx.OrderOrderItem.Add(orderOrderItem);
-                _ctx.SaveChanges();
             }
             if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "orderId") == null)
             {
@@ -92,7 +80,7 @@ namespace PizzaButt.Controllers
             }
 
 
-            return RedirectToAction("OrderInfo", "Orders");
+            return RedirectToAction("OrderInfoForCustomer", "Orders");
         }
 
         [Route("buy/{id}")]
