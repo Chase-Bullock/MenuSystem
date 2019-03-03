@@ -28,11 +28,28 @@ namespace PizzaButt.Controllers
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
 
+            //return RedirectToAction("OrderInfoForCustomer", "Orders");
+            return View();
+        }
+
+        [Route("checkout")]
+        [HttpPost]
+        public IActionResult Checkout(CartViewModel cartViewModel)
+        {
+            if (!ModelState.IsValid) return View(cartViewModel);
+
+            var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
+            ViewBag.cart = cart;
+
             var order = new Order
             {
                 OrderStatusId = _ctx.OrderStatus.SingleOrDefault(x => x.Status == "Pending").Id,
-                CustomerName = "Placeholder",
-                Note = "Also a placeholder",
+                CustomerName = cartViewModel.Name,
+                Note = cartViewModel.Note,
+                AddressLine1 = cartViewModel.AddressLine1,
+                AddressLine2 = cartViewModel.AddressLine2,
+                City = cartViewModel.City,
+                ZipCode = cartViewModel.Zipcode,
                 CreateBy = 1,
                 UpdateBy = 1,
                 CreateTime = DateTime.UtcNow,
@@ -42,7 +59,7 @@ namespace PizzaButt.Controllers
             _ctx.Order.Add(order);
             _ctx.SaveChanges();
 
-            foreach(var item in cart)
+            foreach (var item in cart)
             {
                 var orderItem = new OrderItem
                 {
@@ -54,12 +71,12 @@ namespace PizzaButt.Controllers
                     CreateTime = DateTime.UtcNow,
                     UpdateTime = DateTime.UtcNow,
                     OrderId = order.Id
-                    
+
                 };
                 _ctx.OrderItem.Add(orderItem);
                 _ctx.SaveChanges();
 
-                foreach(var topping in item.Toppings)
+                foreach (var topping in item.Toppings)
                 {
                     var toppingItem = new OrderItemTopping
                     {
@@ -81,6 +98,7 @@ namespace PizzaButt.Controllers
 
 
             return RedirectToAction("OrderInfoForCustomer", "Orders");
+               
         }
 
         [Route("buy/{id}")]

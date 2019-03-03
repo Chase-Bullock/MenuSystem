@@ -264,6 +264,58 @@ namespace PizzaButt.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult ShortendOrderView(HomePageViewModel request)
+        {
+            var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
+            var selectedItem = menuItems.First(x => x.Name == request.ItemName);
+            var toppings = _ctx.Topping;
+            var selectedToppings = toppings.Where(x => request.Toppings.Contains(x.Id)).ToList();
+            var selectedToppingsViewModels = new List<ToppingsViewModel>();
+
+            foreach (var selectedTopping in selectedToppings)
+            {
+                ToppingsViewModel topping = new ToppingsViewModel
+                {
+                    Id = selectedTopping.Id,
+                    Name = selectedTopping.ToppingName
+                };
+
+                selectedToppingsViewModels.Add(topping);
+            }
+
+            MenuItemViewModel selectedItemViewModel = new MenuItemViewModel
+            {
+                Id = selectedItem.Id,
+                Name = selectedItem.Name
+            };
+
+            if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart") == null)
+            {
+                List<OrderItemViewModel> cart = new List<OrderItemViewModel>();
+                cart.Add(new OrderItemViewModel { MenuItem = selectedItemViewModel, Toppings = selectedToppingsViewModels, Quantity = request.Quantity, SizeId = request.SizeId });
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            }
+            else
+            {
+                List<OrderItemViewModel> cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
+                long index = isExist(selectedItemViewModel.Id, selectedToppingsViewModels);
+                if (index != -1)
+                {
+                    cart[(int)index].Quantity += request.Quantity;
+                }
+                else
+                {
+                    cart.Add(new OrderItemViewModel { MenuItem = selectedItemViewModel, Toppings = selectedToppingsViewModels, Quantity = request.Quantity, SizeId = request.SizeId });
+                }
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            }
+
+            return RedirectToAction("ShortendOrderView");
+
+        }
+
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

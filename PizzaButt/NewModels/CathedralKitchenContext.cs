@@ -61,6 +61,12 @@ namespace PizzaButt.NewModels
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
+                entity.Property(e => e.AddressLine1).HasMaxLength(255);
+
+                entity.Property(e => e.AddressLine2).HasMaxLength(255);
+
+                entity.Property(e => e.City).HasMaxLength(255);
+
                 entity.Property(e => e.CompleteTime).HasColumnType("datetime");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
@@ -74,6 +80,8 @@ namespace PizzaButt.NewModels
                 entity.Property(e => e.Note).HasMaxLength(500);
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.ZipCode).HasMaxLength(12);
 
                 entity.HasOne(d => d.OrderStatus)
                     .WithMany(p => p.Order)

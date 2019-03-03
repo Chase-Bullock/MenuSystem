@@ -22,6 +22,10 @@ namespace PizzaButt.NewModels
         public DateTime? DeleteTime { get; set; }
         public long? DeleteBy { get; set; }
         public bool? Active { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string City { get; set; }
+        public string ZipCode { get; set; }
 
         public virtual OrderStatus OrderStatus { get; set; }
         public virtual ICollection<OrderItem> OrderItem { get; set; }
