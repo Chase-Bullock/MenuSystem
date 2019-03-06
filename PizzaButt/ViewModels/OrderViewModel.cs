@@ -24,7 +24,7 @@ namespace PizzaButt.ViewModels
         
         public DateTime CreateTime { get; set; }
         
-        public DateTime CompleteTime { get; set; }
+        public DateTime? CompleteTime { get; set; }
         
     }
 }

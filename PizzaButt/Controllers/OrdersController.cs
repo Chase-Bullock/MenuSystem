@@ -61,7 +61,8 @@ namespace PizzaButt.Controllers
                     Note = order.Note,
                     OrderItems = orderItemsViewModel[order.Id] != null ? orderItemsViewModel.First(x => x.Key == order.Id).Value : new List<OrderItemViewModel>(),
                     Name = order.CustomerName,
-                    CreateTime = order.CreateTime
+                    CreateTime = order.CreateTime,
+                    CompleteTime = order.CompleteTime
                 };
                 ordersViewModel.Add(orderViewModel);
 
@@ -100,7 +101,8 @@ namespace PizzaButt.Controllers
                 Note = order.Note,
                 OrderItems = orderItemsViewModel,
                 Name = order.CustomerName,
-                CreateTime = order.CreateTime
+                CreateTime = order.CreateTime,
+                CompleteTime = order.CompleteTime
             };
 
             return View(orderViewModel);
@@ -256,19 +258,19 @@ namespace PizzaButt.Controllers
         {
             var order = _cathedralKitchenRepository.GetOrder(orderId);
             _cathedralKitchenRepository.CompleteOrder(order);
-            return Redirect("Status");
+            return Redirect("StatusOfAllOrders");
         }
 
         public IActionResult Start([FromQuery] long orderId)
         {
             _cathedralKitchenRepository.StartOrder(orderId);
-            return Redirect("Status");
+            return Redirect("StatusOfAllOrders");
         }
 
         public IActionResult ReOpen([FromQuery] long orderId)
         {
             _cathedralKitchenRepository.StartOrder(orderId);
-            return Redirect("Status");
+            return Redirect("StatusOfAllOrders");
         }
 
 

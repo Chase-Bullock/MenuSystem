@@ -4,7 +4,7 @@
 @model HomePageViewModel
 
 
-<div style="border:solid; border-color:black; height:600px">
+<div style="background-color:#efefef; border-width: 1px; border-color:black; -webkit-box-shadow: 0px 0px 9px 1px rgba(0,0,0,0.75); -moz-box-shadow: 0px 0px 9px 1px rgba(0,0,0,0.75); box-shadow: 0px 0px 9px 1px rgba(0,0,0,0.75); height:600px ">
     <h3 style="font-size: 36px; font-weight: 700; text-align: center; border-bottom:solid;">Cart</h3>
     <div style="display:flex; flex-direction: column; height:540px; justify-content: space-between;">
         <table style="flex:10; display:flex; justify-content:center;">
@@ -21,8 +21,10 @@
             </tr>
         }
         </table>
-        <div style="flex:1">
-                <a style="color: #fff; align-items:center; justify-content:center;" asp-controller="cart" asp-action="checkout" class="btn btn-primary">Place order</a>
+        <div style="flex:1;">
+            <div style="align-content:center; justify-content:center;">
+                <a style="color: #fff; margin-left:60px" asp-controller="cart" asp-action="checkout" class="btn btn-primary">Place order</a>
+            </div>
         </div>
     </div>
 </div>

@@ -13,3 +13,11 @@ document.getElementById("activateNav").addEventListener("click", function (event
         return console.error(err.toString());
     });
 });
+
+document.getElementById("activateNav").addEventListener("click", function (event) {
+    event.preventDefault();
+    $('.checkoutForm').submit();
+    connection.invoke("UpdateOrder").catch(function (err) {
+        return console.error(err.toString());
+    });
+});

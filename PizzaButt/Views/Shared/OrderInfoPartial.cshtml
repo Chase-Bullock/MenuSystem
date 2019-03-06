@@ -61,9 +61,9 @@
                   
                     <th scope="col">Complete Time</th>
                     <td>
-                        @if(Model.CompleteTime.ToLocalTime() > Model.CreateTime)
+                        @if(Model.CompleteTime?.ToLocalTime() > Model.CreateTime)
                         {
-                            Model.CompleteTime.ToLocalTime();
+                            Model.CompleteTime?.ToLocalTime();
                         } else
                         {
                             <div>N/A</div>

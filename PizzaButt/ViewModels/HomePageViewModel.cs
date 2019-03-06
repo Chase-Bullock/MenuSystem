@@ -22,8 +22,10 @@ namespace PizzaButt.ViewModels
         
         public Order Order { get; set; }
         
+        [Required]
         public string ItemName { get; set; }
 
+        [Required]
         public long SizeId { get; set; }
         
         public List<long> Toppings { get; set; }
@@ -34,9 +36,6 @@ namespace PizzaButt.ViewModels
         [Range(1, 100)]
         [Required]
         public int Quantity { get; set; }
-        
-        [StringLength(600)]
-        public string SpecialInstructions { get; set; }
         
         public string Status { get; set; }
         

@@ -7,17 +7,20 @@
             <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Home" asp-action="Index">Home</a>
         </li>
         @if (SignInManager.IsSignedIn(User))
-      {
-        <li class="nav-item">
-            <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Orders" asp-action="Status">Orders</a>
-        </li>
-        <li class="nav-item">
-            <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Orders" asp-action="Menu">Today's Menu</a>
-        </li>
-        <li class="nav-item">
-            <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Orders" asp-action="CreateItem">Add Item to menu</a>
-        </li>
-      }
+        {
+            <li class="nav-item">
+                <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Orders" asp-action="StatusOfAllOrders">Orders</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Orders" asp-action="Menu">Today's Menu</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Orders" asp-action="CreateItem">Add Item to menu</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Orders" asp-action="CreateTopping">Add Topping to menu</a>
+            </li>
+        }
     </ul>
     @using Microsoft.AspNetCore.Identity
 

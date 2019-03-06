@@ -6,16 +6,11 @@
     @**************************@
     <div class="row">
         <div class="form-group col-md-6 offset-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <label asp-for="ItemName" class="titleTag" for="menuSelect">Menu</label>
-            <div class="selectdiv">
-                <select asp-for="ItemName" required class="form-control" id="menuSelect" name="itemName">
-                    <option disabled selected hidden> -- </option>
-                    @foreach (var item in Model.MenuItems)
-                    {
-                        <option value="@item.Name">@Html.DisplayFor(model => item.Name)</option>
-                    }
-                </select>
-            </div>
+            <select asp-for="ItemName" class="form-control" id="menuSelect" name="itemName" asp-items="@(new SelectList(Model.MenuItems,"Name", "Name"))">
+                <option value="" disabled selected hidden> -- </option>
+            </select>
             <span asp-validation-for="ItemName" class="text-danger"></span>
         </div>
     </div>
@@ -192,7 +187,7 @@
             <div class="row">
                 <div class="offset-md-1 col-md-3">
                     <div class="pretty p-default p-round">
-                        <input value=5 class="toppings" type="radio" name="SizeId" />
+                        <input asp-for="SizeId" value=5 class="toppings" type="radio" name="SizeId" />
                         <div class="state p-primary-o">
                             <label>Small</label>
                         </div>
@@ -200,7 +195,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="pretty p-default p-round">
-                        <input value=6 class="toppings" type="radio" name="SizeId" />
+                        <input input asp-for="SizeId" value=6 class="toppings" type="radio" name="SizeId" />
                         <div class="state p-primary-o">
                             <label>Medium</label>
                         </div>
@@ -208,7 +203,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="pretty p-default p-round">
-                        <input value=7 class="toppings" type="radio" name="SizeId" />
+                        <input input asp-for="SizeId" value=7 class="toppings" type="radio" name="SizeId" />
                         <div class="state p-primary-o">
                             <label>Large</label>
                         </div>
@@ -300,10 +295,9 @@
     @**************************@
     <div class="row">
         <div class="form-group col-md-6 offset-md-4">
-            <label asp-for="Quantity" class="titleTag" for="qtyInput">Quantity</label>
-            <input type="number" minValue="1" class="form-control" id="qtyInput" aria-describedby="emailHelp" name="quantity" required="true" />
+            <label asp-for="Quantity" class="titleTag">Quantity</label>
+            <input asp-for="Quantity" type="number" class="form-control boxStyle" id="qtyInput" aria-describedby="emailHelp" placeholder="Enter Quantity" name="quantity" required />
             <span asp-validation-for="Quantity" class="text-danger"></span>
-            @Html.ValidationMessage("This field is required")
         </div>
     </div>
     @**************************@
@@ -315,3 +309,7 @@
         </div>
     </div>
 </form>
+
+@*<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>*@

@@ -216,6 +216,7 @@ namespace PizzaButt.Controllers
         [HttpPost]
         public IActionResult Index(HomePageViewModel request)
         {
+            if (!ModelState.IsValid) return RedirectToAction("ShortendOrderView", "Home");
             var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
             var selectedItem = menuItems.First(x => x.Name == request.ItemName);
             var toppings = _ctx.Topping;

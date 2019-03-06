@@ -1,26 +1,27 @@
 ﻿<nav class="navbar navbar-expand-lg homeNav navbar-primary">
     <ul class="nav navbar-nav mr-auto">
         <li class="nav-item">
-            <a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 16px; font-size: 18px;" asp-controller="Home" asp-action="Index">Cathedral Pizza</a>
-        </li>
-        <li class="nav-item">
-            <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 16px; font-size: 16px;" asp-controller="Home" asp-action="Index">Cathedral Pizza</a>
         </li>
         @if (SignInManager.IsSignedIn(User))
-            {
-        <li class="nav-item">
-            <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300"
-               asp-controller="Orders" asp-action="Status">Orders</a>
-        </li>
-        <li class="nav-item">
-            <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300"
-               asp-controller="Orders" asp-action="Menu">Today's Menu</a>
-        </li>
-        <li class="nav-item">
-            <a asp-area="" class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300"
-               asp-controller="Orders" asp-action="CreateItem">Add Item to menu</a>
-        </li>
-            }
+        {
+            <li class="nav-item">
+                <a asp-area="" class="nav-link" style="color: #fff; margin-right: 10px; margin-left: 10px; font-size: 16px; font-weight: 300"
+                   asp-controller="Orders" asp-action="StatusOfAllOrders">Orders</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="" class="nav-link" style="color: #fff; margin-right: 10px; margin-left: 10px; font-size: 16px; font-weight: 300"
+                   asp-controller="Orders" asp-action="Menu">Today's Menu</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="" class="nav-link" style="color: #fff; margin-right: 10px; margin-left: 10px; font-size: 16px; font-weight: 300"
+                   asp-controller="Orders" asp-action="CreateItem">Add Item to menu</a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="" class="nav-link" style="color: #fff; margin-right: 10px; margin-left: 10px; font-size: 16px; font-weight: 300"
+                    asp-controller="Orders" asp-action="CreateTopping">Add Topping to menu</a>
+            </li>
+        }
     </ul>
     @using Microsoft.AspNetCore.Identity
     @using PizzaButt.NewModels
@@ -33,11 +34,11 @@
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300"
-                   title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                <a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 16px; font-weight: 300"
+                   title="Manage">Hello @UserManager.GetUserName(User).ToLower()!</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 18px; font-weight: 300"
+                <a class="nav-link" style="color: #fff; margin-right: 20px; margin-left: 20px; font-size: 16px; font-weight: 300"
                    asp-controller="Account" asp-action="Logout" method="post">Log out</a>
             </li>
         </ul>
