@@ -20,15 +20,10 @@
         </div>
     </div>
     <div class="row">
-        @Html.BeginForm(FormMethod.Post, new { @class = "orderForm" }) {
-            @Html.TextBoxFor(model => model.Quantity)
-        <input type="submit" />
-        @Html.ValidationSummary()
-        }
-        @*@await Html.PartialAsync("../Shared/OrderPartial.cshtml")
+        @await Html.PartialAsync("../Shared/OrderPartial.cshtml")
         <div class="col-3" style="margin-right:30px;">
             @await Html.PartialAsync("../Shared/CartPartial.cshtml")
-        </div>*@
+        </div>
     </div>
 </div>
 <script src="~/lib/signalr/signalr.js"></script>
