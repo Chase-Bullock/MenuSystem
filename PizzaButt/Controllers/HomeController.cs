@@ -55,11 +55,40 @@ namespace PizzaButt.Controllers
             var toppings = _ctx.Topping.Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
             var filteredPizzaToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Pizza"));
             var filteredTacoToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Taco"));
+            var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community);
+            var filteredTodaysSchedule = todaysSchedule.Where(x => x.Date == DateTime.Today).Where(y => y.Active == true);
             bool isAuthenticated = User.Identity.IsAuthenticated;
 
             var filteredPizzaToppingsViewModel = new List<ToppingsViewModel>();
             var filteredTacoToppingsViewModel = new List<ToppingsViewModel>();
             var allToppingsViewModel = new List<ToppingsViewModel>();
+            var filteredScheduleConfigViewModel = new List<ScheduleConfigViewModel>();
+
+            foreach (var config in filteredTodaysSchedule)
+            {
+                var builderViewModel = new BuilderViewModel
+                {
+                    Id = config.Builder.Id,
+                    Name = config.Builder.Name
+                };
+
+                var communityViewModel = new CommunityViewModel
+                {
+                    Id = config.Community.Id,
+                    Name = config.Community.Name
+                };
+
+                var scheduleViewModel = new ScheduleConfigViewModel
+                {
+                    Id = config.Id,
+                    Builder = builderViewModel,
+                    Community = communityViewModel,
+                    Date = config.Date,
+                    Active = config.Active
+                };
+
+                filteredScheduleConfigViewModel.Add(scheduleViewModel);
+            };
 
             foreach (var topping in filteredPizzaToppings)
             {
@@ -122,7 +151,8 @@ namespace PizzaButt.Controllers
                 UserLoggedIn = isAuthenticated,
                 PizzaToppings = filteredPizzaToppingsViewModel,
                 TacoToppings = filteredTacoToppingsViewModel,
-                AllToppings = allToppingsViewModel
+                AllToppings = allToppingsViewModel,
+                TodaysSchedule = filteredScheduleConfigViewModel
             };
             return View(orderView);
         }
@@ -141,11 +171,40 @@ namespace PizzaButt.Controllers
             var toppings = _ctx.Topping.Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
             var filteredPizzaToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Pizza"));
             var filteredTacoToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Taco"));
+            var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community);
+            var filteredTodaysSchedule = todaysSchedule.Where(x => x.Date == DateTime.Today).Where(y => y.Active == true);
             bool isAuthenticated = User.Identity.IsAuthenticated;
 
             var filteredPizzaToppingsViewModel = new List<ToppingsViewModel>();
             var filteredTacoToppingsViewModel = new List<ToppingsViewModel>();
             var allToppingsViewModel = new List<ToppingsViewModel>();
+            var filteredScheduleConfigViewModel = new List<ScheduleConfigViewModel>();
+
+            foreach (var config in filteredTodaysSchedule)
+            {
+                var builderViewModel = new BuilderViewModel
+                {
+                    Id = config.Builder.Id,
+                    Name = config.Builder.Name
+                };
+
+                var communityViewModel = new CommunityViewModel
+                {
+                    Id = config.Community.Id,
+                    Name = config.Community.Name
+                };
+
+                var scheduleViewModel = new ScheduleConfigViewModel
+                {
+                    Id = config.Id,
+                    Builder = builderViewModel,
+                    Community = communityViewModel,
+                    Date = config.Date,
+                    Active = config.Active
+                };
+
+                filteredScheduleConfigViewModel.Add(scheduleViewModel);
+            };
 
             foreach (var topping in filteredPizzaToppings)
             {
@@ -208,7 +267,8 @@ namespace PizzaButt.Controllers
                 UserLoggedIn = isAuthenticated,
                 PizzaToppings = filteredPizzaToppingsViewModel,
                 TacoToppings = filteredTacoToppingsViewModel,
-                AllToppings = allToppingsViewModel
+                AllToppings = allToppingsViewModel,
+                TodaysSchedule = filteredScheduleConfigViewModel
             };
             return View(orderView);
         }

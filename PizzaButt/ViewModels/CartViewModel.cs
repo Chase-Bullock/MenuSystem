@@ -11,11 +11,17 @@ namespace PizzaButt.ViewModels
     {
         public long Id { get; set; }
 
+        public IEnumerable<ScheduleConfigViewModel> TodaysSchedule { get; set; }
+
         [Required]
         [StringLength(75)]
         public string Name { get; set; }
-        
+
         public Order Order { get; set; }
+
+        public HashSet<CommunityViewModel> Communities { get; set; }
+
+        public long CommunityId { get; set; }
 
         [StringLength(255)]
         [Required]

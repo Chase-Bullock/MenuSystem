@@ -14,6 +14,7 @@ namespace PizzaButt.ViewModels
         public IEnumerable<ToppingsViewModel> TacoToppings { get; set; }
         public IEnumerable<ToppingsViewModel> PizzaToppings { get; set; }
         public IEnumerable<ToppingsViewModel> AllToppings { get; set; }
+        public IEnumerable<ScheduleConfigViewModel> TodaysSchedule { get; set; }
         //public IEnumerable<Size> Sizes { get; set; }
 
         public long Id { get; set; }

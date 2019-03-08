@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PizzaButt.Helpers;
 using PizzaButt.NewModels;
 using PizzaButt.ViewModels;
@@ -28,8 +29,48 @@ namespace PizzaButt.Controllers
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
 
+            var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community);
+            var filteredTodaysSchedule = todaysSchedule.Where(x => x.Date.Date == DateTime.Today);
+
+            var filteredScheduleConfigViewModel = new List<ScheduleConfigViewModel>();
+            var communities = new HashSet<CommunityViewModel>();
+
+            foreach (var config in filteredTodaysSchedule)
+            {
+                //var builderViewModel = new BuilderViewModel
+                //{
+                //    Id = config.Builder.Id,
+                //    Name = config.Builder.Name
+                //};
+
+                var communityViewModel = new CommunityViewModel
+                {
+                    Id = config.Community.Id,
+                    Name = config.Community.Name
+                };
+
+                var scheduleViewModel = new ScheduleConfigViewModel
+                {
+                    Id = config.Id,
+                    //Builder = builderViewModel,
+                    Community = communityViewModel,
+                    Date = config.Date,
+                    Active = config.Active
+                };
+
+                communities.Add(communityViewModel);
+
+                filteredScheduleConfigViewModel.Add(scheduleViewModel);
+            };
+
+            var cartViewModel = new CartViewModel
+            {
+                TodaysSchedule = filteredScheduleConfigViewModel,
+                Communities = communities
+            };
+
             //return RedirectToAction("OrderInfoForCustomer", "Orders");
-            return View();
+            return View(cartViewModel);
         }
 
         [Route("checkout")]
@@ -48,7 +89,7 @@ namespace PizzaButt.Controllers
                 Note = cartViewModel.Note,
                 AddressLine1 = cartViewModel.AddressLine1,
                 AddressLine2 = cartViewModel.AddressLine2,
-                City = cartViewModel.City,
+                //TODO City = cartViewModel.City,
                 ZipCode = cartViewModel.Zipcode,
                 CreateBy = 1,
                 UpdateBy = 1,
@@ -98,14 +139,14 @@ namespace PizzaButt.Controllers
 
 
             return RedirectToAction("OrderInfoForCustomer", "Orders");
-               
+
         }
 
         [Route("buy/{id}")]
         public IActionResult Buy(long id)
         {
             var MenuItems = _cathedralKitchenRepository.GetActiveMenuItems();
-                if (SessionHelper.GetObjectFromJson<List<OrderItem>>(HttpContext.Session, "cart") == null)
+            if (SessionHelper.GetObjectFromJson<List<OrderItem>>(HttpContext.Session, "cart") == null)
             {
                 List<OrderItem> cart = new List<OrderItem>();
                 cart.Add(new OrderItem { MenuItem = MenuItems.FirstOrDefault(x => x.Id == id), Quantity = 1 });

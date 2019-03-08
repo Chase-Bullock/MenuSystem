@@ -15,13 +15,19 @@ namespace PizzaButt.NewModels
         {
         }
 
+        public virtual DbSet<Builder> Builder { get; set; }
+        public virtual DbSet<BuilderCommunity> BuilderCommunity { get; set; }
+        public virtual DbSet<City> City { get; set; }
+        public virtual DbSet<Community> Community { get; set; }
         public virtual DbSet<MenuItem> MenuItem { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderItem> OrderItem { get; set; }
         public virtual DbSet<OrderItemTopping> OrderItemTopping { get; set; }
         public virtual DbSet<OrderStatus> OrderStatus { get; set; }
         public virtual DbSet<Person> Person { get; set; }
+        public virtual DbSet<Region> Region { get; set; }
         public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<ScheduleConfig> ScheduleConfig { get; set; }
         public virtual DbSet<SystemReference> SystemReference { get; set; }
         public virtual DbSet<Topping> Topping { get; set; }
         public virtual DbSet<ToppingSystemReference> ToppingSystemReference { get; set; }
@@ -39,6 +45,69 @@ namespace PizzaButt.NewModels
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.2-servicing-10034");
+
+            modelBuilder.Entity<Builder>(entity =>
+            {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<BuilderCommunity>(entity =>
+            {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<City>(entity =>
+            {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(80);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Community>(entity =>
+            {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Region)
+                    .WithMany(p => p.Community)
+                    .HasForeignKey(d => d.RegionId)
+                    .HasConstraintName("FK_Community_Region");
+            });
 
             modelBuilder.Entity<MenuItem>(entity =>
             {
@@ -65,8 +134,6 @@ namespace PizzaButt.NewModels
 
                 entity.Property(e => e.AddressLine2).HasMaxLength(255);
 
-                entity.Property(e => e.City).HasMaxLength(255);
-
                 entity.Property(e => e.CompleteTime).HasColumnType("datetime");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
@@ -82,6 +149,16 @@ namespace PizzaButt.NewModels
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.ZipCode).HasMaxLength(12);
+
+                entity.HasOne(d => d.City)
+                    .WithMany(p => p.Order)
+                    .HasForeignKey(d => d.CityId)
+                    .HasConstraintName("FK_Order_City");
+
+                entity.HasOne(d => d.Community)
+                    .WithMany(p => p.Order)
+                    .HasForeignKey(d => d.CommunityId)
+                    .HasConstraintName("FK_Order_Community");
 
                 entity.HasOne(d => d.OrderStatus)
                     .WithMany(p => p.Order)
@@ -185,6 +262,17 @@ namespace PizzaButt.NewModels
                 entity.Property(e => e.Work).HasMaxLength(20);
             });
 
+            modelBuilder.Entity<Region>(entity =>
+            {
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteTime).HasColumnType("datetime");
+
+                entity.Property(e => e.RegionName).HasMaxLength(300);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.Active)
@@ -200,6 +288,40 @@ namespace PizzaButt.NewModels
                     .HasMaxLength(100);
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<ScheduleConfig>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.BuilderId).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteTime).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Builder)
+                    .WithMany(p => p.ScheduleConfig)
+                    .HasForeignKey(d => d.BuilderId)
+                    .HasConstraintName("FK_ScheduleConfig_Builder");
+
+                entity.HasOne(d => d.Community)
+                    .WithMany(p => p.ScheduleConfig)
+                    .HasForeignKey(d => d.CommunityId)
+                    .HasConstraintName("FK_ScheduleConfig_Community");
+
+                entity.HasOne(d => d.Region)
+                    .WithMany(p => p.ScheduleConfig)
+                    .HasForeignKey(d => d.RegionId)
+                    .HasConstraintName("FK_ScheduleConfig_Region");
             });
 
             modelBuilder.Entity<SystemReference>(entity =>
