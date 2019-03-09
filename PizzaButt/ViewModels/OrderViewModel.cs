@@ -13,10 +13,10 @@ namespace PizzaButt.ViewModels
         public List<OrderItemViewModel> OrderItems { get; set; }
 
         public string Name { get; set; }
-        
-        public string Size { get; set; }
 
-        public int Quantity { get; set; }
+        public long CommunityId { get; set; }
+
+        public CommunityViewModel Community { get; set; }
         
         public string Note { get; set; }
         

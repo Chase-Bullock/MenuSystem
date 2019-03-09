@@ -102,3 +102,13 @@ $('textarea').keyup(function () {
 //        }
 //    }, 1000);
 //}
+
+$(function () {
+
+    // page is now ready, initialize the calendar...
+
+    $('#calendar').fullCalendar({
+        // put your options and callbacks here
+    })
+
+});

@@ -87,6 +87,7 @@ namespace PizzaButt.Controllers
                 OrderStatusId = _ctx.OrderStatus.SingleOrDefault(x => x.Status == "Pending").Id,
                 CustomerName = cartViewModel.Name,
                 Note = cartViewModel.Note,
+                CommunityId = cartViewModel.CommunityId,
                 AddressLine1 = cartViewModel.AddressLine1,
                 AddressLine2 = cartViewModel.AddressLine2,
                 //TODO City = cartViewModel.City,

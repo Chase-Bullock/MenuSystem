@@ -19,6 +19,11 @@ namespace PizzaButt.Helpers
             session.Clear();
         }
 
+        public static void Remove(this ISession session, string Name)
+        {
+            session.Remove(Name);
+        }
+
         public static T GetObjectFromJson<T>(this ISession session, string key)
         {
             var value = session.GetString(key);

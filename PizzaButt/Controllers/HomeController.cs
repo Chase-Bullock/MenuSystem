@@ -148,7 +148,6 @@ namespace PizzaButt.Controllers
             var orderView = new HomePageViewModel
             {
                 MenuItems = menuItems,
-                UserLoggedIn = isAuthenticated,
                 PizzaToppings = filteredPizzaToppingsViewModel,
                 TacoToppings = filteredTacoToppingsViewModel,
                 AllToppings = allToppingsViewModel,
@@ -264,7 +263,6 @@ namespace PizzaButt.Controllers
             var orderView = new HomePageViewModel
             {
                 MenuItems = menuItems,
-                UserLoggedIn = isAuthenticated,
                 PizzaToppings = filteredPizzaToppingsViewModel,
                 TacoToppings = filteredTacoToppingsViewModel,
                 AllToppings = allToppingsViewModel,
@@ -375,6 +373,11 @@ namespace PizzaButt.Controllers
 
             return RedirectToAction("ShortendOrderView");
 
+        }
+
+        public IActionResult Schedule()
+        {
+            return View();
         }
 
 

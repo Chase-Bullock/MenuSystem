@@ -25,7 +25,7 @@ namespace PizzaButt.Controllers
         [Authorize]
         public IActionResult StatusOfAllOrders()
         {
-            var orders = _ctx.Order.Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus);
+            var orders = _ctx.Order.Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus).Include(c => c.Community);
             //var orderItems = _ctx.OrderItem.Include(y => y.MenuItem).Include(y => y.OrderItemTopping).ThenInclude(y => y.Topping).ToList();
             var orderItemsViewModel = new Dictionary<long, List<OrderItemViewModel>>();
             var ordersViewModel = new List<OrderViewModel>();
@@ -54,11 +54,20 @@ namespace PizzaButt.Controllers
                         orderItemsViewModel[order.Id].Add(orderItemViewModel);
                     };
                 }
+
+                var communityViewModel = new CommunityViewModel
+                {
+                    Id = order.Community.Id,
+                    Name = order.Community.Name,
+                    Active = order.Community.Active
+                };
+
                 var orderViewModel = new OrderViewModel
                 {
                     Id = order.Id,
                     Status = order.OrderStatus.Status,
                     Note = order.Note,
+                    Community = communityViewModel,
                     OrderItems = orderItemsViewModel[order.Id] != null ? orderItemsViewModel.First(x => x.Key == order.Id).Value : new List<OrderItemViewModel>(),
                     Name = order.CustomerName,
                     CreateTime = order.CreateTime,
@@ -72,9 +81,10 @@ namespace PizzaButt.Controllers
 
         public IActionResult OrderInfoForCustomer()
         {
+            SessionHelper.Remove(HttpContext.Session, "cart");
             var orderId = SessionHelper.GetObjectFromJson<long>(HttpContext.Session, "orderId");
 
-            var order = _ctx.Order.Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus).FirstOrDefault(x => x.Id == orderId);
+            var order = _ctx.Order.Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus).Include(c => c.Community).FirstOrDefault(x => x.Id == orderId);
             //var orderItems = _ctx.OrderItem.Include(y => y.MenuItem).Include(y => y.OrderItemTopping).ThenInclude(y => y.Topping).Where(x => x.OrderOrderItem.Any(z => z.OrderId == order.Id)).ToList();
             var orderItemsViewModel = new List<OrderItemViewModel>();
 
@@ -94,10 +104,18 @@ namespace PizzaButt.Controllers
                 orderItemsViewModel.Add(orderItemViewModel);
             }
 
+            var communityViewModel = new CommunityViewModel
+            {
+                Id = order.Community.Id,
+                Name = order.Community.Name,
+                Active = order.Community.Active
+            };
+
             var orderViewModel = new OrderViewModel
             {
                 Id = order.Id,
                 Status = order.OrderStatus.Status,
+                Community = communityViewModel,
                 Note = order.Note,
                 OrderItems = orderItemsViewModel,
                 Name = order.CustomerName,
