@@ -257,7 +257,9 @@
                 <label class="titleTag">Other</label>
                 <div class="row" style="margin-top: 6px; margin-bottom: 6px">
                     @{ var pizzaOtherCount = 0; }
-                    @{ var pizzaOtherToppings = Model.PizzaToppings.Where(x => x.ToppingTypes.Any(y => y.MainValue == "Other"));}
+                    @{ var pizzaOtherToppings = Model.PizzaToppings
+                            .Where(x => x.ToppingTypes.Any(y => y.MainValue == "Other"))
+                            .Where(z => z.ToppingTypes.Any(c => c.Name != "Pizza"));}
                     @foreach (var item in pizzaOtherToppings)
                     {
                         pizzaOtherCount += 1;

@@ -10,6 +10,7 @@ const fpEndTime = flatpickr("#EndTime", {
 });
 
 $('#calendar').fullCalendar({
+    themeSystem: 'bootstrap4',
     defaultView: 'month',
     height: 'parent',
     header: {
