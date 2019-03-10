@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace PizzaButt.Models
+namespace CathedralKitchen.Models
 {
     public class OrderModel
     {

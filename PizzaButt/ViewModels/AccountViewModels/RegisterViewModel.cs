@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PizzaButt.ViewModels.AccountViewModels
+namespace CathedralKitchen.ViewModels.AccountViewModels
 {
     public class RegisterViewModel
     {

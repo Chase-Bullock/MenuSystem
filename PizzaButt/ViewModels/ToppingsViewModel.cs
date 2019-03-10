@@ -1,7 +1,7 @@
-﻿using PizzaButt.NewModels;
+﻿using CathedralKitchen.NewModels;
 using System.Collections.Generic;
 
-namespace PizzaButt.ViewModels
+namespace CathedralKitchen.ViewModels
 {
     public class ToppingsViewModel
     {

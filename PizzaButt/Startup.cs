@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using PizzaButt.Hubs;
-using PizzaButt.NewModels;
-using PizzaButt.Security;
+using CathedralKitchen.Hubs;
+using CathedralKitchen.NewModels;
+using CathedralKitchen.Security;
 using System;
 using System.Text;
 
-namespace PizzaButt
+namespace CathedralKitchen
 {
     public class Startup
     {

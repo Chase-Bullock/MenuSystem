@@ -1,9 +1,9 @@
-﻿using PizzaButt.Models;
-using PizzaButt.NewModels;
+﻿using CathedralKitchen.Models;
+using CathedralKitchen.NewModels;
 using System;
 using System.Collections.Generic;
 
-namespace PizzaButt.ViewModels
+namespace CathedralKitchen.ViewModels
 {
     public partial class OrderItemViewModel
     {

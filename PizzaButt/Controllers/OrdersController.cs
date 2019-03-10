@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PizzaButt.Helpers;
-using PizzaButt.NewModels;
-using PizzaButt.Services;
-using PizzaButt.ViewModels;
+using CathedralKitchen.Helpers;
+using CathedralKitchen.NewModels;
+using CathedralKitchen.Services;
+using CathedralKitchen.ViewModels;
 
-namespace PizzaButt.Controllers
+namespace CathedralKitchen.Controllers
 {
     public class OrdersController : Controller
     {

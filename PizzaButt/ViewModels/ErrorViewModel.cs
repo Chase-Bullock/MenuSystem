@@ -1,6 +1,6 @@
 using System;
 
-namespace PizzaButt.ViewModels
+namespace CathedralKitchen.ViewModels
 {
     public class ErrorViewModel
     {

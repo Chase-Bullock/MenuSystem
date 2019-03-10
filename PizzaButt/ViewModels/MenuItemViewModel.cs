@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PizzaButt.ViewModels
+namespace CathedralKitchen.ViewModels
 {
     public partial class MenuItemViewModel
     {

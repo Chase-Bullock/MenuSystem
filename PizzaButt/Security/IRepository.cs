@@ -1,4 +1,4 @@
-﻿namespace PizzaButt.Security
+﻿namespace CathedralKitchen.Security
 {
     internal interface IRepository
     {

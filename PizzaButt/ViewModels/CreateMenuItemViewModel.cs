@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using PizzaButt.Models;
+using CathedralKitchen.Models;
 
-namespace PizzaButt.ViewModels
+namespace CathedralKitchen.ViewModels
 {
     public class CreateMenuItemViewModel
     {

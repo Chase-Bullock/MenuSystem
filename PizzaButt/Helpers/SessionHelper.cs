@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PizzaButt.Helpers
+namespace CathedralKitchen.Helpers
 {
     public static class SessionHelper
     {

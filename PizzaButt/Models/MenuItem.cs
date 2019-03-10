@@ -2,7 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace PizzaButt.Models
+namespace CathedralKitchen.Models
 {
   public class MenuItem
   {

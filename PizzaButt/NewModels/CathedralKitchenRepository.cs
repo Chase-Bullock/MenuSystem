@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using PizzaButt.ViewModels;
+using CathedralKitchen.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PizzaButt.NewModels
+namespace CathedralKitchen.NewModels
 {
     public class CathedralKitchenRepository : ICathedralKitchenRepository
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PizzaButt.NewModels
+namespace CathedralKitchen.NewModels
 {
     public interface ICathedralKitchenRepository
     {

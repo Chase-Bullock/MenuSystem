@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace PizzaButt.NewModels
+namespace CathedralKitchen.NewModels
 {
     public partial class CathedralKitchenContext : DbContext
     {

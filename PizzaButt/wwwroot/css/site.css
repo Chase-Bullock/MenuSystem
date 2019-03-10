@@ -15,6 +15,40 @@ html,body{
     font-weight: bold;
 }
 
+/* ------- CALENDAR -------*/
+#calendar-wrapper {
+    height: 800px;
+}
+
+#calendar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.fc-header-toolbar {
+    padding-top: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+#calendar a.fc-event {
+    color: #fff;
+    /* bootstrap default styles make it black. undo */
+}
+
+#eventModal label {
+    text-align: right;
+}
+
+.modal-footer {
+    justify-content: space-between !important;
+}
+
+
+
 /* ------- HEADER ------- */
 
 header {

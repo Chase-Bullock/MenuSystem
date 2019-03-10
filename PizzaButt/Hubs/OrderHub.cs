@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using PizzaButt.Models;
+using CathedralKitchen.Models;
 
-namespace PizzaButt.Hubs
+namespace CathedralKitchen.Hubs
 {
     public class OrderHub : Hub
     {

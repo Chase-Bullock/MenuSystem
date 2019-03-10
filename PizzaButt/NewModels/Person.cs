@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PizzaButt.NewModels
+namespace CathedralKitchen.NewModels
 {
     public partial class Person
     {

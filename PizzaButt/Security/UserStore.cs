@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PizzaButt.NewModels;
+using CathedralKitchen.NewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PizzaButt.Security
+namespace CathedralKitchen.Security
 {
     public class UserStore : IUserStore<User>, IUserPasswordStore<User>, IUserClaimStore<User>, IUserRoleStore<User>, IUserEmailStore<User>
     {

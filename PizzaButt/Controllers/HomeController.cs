@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using PizzaButt.Helpers;
+using CathedralKitchen.Helpers;
 //using PizzaButt.Models;
-using PizzaButt.NewModels;
-using PizzaButt.ViewModels;
-using PizzaButt.ViewModels.AccountViewModels;
+using CathedralKitchen.NewModels;
+using CathedralKitchen.ViewModels;
+using CathedralKitchen.ViewModels.AccountViewModels;
 
-namespace PizzaButt.Controllers
+namespace CathedralKitchen.Controllers
 {
     public class HomeController : Controller
     {
@@ -381,6 +381,26 @@ namespace PizzaButt.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult GetCalendarEvents(string start, string end)
+        {
+            List<ScheduleConfig> events = _ctx.ScheduleConfig.ToList();
+
+            return Json(events);
+        }
+
+
+        [HttpPost]
+        public IActionResult AddEvent([FromBody] Event evt)
+        {
+            var message = "";
+            //_ctx.ScheduleConfig.Add(evt);
+            _ctx.SaveChanges();
+            return Json(new { message, evt.EventId });
+        }
+
+
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -403,49 +423,3 @@ namespace PizzaButt.Controllers
         }
     }
 }
-
-//[HttpPost]
-//public IActionResult Index(HomePageViewModel request)
-//{
-//    var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
-//    var pizzaToppings = _ctx.Topping.Include(y => y.ToppingType);
-//    var filteredPizzaToppings = pizzaToppings.Where(x => x.ToppingType.Name == "Pizza");
-//    var tacoToppings = _ctx.Topping.Include(y => y.ToppingType);
-//    var filteredTacoToppings = tacoToppings.Where(x => x.ToppingType.Name == "Taco");
-
-//    var orderView = new HomePageViewModel
-//    {
-//        MenuItems = menuItems,
-//        PizzaToppings = filteredPizzaToppings,
-//        TacoToppings = tacoToppings
-//    };
-
-//    if (orderView.Order == null)
-//    {
-//        orderView.Order = new Order() {
-//            CreateBy = 1,
-//            UpdateBy = 1,
-//            CreateTime = DateTime.UtcNow,
-//            UpdateTime = DateTime.UtcNow,
-//            CustomerName = request.Name,
-//            Note = request.SpecialInstructions,
-//            OrderStatusId = _ctx.OrderStatus.First(x => x.Status == "Pending").Id
-//        };
-//    }
-
-//    OrderItem orderItem = new OrderItem
-//    {
-//        CreateBy = 1,
-//        UpdateBy = 1,
-//        CreateTime = DateTime.UtcNow,
-//        UpdateTime = DateTime.UtcNow,
-//        MenuItemId = request.OrderItem.MenuItemId,
-//        OrderItemTopping = request.Toppings,
-//        Quantity = request.Quantity,
-//        Size = request.Size
-//    };
-
-//   orderView.OrderItems.Add(request.OrderItem);
-//    return View(orderView);
-
-//}

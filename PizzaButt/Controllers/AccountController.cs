@@ -10,10 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using PizzaButt.Models;
-using PizzaButt.ViewModels.AccountViewModels;
-using PizzaButt.Controllers;
-using PizzaButt.NewModels;
+using CathedralKitchen.Models;
+using CathedralKitchen.ViewModels.AccountViewModels;
+using CathedralKitchen.Controllers;
+using CathedralKitchen.NewModels;
 
 namespace Example.DefaultUser.Controllers
 {

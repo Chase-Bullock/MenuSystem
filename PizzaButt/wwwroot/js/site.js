@@ -70,12 +70,12 @@ if (window.location.pathname === '/'){
 
 //////////////////////////// COMMENT / SPECIAL INSTRUCTIONS FOR ORDER ////////////////////////////
 
-$('textarea').keyup(function () {
-    var tlength = $(this).val().length;
-    $(this).val($(this).val().substring(0, 355));
-    remain = maxchars - parseInt(tlength);
-    $('#remain').text(remain);
-});
+//$('textarea').keyup(function () {
+//    var tlength = $(this).val().length;
+//    $(this).val($(this).val().substring(0, 355));
+//    remain = maxchars - parseInt(tlength);
+//    $('#remain').text(remain);
+//});
 
 //////////////////////////// SUBMIT ORDER ////////////////////////////
 
@@ -102,13 +102,3 @@ $('textarea').keyup(function () {
 //        }
 //    }, 1000);
 //}
-
-$(function () {
-
-    // page is now ready, initialize the calendar...
-
-    $('#calendar').fullCalendar({
-        // put your options and callbacks here
-    })
-
-});
