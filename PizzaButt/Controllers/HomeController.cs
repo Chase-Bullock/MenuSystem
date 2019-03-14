@@ -66,11 +66,6 @@ namespace CathedralKitchen.Controllers
 
             foreach (var config in filteredTodaysSchedule)
             {
-                var builderViewModel = new BuilderViewModel
-                {
-                    Id = config.Builder.Id,
-                    Name = config.Builder.Name
-                };
 
                 var communityViewModel = new CommunityViewModel
                 {
@@ -81,7 +76,6 @@ namespace CathedralKitchen.Controllers
                 var scheduleViewModel = new ScheduleConfigViewModel
                 {
                     Id = config.Id,
-                    Builder = builderViewModel,
                     Community = communityViewModel,
                     Date = config.Date,
                     Active = config.Active
@@ -181,11 +175,6 @@ namespace CathedralKitchen.Controllers
 
             foreach (var config in filteredTodaysSchedule)
             {
-                var builderViewModel = new BuilderViewModel
-                {
-                    Id = config.Builder.Id,
-                    Name = config.Builder.Name
-                };
 
                 var communityViewModel = new CommunityViewModel
                 {
@@ -196,7 +185,6 @@ namespace CathedralKitchen.Controllers
                 var scheduleViewModel = new ScheduleConfigViewModel
                 {
                     Id = config.Id,
-                    Builder = builderViewModel,
                     Community = communityViewModel,
                     Date = config.Date,
                     Active = config.Active
@@ -232,6 +220,7 @@ namespace CathedralKitchen.Controllers
                 {
                     toppingTypes.Add(sysref.ToppingType);
                 }
+
                 var toppingViewModel = new ToppingsViewModel
                 {
                     Name = topping.ToppingName,
@@ -377,29 +366,109 @@ namespace CathedralKitchen.Controllers
 
         public IActionResult Schedule()
         {
-            return View();
+
+            var communities = _ctx.Community.Where(x => x.Active == true).ToList();
+
+            var communityViewModels = new List<CommunityViewModel>();
+
+            foreach (var community in communities)
+            {
+                var communityViewModel = new CommunityViewModel
+                {
+                    Id = community.Id,
+                    Name = community.Name,
+                    Active = community.Active
+                };
+
+                communityViewModels.Add(communityViewModel);
+            }
+
+            ScheduleViewModel scheduleViewModel = new ScheduleViewModel
+            {
+                Communities = communityViewModels
+                //ScheduleConfigViewModels = events
+            };
+
+            return View(scheduleViewModel);
         }
 
 
         [HttpGet]
-        public IActionResult GetCalendarEvents(string start, string end)
+        public IActionResult GetCalendarEvents(string start)
         {
-            List<ScheduleConfig> events = _ctx.ScheduleConfig.ToList();
+            List<ScheduleConfig> events = _ctx.ScheduleConfig.Where(x => x.Active == true).ToList();
 
             return Json(events);
         }
 
 
         [HttpPost]
-        public IActionResult AddEvent([FromBody] Event evt)
+        public IActionResult AddEvent([FromBody] dynamic evt)
         {
+            var cycle = 0;
+            var events = new Dictionary<long, DateTime>();
+            for(int i = 0; i < (int)evt.Cycle; i++)
+            {
+                DateTime date = evt.Start;
+                for(int y = 0; y < cycle; y++)
+                {
+                    date = date.AddDays(7);
+                }
+                var scheduleConfig = new ScheduleConfig
+                {
+                    CommunityId = evt.CommunityId,
+                    Date = date,
+                    Active = true,
+                    CreateBy = 2,
+                    CreateTime = DateTime.UtcNow,
+                    UpdateBy = 2,
+                    UpdateTime = DateTime.UtcNow
+
+                };
+                cycle += 1;
+                _ctx.ScheduleConfig.Add(scheduleConfig);
+                _ctx.SaveChanges();
+                events.Add(scheduleConfig.Id, scheduleConfig.Date);
+            }
+
+            var message = "";
+            return Json(new { message, events });
+        }
+
+        [HttpPost]
+        public IActionResult UpdateEvent([FromBody] dynamic evt)
+        {
+            DateTime date = evt.Start;
+
+            var cycle = 0;
+            for (int i = 0; i < (int)evt.Cycle; i++)
+            {
+                for (int y = 0; y < cycle; y++)
+                {
+                    date = date.AddDays(7);
+                }
+
+                var scheduleToUpdate = _ctx.ScheduleConfig.Where(x => x.Date == date);
+                var scheduleConfig = new ScheduleConfig
+                {
+                    CommunityId = evt.CommunityId,
+                    Date = date,
+                    Active = true,
+                    CreateBy = 2,
+                    CreateTime = DateTime.UtcNow,
+                    UpdateBy = 2,
+                    UpdateTime = DateTime.UtcNow
+
+                };
+                cycle += 1;
+                _ctx.ScheduleConfig.Add(scheduleConfig);
+            }
+
             var message = "";
             //_ctx.ScheduleConfig.Add(evt);
             _ctx.SaveChanges();
-            return Json(new { message, evt.EventId });
+            return Json(new { message });
         }
-
-
 
         public IActionResult Error()
         {

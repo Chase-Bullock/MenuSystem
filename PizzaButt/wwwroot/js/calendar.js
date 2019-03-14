@@ -1,12 +1,7 @@
 ﻿let currentEvent;
-const formatDate = date => date === null ? '' : moment(date).format("MM/DD/YYYY h:mm A");
+const formatDate = date => date === null ? '' : moment(date).format("MM/DD/YYYY");
 const fpStartTime = flatpickr("#StartTime", {
-    enableTime: true,
-    dateFormat: "m/d/Y h:i K"
-});
-const fpEndTime = flatpickr("#EndTime", {
-    enableTime: true,
-    dateFormat: "m/d/Y h:i K"
+    dateFormat: "m/d/Y"
 });
 
 $('#calendar').fullCalendar({
@@ -15,14 +10,14 @@ $('#calendar').fullCalendar({
     height: 'parent',
     header: {
         left: 'prev,next today',
-        center: 'title',
+        center: 'communityId',
         right: 'month,agendaWeek,agendaDay'
     },
     eventRender(event, $el) {
         $el.qtip({
             content: {
-                title: event.title,
-                text: event.description
+                communityId: event.communityId,
+                text: event.cycle
             },
             hide: {
                 event: 'unfocus'
@@ -57,29 +52,20 @@ function updateEvent(event, element) {
 
     $('#eventModalLabel').html('Edit Event');
     $('#eventModalSave').html('Update Event');
-    $('#EventTitle').val(event.title);
-    $('#Description').val(event.description);
+    $('#CommunityId').val(event.communityId);
+    $('#Cycle').val(event.cycle);
     $('#isNewEvent').val(false);
 
     const start = formatDate(event.start);
-    const end = formatDate(event.end);
 
     fpStartTime.setDate(start);
-    fpEndTime.setDate(end);
 
     $('#StartTime').val(start);
-    $('#EndTime').val(end);
-
-    if (event.allDay) {
-        $('#AllDay').prop('checked', 'checked');
-    } else {
-        $('#AllDay')[0].checked = false;
-    }
 
     $('#eventModal').modal('show');
 }
 
-function addEvent(start, end) {
+function addEvent(start) {
     $('#eventForm')[0].reset();
 
     $('#eventModalLabel').html('Add Event');
@@ -87,10 +73,8 @@ function addEvent(start, end) {
     $('#isNewEvent').val(true);
 
     start = formatDate(start);
-    end = formatDate(end);
 
     fpStartTime.setDate(start);
-    fpEndTime.setDate(end);
 
     $('#eventModal').modal('show');
 }
@@ -100,29 +84,20 @@ function addEvent(start, end) {
  * */
 
 $('#eventModalSave').click(() => {
-    const title = $('#EventTitle').val();
-    const description = $('#Description').val();
+    const communityId = $('#CommunityId').val();
+    const cycle = $('#Cycle').val();
     const startTime = moment($('#StartTime').val());
-    const endTime = moment($('#EndTime').val());
-    const isAllDay = $('#AllDay').is(":checked");
     const isNewEvent = $('#isNewEvent').val() === 'true' ? true : false;
 
-    if (startTime > endTime) {
-        alert('Start Time cannot be greater than End Time');
-
-        return;
-    } else if ((!startTime.isValid() || !endTime.isValid()) && !isAllDay) {
-        alert('Please enter both Start Time and End Time');
-
+    if (!startTime.isValid()) {
+        alert('Please enter Start Time');
         return;
     }
 
     const event = {
-        title,
-        description,
-        isAllDay,
+        communityId,
+        cycle,
         startTime: startTime._i,
-        endTime: endTime._i
     };
 
     if (isNewEvent) {
@@ -137,27 +112,25 @@ function sendAddEvent(event) {
         method: 'post',
         url: '/Home/AddEvent',
         data: {
-            "Title": event.title,
-            "CommunityId": event.description,
-            "DateString": event.startTime,
-            "End": event.endTime,
-            "AllDay": event.isAllDay
+            "CommunityId": event.communityId,
+            "Cycle": event.cycle,
+            "Start": event.startTime,
         }
     })
         .then(res => {
-            const { message, eventId } = res.data;
+            const { message, events } = res.data;
 
             if (message === '') {
-                const newEvent = {
-                    start: event.startTime,
-                    end: event.endTime,
-                    allDay: event.isAllDay,
-                    title: event.title,
-                    description: event.description,
-                    eventId
-                };
+                for (const [key, value] of Object.entries(events))
+                {
+                    const newEvent = {
+                        start: value,
+                        communityId: event.communityId,
+                        eventId: key
+                    };
 
-                $('#calendar').fullCalendar('renderEvent', newEvent);
+                    $('#calendar').fullCalendar('renderEvent', newEvent);
+                }
                 $('#calendar').fullCalendar('unselect');
 
                 $('#eventModal').modal('hide');
@@ -174,22 +147,18 @@ function sendUpdateEvent(event) {
         url: '/Home/UpdateEvent',
         data: {
             "EventId": currentEvent.eventId,
-            "Title": event.title,
-            "Description": event.description,
+            "CommunityId": event.communityId,
+            "Cycle": event.cycle,
             "Start": event.startTime,
-            "End": event.endTime,
-            "AllDay": event.isAllDay
         }
     })
         .then(res => {
             const { message } = res.data;
 
             if (message === '') {
-                currentEvent.title = event.title;
-                currentEvent.description = event.description;
+                currentEvent.communityId = event.communityId;
+                currentEvent.cycle = event.cycle;
                 currentEvent.start = event.startTime;
-                currentEvent.end = event.endTime;
-                currentEvent.allDay = event.isAllDay;
 
                 $('#calendar').fullCalendar('updateEvent', currentEvent);
                 $('#eventModal').modal('hide');
@@ -201,7 +170,7 @@ function sendUpdateEvent(event) {
 }
 
 $('#deleteEvent').click(() => {
-    if (confirm(`Do you really want to delte "${currentEvent.title}" event?`)) {
+    if (confirm(`Do you really want to delete "${currentEvent.communityId}" event?`)) {
         axios({
             method: 'post',
             url: '/Home/DeleteEvent',
@@ -221,18 +190,4 @@ $('#deleteEvent').click(() => {
             })
             .catch(err => alert(`Something went wrong: ${err}`));
     }
-});
-
-$('#AllDay').on('change', function (e) {
-    if (e.target.checked) {
-        $('#EndTime').val('');
-        fpEndTime.clear();
-        this.checked = true;
-    } else {
-        this.checked = false;
-    }
-});
-
-$('#EndTime').on('change', () => {
-    $('#AllDay')[0].checked = false;
 });

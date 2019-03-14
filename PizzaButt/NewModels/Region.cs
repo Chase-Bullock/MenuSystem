@@ -8,7 +8,6 @@ namespace CathedralKitchen.NewModels
         public Region()
         {
             Community = new HashSet<Community>();
-            ScheduleConfig = new HashSet<ScheduleConfig>();
         }
 
         public long Id { get; set; }
@@ -22,6 +21,5 @@ namespace CathedralKitchen.NewModels
         public long? DeleteBy { get; set; }
 
         public virtual ICollection<Community> Community { get; set; }
-        public virtual ICollection<ScheduleConfig> ScheduleConfig { get; set; }
     }
 }

@@ -292,13 +292,9 @@ namespace CathedralKitchen.NewModels
 
             modelBuilder.Entity<ScheduleConfig>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Active)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
-
-                entity.Property(e => e.BuilderId).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
@@ -308,20 +304,10 @@ namespace CathedralKitchen.NewModels
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Builder)
-                    .WithMany(p => p.ScheduleConfig)
-                    .HasForeignKey(d => d.BuilderId)
-                    .HasConstraintName("FK_ScheduleConfig_Builder");
-
                 entity.HasOne(d => d.Community)
                     .WithMany(p => p.ScheduleConfig)
                     .HasForeignKey(d => d.CommunityId)
                     .HasConstraintName("FK_ScheduleConfig_Community");
-
-                entity.HasOne(d => d.Region)
-                    .WithMany(p => p.ScheduleConfig)
-                    .HasForeignKey(d => d.RegionId)
-                    .HasConstraintName("FK_ScheduleConfig_Region");
             });
 
             modelBuilder.Entity<SystemReference>(entity =>
