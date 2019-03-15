@@ -396,7 +396,7 @@ namespace CathedralKitchen.Controllers
         [HttpGet]
         public IActionResult GetCalendarEvents(string start)
         {
-            List<ScheduleConfig> events = _ctx.ScheduleConfig.Where(x => x.Active == true).ToList();
+            List<ScheduleConfig> events = _ctx.ScheduleConfig.Where(x => x.Active == true).Include(y => y.Community).ToList();
 
             return Json(events);
         }

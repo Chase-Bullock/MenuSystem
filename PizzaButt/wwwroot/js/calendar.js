@@ -15,9 +15,11 @@ $('#calendar').fullCalendar({
     },
     eventRender(event, $el) {
         $el.qtip({
+            title: event.community.name,
             content: {
                 communityId: event.communityId,
-                text: event.cycle
+                text: event.cycle,
+                title: event.community.name
             },
             hide: {
                 event: 'unfocus'
@@ -34,6 +36,7 @@ $('#calendar').fullCalendar({
                 }
             }
         });
+        event.title = event.community.name
     },
     events: '/Home/GetCalendarEvents',
     eventClick: updateEvent,
@@ -126,7 +129,7 @@ function sendAddEvent(event) {
                     const newEvent = {
                         start: value,
                         communityId: event.communityId,
-                        eventId: key
+                        eventId: key,
                     };
 
                     $('#calendar').fullCalendar('renderEvent', newEvent);
