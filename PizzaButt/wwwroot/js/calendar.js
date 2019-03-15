@@ -146,21 +146,28 @@ function sendUpdateEvent(event) {
         method: 'post',
         url: '/Home/UpdateEvent',
         data: {
-            "EventId": currentEvent.eventId,
+            "EventId": currentEvent.id,
             "CommunityId": event.communityId,
             "Cycle": event.cycle,
             "Start": event.startTime,
         }
     })
         .then(res => {
-            const { message } = res.data;
+            const { message, events } = res.data;
 
             if (message === '') {
-                currentEvent.communityId = event.communityId;
-                currentEvent.cycle = event.cycle;
-                currentEvent.start = event.startTime;
+                for (const [key, value] of Object.entries(events)) {
+                    const newEvent = {
+                        start: value,
+                        communityId: event.communityId,
+                        eventId: key
+                    };
 
-                $('#calendar').fullCalendar('updateEvent', currentEvent);
+                    $('#calendar').fullCalendar('rerenderEvents');
+                    $('#calendar').fullCalendar('refetchEvents');
+                }
+                $('#calendar').fullCalendar('unselect');
+
                 $('#eventModal').modal('hide');
             } else {
                 alert(`Something went wrong: ${message}`);

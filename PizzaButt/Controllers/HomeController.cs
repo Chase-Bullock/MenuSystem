@@ -88,7 +88,7 @@ namespace CathedralKitchen.Controllers
             {
                 var toppingTypes = new List<SystemReference>();
 
-                foreach(var sysref in topping.ToppingSystemReference)
+                foreach (var sysref in topping.ToppingSystemReference)
                 {
                     toppingTypes.Add(sysref.ToppingType);
                 }
@@ -270,7 +270,7 @@ namespace CathedralKitchen.Controllers
             var selectedToppings = toppings.Where(x => request.Toppings.Contains(x.Id)).ToList();
             var selectedToppingsViewModels = new List<ToppingsViewModel>();
 
-            foreach(var selectedTopping in selectedToppings)
+            foreach (var selectedTopping in selectedToppings)
             {
                 ToppingsViewModel topping = new ToppingsViewModel
                 {
@@ -286,7 +286,7 @@ namespace CathedralKitchen.Controllers
                 Id = selectedItem.Id,
                 Name = selectedItem.Name
             };
-            
+
             if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart") == null)
             {
                 List<OrderItemViewModel> cart = new List<OrderItemViewModel>();
@@ -407,28 +407,52 @@ namespace CathedralKitchen.Controllers
         {
             var cycle = 0;
             var events = new Dictionary<long, DateTime>();
-            for(int i = 0; i < (int)evt.Cycle; i++)
+            long parentId = 0;
+            for (int i = 0; i < (int)evt.Cycle; i++)
             {
                 DateTime date = evt.Start;
-                for(int y = 0; y < cycle; y++)
+                for (int y = 0; y < cycle; y++)
                 {
                     date = date.AddDays(7);
                 }
-                var scheduleConfig = new ScheduleConfig
+                if (i == 0)
                 {
-                    CommunityId = evt.CommunityId,
-                    Date = date,
-                    Active = true,
-                    CreateBy = 2,
-                    CreateTime = DateTime.UtcNow,
-                    UpdateBy = 2,
-                    UpdateTime = DateTime.UtcNow
+                    var parentScheduleConfig = new ScheduleConfig
+                    {
+                        CommunityId = evt.CommunityId,
+                        Date = date,
+                        Active = true,
+                        CreateBy = 2,
+                        CreateTime = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        UpdateTime = DateTime.UtcNow
+                    };
+                    _ctx.ScheduleConfig.Add(parentScheduleConfig);
+                    _ctx.SaveChanges();
+                    parentId = parentScheduleConfig.Id;
+                    events.Add(parentScheduleConfig.Id, parentScheduleConfig.Date);
 
-                };
+                }
+                else
+                {
+                    var scheduleConfig = new ScheduleConfig
+                    {
+                        ParentId = parentId,
+                        CommunityId = evt.CommunityId,
+                        Date = date,
+                        Active = true,
+                        CreateBy = 2,
+                        CreateTime = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        UpdateTime = DateTime.UtcNow
+
+                    };
+                    _ctx.ScheduleConfig.Add(scheduleConfig);
+                    _ctx.SaveChanges();
+                    events.Add(scheduleConfig.Id, scheduleConfig.Date);
+                }
                 cycle += 1;
-                _ctx.ScheduleConfig.Add(scheduleConfig);
-                _ctx.SaveChanges();
-                events.Add(scheduleConfig.Id, scheduleConfig.Date);
+
             }
 
             var message = "";
@@ -438,36 +462,70 @@ namespace CathedralKitchen.Controllers
         [HttpPost]
         public IActionResult UpdateEvent([FromBody] dynamic evt)
         {
-            DateTime date = evt.Start;
-
+            DateTime InitialDate = evt.Start;
+            long eventId = (long)evt.EventId;
+            TimeSpan dateDifference;
+            var events = new Dictionary<long, DateTime>();
+            var eventSchedule = _ctx.ScheduleConfig.First(x => x.Id == eventId);
+            ScheduleConfig parentSchedule = _ctx.ScheduleConfig.FirstOrDefault(x => x.Id == eventSchedule.ParentId);
+            if(parentSchedule != null) {
+                dateDifference = parentSchedule.Date.Subtract(eventSchedule.Date);
+                eventSchedule = parentSchedule;
+                InitialDate = InitialDate.Add(dateDifference);
+            }
+            long parentId = eventSchedule.ParentId ?? eventSchedule.Id;
+            var schedules = _ctx.ScheduleConfig.Where(x => x.ParentId == parentId || x.Id == parentId).ToList();
             var cycle = 0;
+
+            foreach (var schedule in schedules)
+            {
+                schedule.Active = false;
+                _ctx.SaveChanges();
+            }
             for (int i = 0; i < (int)evt.Cycle; i++)
             {
+                DateTime oldDate = eventSchedule.Date;
+                DateTime newDate = InitialDate;
                 for (int y = 0; y < cycle; y++)
                 {
-                    date = date.AddDays(7);
+                    oldDate = oldDate.AddDays(7);
+                    newDate = newDate.AddDays(7);
                 }
-
-                var scheduleToUpdate = _ctx.ScheduleConfig.Where(x => x.Date == date);
-                var scheduleConfig = new ScheduleConfig
+                ScheduleConfig scheduledDate = schedules.Where(x => x.Date == oldDate).FirstOrDefault(x => x.CommunityId == eventSchedule.CommunityId);
+                if (scheduledDate != null)
                 {
-                    CommunityId = evt.CommunityId,
-                    Date = date,
-                    Active = true,
-                    CreateBy = 2,
-                    CreateTime = DateTime.UtcNow,
-                    UpdateBy = 2,
-                    UpdateTime = DateTime.UtcNow
+                    scheduledDate.ParentId = parentId;
+                    scheduledDate.CommunityId = evt.CommunityId;
+                    scheduledDate.Date = newDate;
+                    scheduledDate.Active = true;
+                    scheduledDate.UpdateBy = 2;
+                    scheduledDate.UpdateTime = DateTime.UtcNow;
+                    events.Add(scheduledDate.Id, scheduledDate.Date);
+                    _ctx.SaveChanges();
+                }
+                else
+                {
+                    var scheduleConfig = new ScheduleConfig
+                    {
+                        ParentId = parentId,
+                        CommunityId = evt.CommunityId,
+                        Date = newDate,
+                        Active = true,
+                        CreateBy = 2,
+                        CreateTime = DateTime.UtcNow,
+                        UpdateBy = 2,
+                        UpdateTime = DateTime.UtcNow
 
-                };
+                    };
+                    _ctx.ScheduleConfig.Add(scheduleConfig);
+                    _ctx.SaveChanges();
+                    events.Add(scheduleConfig.Id, scheduleConfig.Date);
+                }
                 cycle += 1;
-                _ctx.ScheduleConfig.Add(scheduleConfig);
             }
 
             var message = "";
-            //_ctx.ScheduleConfig.Add(evt);
-            _ctx.SaveChanges();
-            return Json(new { message });
+            return Json(new { message, events });
         }
 
         public IActionResult Error()

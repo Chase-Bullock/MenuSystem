@@ -308,6 +308,11 @@ namespace CathedralKitchen.NewModels
                     .WithMany(p => p.ScheduleConfig)
                     .HasForeignKey(d => d.CommunityId)
                     .HasConstraintName("FK_ScheduleConfig_Community");
+
+                entity.HasOne(d => d.Parent)
+                    .WithMany(p => p.InverseParent)
+                    .HasForeignKey(d => d.ParentId)
+                    .HasConstraintName("FK_ScheduleConfig_ScheduleConfig");
             });
 
             modelBuilder.Entity<SystemReference>(entity =>

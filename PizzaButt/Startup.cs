@@ -28,7 +28,7 @@ namespace CathedralKitchen
 
             services.AddSession();
 
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.Configure<IdentityOptions>(options =>
             {
