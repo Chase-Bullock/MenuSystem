@@ -25,7 +25,7 @@ namespace CathedralKitchen.Controllers
         [Authorize]
         public IActionResult StatusOfAllOrders()
         {
-            var orders = _ctx.Order.Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus).Include(c => c.Community);
+            var orders = _ctx.Order.Where(x => x.OrderStatusId != 20002).Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus).Include(c => c.Community);
             //var orderItems = _ctx.OrderItem.Include(y => y.MenuItem).Include(y => y.OrderItemTopping).ThenInclude(y => y.Topping).ToList();
             var orderItemsViewModel = new Dictionary<long, List<OrderItemViewModel>>();
             var ordersViewModel = new List<OrderViewModel>();
