@@ -2,7 +2,7 @@
     ViewData["Title"] = "Order Pizza";
     Layout = "_Layout";
 }
-@model HomePageViewModel
+@model CodeViewModel
 <header>
     @await Html.PartialAsync("../Shared/NavHomePartial.cshtml")
     <div class="hero-text-box">
@@ -14,19 +14,31 @@
 <div class="order-section scrollable js--order-section">
     <div class="row" style="margin-top: 25px;">
         <div class="form-group col-md-4 offset-md-4">
-            <h3 style="font-size: 36px; font-weight: 700; text-align: center">Place an order</h3>
+            <h3 style="font-size: 36px; font-weight: 700; text-align: center">Enter Daily Code</h3>
         </div>
     </div>
     <div class="row">
-        @await Html.PartialAsync("../Shared/OrderPartial.cshtml")
-        <div class="col-3" style="margin-right:30px;">
-            @await Html.PartialAsync("../Shared/CartPartial.cshtml")
-        </div>
+        <form style="margin-top: 70px;" class="orderForm col-8" id="checkoutForm" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-md-6 offset-md-6">
+                    <div style="color:red;">@Html.ValidationMessage("error")</div>
+                    <input asp-for="Code" type="text" class="form-control boxStyle" id="nameInput" placeholder="Enter Code" required />
+                    <span asp-validation-for="Code" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6 offset-md-6">
+                    <button type="submit" id="activateNav" class="btn btn-primary activateNav">Submit code</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 @section Scripts
     {
     <script src="~/lib/signalr/signalr.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/chat.js"></script>

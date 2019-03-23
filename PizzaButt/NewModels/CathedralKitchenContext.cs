@@ -21,6 +21,7 @@ namespace CathedralKitchen.NewModels
         public virtual DbSet<Community> Community { get; set; }
         public virtual DbSet<MenuItem> MenuItem { get; set; }
         public virtual DbSet<Order> Order { get; set; }
+        public virtual DbSet<OrderCode> OrderCode { get; set; }
         public virtual DbSet<OrderItem> OrderItem { get; set; }
         public virtual DbSet<OrderItemTopping> OrderItemTopping { get; set; }
         public virtual DbSet<OrderStatus> OrderStatus { get; set; }
@@ -165,6 +166,23 @@ namespace CathedralKitchen.NewModels
                     .HasForeignKey(d => d.OrderStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Order_OrderStatus");
+            });
+
+            modelBuilder.Entity<OrderCode>(entity =>
+            {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<OrderItem>(entity =>

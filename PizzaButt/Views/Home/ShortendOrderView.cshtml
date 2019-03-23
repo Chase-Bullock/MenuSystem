@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Order Pizza";
 }
-@model HomePageViewModel
+@model CartViewModel
 
 
 @await Html.PartialAsync("../Shared/NavHomePartial.cshtml")
@@ -12,10 +12,9 @@
         </div>
     </div>
     <div class="row">
-        @await Html.PartialAsync("../Shared/OrderPartial.cshtml")
-        <div class="col-3" style="margin-right:30px;">
-            @await Html.PartialAsync("../Shared/CartPartial.cshtml")
-        </div>
+        {
+        @await Html.PartialAsync("../Shared/PlaceOrderPartial.cshtml")
+        }
     </div>
 </div>
 <script src="~/lib/signalr/signalr.js"></script>

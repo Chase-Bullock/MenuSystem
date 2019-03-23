@@ -67,6 +67,25 @@ if (window.location.pathname === '/'){
     $('.homeNav').css("display", "flex").fadeIn();
 }
 
+//////////////////////////// SWITCH BETWEEN CUSTOMER AND INTERNAL ORDER //////////////////////////
+$('#isEmployee').on('change', function (e) {
+    var val = $('#isEmployee').is(':checked');
+    console.log(val);
+    if (val === true) {
+        $('#zipcode').fadeOut();
+        $('#community').fadeOut();
+        $('#city').fadeOut();
+        $('#addressLine1').fadeOut();
+        $('#addressLine2').fadeOut();
+    } else if (val === false) {
+        $('#zipcode').fadeIn();
+        $('#community').fadeIn();
+        $('#city').fadeIn();
+        $('#addressLine1').fadeIn();
+        $('#addressLine2').fadeIn();
+    }
+});
+
 
 //////////////////////////// COMMENT / SPECIAL INSTRUCTIONS FOR ORDER ////////////////////////////
 
@@ -76,16 +95,6 @@ if (window.location.pathname === '/'){
 //    remain = maxchars - parseInt(tlength);
 //    $('#remain').text(remain);
 //});
-
-//////////////////////////// SUBMIT ORDER ////////////////////////////
-
-// $('.activateNav').click(function (e) {
-//     e.preventDefault();
-//
-//     $('.orderForm').submit();
-//
-// });
-//
 
 
 //////////////////////////// OLD WAY TO REFRESH PAGE(NEW WAY NOT IMPLEMENTED) ////////////////////////////

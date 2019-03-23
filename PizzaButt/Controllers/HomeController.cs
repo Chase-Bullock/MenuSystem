@@ -41,140 +41,142 @@ namespace CathedralKitchen.Controllers
             return _cathedralKitchenRepository.GetMenuItem(id) ?? new MenuItem();
         }
 
+        //public IActionResult Index()
+        //{
+        //    if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart") == null)
+        //    {
+        //        List<OrderItemViewModel> newCart = new List<OrderItemViewModel>();
+        //        SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", newCart);
+        //    }
+        //    var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
+        //    ViewBag.cart = cart;
+        //    //FIX ORDER VIEW MODEL
+        //    var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
+        //    var toppings = _ctx.Topping.Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
+        //    var filteredPizzaToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Pizza"));
+        //    var filteredTacoToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Taco"));
+        //    var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community);
+        //    var filteredTodaysSchedule = todaysSchedule.Where(x => x.Date == DateTime.Today).Where(y => y.Active == true);
+        //    bool isAuthenticated = User.Identity.IsAuthenticated;
+
+        //    var filteredPizzaToppingsViewModel = new List<ToppingsViewModel>();
+        //    var filteredTacoToppingsViewModel = new List<ToppingsViewModel>();
+        //    var allToppingsViewModel = new List<ToppingsViewModel>();
+        //    var filteredScheduleConfigViewModel = new List<ScheduleConfigViewModel>();
+
+        //    foreach (var config in filteredTodaysSchedule)
+        //    {
+
+        //        var communityViewModel = new CommunityViewModel
+        //        {
+        //            Id = config.Community.Id,
+        //            Name = config.Community.Name
+        //        };
+
+        //        var scheduleViewModel = new ScheduleConfigViewModel
+        //        {
+        //            Id = config.Id,
+        //            Community = communityViewModel,
+        //            Date = config.Date,
+        //            Active = config.Active
+        //        };
+
+        //        filteredScheduleConfigViewModel.Add(scheduleViewModel);
+        //    };
+
+        //    foreach (var topping in filteredPizzaToppings)
+        //    {
+        //        var toppingTypes = new List<SystemReference>();
+
+        //        foreach (var sysref in topping.ToppingSystemReference)
+        //        {
+        //            toppingTypes.Add(sysref.ToppingType);
+        //        }
+        //        var toppingViewModel = new ToppingsViewModel
+        //        {
+        //            Name = topping.ToppingName,
+        //            ToppingTypes = toppingTypes,
+        //            Id = topping.Id
+        //        };
+
+        //        filteredPizzaToppingsViewModel.Add(toppingViewModel);
+        //    };
+
+
+        //    foreach (var topping in filteredTacoToppings)
+        //    {
+        //        var toppingTypes = new List<SystemReference>();
+
+        //        foreach (var sysref in topping.ToppingSystemReference)
+        //        {
+        //            toppingTypes.Add(sysref.ToppingType);
+        //        }
+        //        var toppingViewModel = new ToppingsViewModel
+        //        {
+        //            Name = topping.ToppingName,
+        //            ToppingTypes = toppingTypes,
+        //            Id = topping.Id
+        //        };
+
+        //        filteredTacoToppingsViewModel.Add(toppingViewModel);
+        //    };
+
+        //    foreach (var topping in toppings)
+        //    {
+        //        var toppingTypes = new List<SystemReference>();
+
+        //        foreach (var sysref in topping.ToppingSystemReference)
+        //        {
+        //            toppingTypes.Add(sysref.ToppingType);
+        //        }
+        //        var toppingViewModel = new ToppingsViewModel
+        //        {
+        //            Name = topping.ToppingName,
+        //            ToppingTypes = toppingTypes,
+        //            Id = topping.Id
+        //        };
+
+        //        allToppingsViewModel.Add(toppingViewModel);
+        //    };
+
+        //    var orderView = new HomePageViewModel
+        //    {
+        //        MenuItems = menuItems,
+        //        PizzaToppings = filteredPizzaToppingsViewModel,
+        //        TacoToppings = filteredTacoToppingsViewModel,
+        //        AllToppings = allToppingsViewModel,
+        //        TodaysSchedule = filteredScheduleConfigViewModel
+        //    };
+        //    return View(orderView);
+        //}
+
         public IActionResult Index()
         {
-            if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart") == null)
-            {
-                List<OrderItemViewModel> newCart = new List<OrderItemViewModel>();
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", newCart);
-            }
-            var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
-            ViewBag.cart = cart;
-            //FIX ORDER VIEW MODEL
-            var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
-            var toppings = _ctx.Topping.Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
-            var filteredPizzaToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Pizza"));
-            var filteredTacoToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Taco"));
-            var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community);
-            var filteredTodaysSchedule = todaysSchedule.Where(x => x.Date == DateTime.Today).Where(y => y.Active == true);
-            bool isAuthenticated = User.Identity.IsAuthenticated;
-
-            var filteredPizzaToppingsViewModel = new List<ToppingsViewModel>();
-            var filteredTacoToppingsViewModel = new List<ToppingsViewModel>();
-            var allToppingsViewModel = new List<ToppingsViewModel>();
-            var filteredScheduleConfigViewModel = new List<ScheduleConfigViewModel>();
-
-            foreach (var config in filteredTodaysSchedule)
-            {
-
-                var communityViewModel = new CommunityViewModel
-                {
-                    Id = config.Community.Id,
-                    Name = config.Community.Name
-                };
-
-                var scheduleViewModel = new ScheduleConfigViewModel
-                {
-                    Id = config.Id,
-                    Community = communityViewModel,
-                    Date = config.Date,
-                    Active = config.Active
-                };
-
-                filteredScheduleConfigViewModel.Add(scheduleViewModel);
-            };
-
-            foreach (var topping in filteredPizzaToppings)
-            {
-                var toppingTypes = new List<SystemReference>();
-
-                foreach (var sysref in topping.ToppingSystemReference)
-                {
-                    toppingTypes.Add(sysref.ToppingType);
-                }
-                var toppingViewModel = new ToppingsViewModel
-                {
-                    Name = topping.ToppingName,
-                    ToppingTypes = toppingTypes,
-                    Id = topping.Id
-                };
-
-                filteredPizzaToppingsViewModel.Add(toppingViewModel);
-            };
-
-
-            foreach (var topping in filteredTacoToppings)
-            {
-                var toppingTypes = new List<SystemReference>();
-
-                foreach (var sysref in topping.ToppingSystemReference)
-                {
-                    toppingTypes.Add(sysref.ToppingType);
-                }
-                var toppingViewModel = new ToppingsViewModel
-                {
-                    Name = topping.ToppingName,
-                    ToppingTypes = toppingTypes,
-                    Id = topping.Id
-                };
-
-                filteredTacoToppingsViewModel.Add(toppingViewModel);
-            };
-
-            foreach (var topping in toppings)
-            {
-                var toppingTypes = new List<SystemReference>();
-
-                foreach (var sysref in topping.ToppingSystemReference)
-                {
-                    toppingTypes.Add(sysref.ToppingType);
-                }
-                var toppingViewModel = new ToppingsViewModel
-                {
-                    Name = topping.ToppingName,
-                    ToppingTypes = toppingTypes,
-                    Id = topping.Id
-                };
-
-                allToppingsViewModel.Add(toppingViewModel);
-            };
-
-            var orderView = new HomePageViewModel
-            {
-                MenuItems = menuItems,
-                PizzaToppings = filteredPizzaToppingsViewModel,
-                TacoToppings = filteredTacoToppingsViewModel,
-                AllToppings = allToppingsViewModel,
-                TodaysSchedule = filteredScheduleConfigViewModel
-            };
-            return View(orderView);
+          
+            return View();
         }
 
         public IActionResult ShortendOrderView()
         {
-            if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart") == null)
-            {
-                List<OrderItemViewModel> newCart = new List<OrderItemViewModel>();
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", newCart);
-            }
+            if (!ModelState.IsValid) return RedirectToAction("ShortendOrderView", "Home");
+            var validated = SessionHelper.GetObjectFromJson<string>(HttpContext.Session, "validated");
+            if (validated != _ctx.OrderCode.First(x => x.Active == true).Password) return RedirectToAction("Index", "Home");
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
-            //FIX ORDER VIEW MODEL
-            var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
-            var toppings = _ctx.Topping.Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
-            var filteredPizzaToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Pizza"));
-            var filteredTacoToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Taco"));
-            var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community);
-            var filteredTodaysSchedule = todaysSchedule.Where(x => x.Date == DateTime.Today).Where(y => y.Active == true);
-            bool isAuthenticated = User.Identity.IsAuthenticated;
 
-            var filteredPizzaToppingsViewModel = new List<ToppingsViewModel>();
-            var filteredTacoToppingsViewModel = new List<ToppingsViewModel>();
-            var allToppingsViewModel = new List<ToppingsViewModel>();
+            var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community);
+            var filteredTodaysSchedule = todaysSchedule.Where(x => x.Date.Date == DateTime.Today);
+
             var filteredScheduleConfigViewModel = new List<ScheduleConfigViewModel>();
+            var communities = new HashSet<CommunityViewModel>();
 
             foreach (var config in filteredTodaysSchedule)
             {
+                //var builderViewModel = new BuilderViewModel
+                //{
+                //    Id = config.Builder.Id,
+                //    Name = config.Builder.Name
+                //};
 
                 var communityViewModel = new CommunityViewModel
                 {
@@ -185,182 +187,75 @@ namespace CathedralKitchen.Controllers
                 var scheduleViewModel = new ScheduleConfigViewModel
                 {
                     Id = config.Id,
+                    //Builder = builderViewModel,
                     Community = communityViewModel,
                     Date = config.Date,
                     Active = config.Active
                 };
 
+                communities.Add(communityViewModel);
+
                 filteredScheduleConfigViewModel.Add(scheduleViewModel);
             };
 
-            foreach (var topping in filteredPizzaToppings)
+            var cartViewModel = new CartViewModel
             {
-                var toppingTypes = new List<SystemReference>();
-
-                foreach (var sysref in topping.ToppingSystemReference)
-                {
-                    toppingTypes.Add(sysref.ToppingType);
-                }
-                var toppingViewModel = new ToppingsViewModel
-                {
-                    Name = topping.ToppingName,
-                    ToppingTypes = toppingTypes,
-                    Id = topping.Id
-                };
-
-                filteredPizzaToppingsViewModel.Add(toppingViewModel);
+                TodaysSchedule = filteredScheduleConfigViewModel,
+                Communities = communities
             };
 
-
-            foreach (var topping in filteredTacoToppings)
-            {
-                var toppingTypes = new List<SystemReference>();
-
-                foreach (var sysref in topping.ToppingSystemReference)
-                {
-                    toppingTypes.Add(sysref.ToppingType);
-                }
-
-                var toppingViewModel = new ToppingsViewModel
-                {
-                    Name = topping.ToppingName,
-                    ToppingTypes = toppingTypes,
-                    Id = topping.Id
-                };
-
-                filteredTacoToppingsViewModel.Add(toppingViewModel);
-            };
-
-            foreach (var topping in toppings)
-            {
-                var toppingTypes = new List<SystemReference>();
-
-                foreach (var sysref in topping.ToppingSystemReference)
-                {
-                    toppingTypes.Add(sysref.ToppingType);
-                }
-                var toppingViewModel = new ToppingsViewModel
-                {
-                    Name = topping.ToppingName,
-                    ToppingTypes = toppingTypes,
-                    Id = topping.Id
-                };
-
-                allToppingsViewModel.Add(toppingViewModel);
-            };
-
-            var orderView = new HomePageViewModel
-            {
-                MenuItems = menuItems,
-                PizzaToppings = filteredPizzaToppingsViewModel,
-                TacoToppings = filteredTacoToppingsViewModel,
-                AllToppings = allToppingsViewModel,
-                TodaysSchedule = filteredScheduleConfigViewModel
-            };
-            return View(orderView);
+            //return RedirectToAction("OrderInfoForCustomer", "Orders");
+            return View(cartViewModel);
         }
 
         [HttpPost]
-        public IActionResult Index(HomePageViewModel request)
+        public IActionResult Index(CodeViewModel codeViewModel)
         {
-            if (!ModelState.IsValid) return RedirectToAction("ShortendOrderView", "Home");
-            var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
-            var selectedItem = menuItems.First(x => x.Name == request.ItemName);
-            var toppings = _ctx.Topping;
-            var selectedToppings = toppings.Where(x => request.Toppings.Contains(x.Id)).ToList();
-            var selectedToppingsViewModels = new List<ToppingsViewModel>();
-
-            foreach (var selectedTopping in selectedToppings)
+            if (!ModelState.IsValid) return View();
+            if (codeViewModel.Code != _ctx.OrderCode.First(x => x.Active == true).Password)
             {
-                ToppingsViewModel topping = new ToppingsViewModel
-                {
-                    Id = selectedTopping.Id,
-                    Name = selectedTopping.ToppingName
-                };
-
-                selectedToppingsViewModels.Add(topping);
+                ModelState.AddModelError("error", "Code is invalid");
+                return View();
             }
-
-            MenuItemViewModel selectedItemViewModel = new MenuItemViewModel
-            {
-                Id = selectedItem.Id,
-                Name = selectedItem.Name
-            };
-
-            if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart") == null)
-            {
-                List<OrderItemViewModel> cart = new List<OrderItemViewModel>();
-                cart.Add(new OrderItemViewModel { MenuItem = selectedItemViewModel, Toppings = selectedToppingsViewModels, Quantity = request.Quantity, SizeId = request.SizeId });
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            }
-            else
-            {
-                List<OrderItemViewModel> cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
-                long index = isExist(selectedItemViewModel.Id, selectedToppingsViewModels);
-                if (index != -1)
-                {
-                    cart[(int)index].Quantity += request.Quantity;
-                }
-                else
-                {
-                    cart.Add(new OrderItemViewModel { MenuItem = selectedItemViewModel, Toppings = selectedToppingsViewModels, Quantity = request.Quantity, SizeId = request.SizeId });
-                }
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            }
-
-            return RedirectToAction("ShortendOrderView");
-
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "validated", _ctx.OrderCode.First(x => x.Active == true).Password);
+            return RedirectToAction("ShortendOrderView", "Home");
         }
 
         [HttpPost]
-        public IActionResult ShortendOrderView(HomePageViewModel request)
+        public IActionResult ShortendOrderView(CartViewModel cartViewModel)
         {
             if (!ModelState.IsValid) return RedirectToAction("ShortendOrderView", "Home");
-            var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
-            var selectedItem = menuItems.First(x => x.Name == request.ItemName);
-            var toppings = _ctx.Topping;
-            var selectedToppings = toppings.Where(x => request.Toppings.Contains(x.Id)).ToList();
-            var selectedToppingsViewModels = new List<ToppingsViewModel>();
 
-            foreach (var selectedTopping in selectedToppings)
+            var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
+            ViewBag.cart = cart;
+
+            var order = new Order
             {
-                ToppingsViewModel topping = new ToppingsViewModel
-                {
-                    Id = selectedTopping.Id,
-                    Name = selectedTopping.ToppingName
-                };
-
-                selectedToppingsViewModels.Add(topping);
-            }
-
-            MenuItemViewModel selectedItemViewModel = new MenuItemViewModel
-            {
-                Id = selectedItem.Id,
-                Name = selectedItem.Name
+                OrderStatusId = _ctx.OrderStatus.SingleOrDefault(x => x.Status == "InProgress").Id,
+                CustomerName = cartViewModel.Name,
+                Note = cartViewModel.Note,
+                CommunityId = cartViewModel.CommunityId > 0 ? cartViewModel.CommunityId : 1,
+                AddressLine1 = cartViewModel.AddressLine1,
+                AddressLine2 = cartViewModel.AddressLine2,
+                //TODO City = cartViewModel.City,
+                ZipCode = cartViewModel.Zipcode,
+                CreateBy = 1,
+                UpdateBy = 1,
+                CreateTime = DateTime.UtcNow,
+                UpdateTime = DateTime.UtcNow
             };
 
-            if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart") == null)
+            _ctx.Order.Add(order);
+            _ctx.SaveChanges();
+        
+            if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "orderId") == null)
             {
-                List<OrderItemViewModel> cart = new List<OrderItemViewModel>();
-                cart.Add(new OrderItemViewModel { MenuItem = selectedItemViewModel, Toppings = selectedToppingsViewModels, Quantity = request.Quantity, SizeId = request.SizeId });
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            }
-            else
-            {
-                List<OrderItemViewModel> cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
-                long index = isExist(selectedItemViewModel.Id, selectedToppingsViewModels);
-                if (index != -1)
-                {
-                    cart[(int)index].Quantity += request.Quantity;
-                }
-                else
-                {
-                    cart.Add(new OrderItemViewModel { MenuItem = selectedItemViewModel, Toppings = selectedToppingsViewModels, Quantity = request.Quantity, SizeId = request.SizeId });
-                }
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "orderId", order.Id);
             }
 
-            return RedirectToAction("ShortendOrderView");
+
+            return RedirectToAction("OrderMenu", "Cart");
+
 
         }
 
@@ -406,7 +301,7 @@ namespace CathedralKitchen.Controllers
         public IActionResult AddEvent([FromBody] dynamic evt)
         {
             var cycle = 0;
-            var events = new Dictionary<long, DateTime>();
+            var events = new Dictionary<long, dynamic>();
             long parentId = 0;
             for (int i = 0; i < (int)evt.Cycle; i++)
             {
@@ -430,7 +325,8 @@ namespace CathedralKitchen.Controllers
                     _ctx.ScheduleConfig.Add(parentScheduleConfig);
                     _ctx.SaveChanges();
                     parentId = parentScheduleConfig.Id;
-                    events.Add(parentScheduleConfig.Id, parentScheduleConfig.Date);
+                    var community = _ctx.Community.FirstOrDefault(x => x.Id == parentScheduleConfig.CommunityId);
+                    events.Add(parentScheduleConfig.Id, new { parentScheduleConfig.Date, community });
 
                 }
                 else
@@ -449,7 +345,8 @@ namespace CathedralKitchen.Controllers
                     };
                     _ctx.ScheduleConfig.Add(scheduleConfig);
                     _ctx.SaveChanges();
-                    events.Add(scheduleConfig.Id, scheduleConfig.Date);
+                    var community = _ctx.Community.FirstOrDefault(x => x.Id == scheduleConfig.CommunityId);
+                    events.Add(scheduleConfig.Id, new { scheduleConfig.Date, community });
                 }
                 cycle += 1;
 
@@ -457,6 +354,19 @@ namespace CathedralKitchen.Controllers
 
             var message = "";
             return Json(new { message, events });
+        }
+
+
+        [HttpPost]
+        public IActionResult DeleteEvent([FromBody] dynamic evt)
+        {
+            long eventId = (long)evt.EventId;
+            var eventToDelete = _ctx.ScheduleConfig.First(x => x.Id == eventId);
+            var message = "";
+
+            eventToDelete.Active = false;
+            _ctx.SaveChanges();
+            return Json(new { message });
         }
 
         [HttpPost]

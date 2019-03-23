@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using CathedralKitchen.NewModels;
+using CathedralKitchen.Helpers;
 
 namespace CathedralKitchen.ViewModels
 {
@@ -13,8 +14,10 @@ namespace CathedralKitchen.ViewModels
 
         public IEnumerable<ScheduleConfigViewModel> TodaysSchedule { get; set; }
 
-        [Required]
+        public bool IsEmployee { get; set; }
+
         [StringLength(75)]
+        [Required]
         public string Name { get; set; }
 
         public Order Order { get; set; }
@@ -24,15 +27,18 @@ namespace CathedralKitchen.ViewModels
         public long CommunityId { get; set; }
 
         [StringLength(255)]
-        [Required]
+        [RequiredIf("IsEmployee", false)]
         public string AddressLine1 { get; set; }
+
         [StringLength(255)]
         public string AddressLine2 { get; set; }
+
         [StringLength(255)]
-        [Required]
+        [RequiredIf("IsEmployee", false)]
         public string City { get; set; }
+
         [StringLength(12)]
-        [Required]
+        [RequiredIf("IsEmployee", false)]
         public string Zipcode { get; set; }
 
 

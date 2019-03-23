@@ -15,11 +15,9 @@ $('#calendar').fullCalendar({
     },
     eventRender(event, $el) {
         $el.qtip({
-            title: event.community.name,
             content: {
                 communityId: event.communityId,
-                text: event.cycle,
-                title: event.community.name
+                cycle: event.cycle,
             },
             hide: {
                 event: 'unfocus'
@@ -36,7 +34,12 @@ $('#calendar').fullCalendar({
                 }
             }
         });
-        event.title = event.community.name
+        $el.find('.fc-title').text(function (i, t) {
+            return t = event.community.name
+        });
+        $el.find('.fc-time').text(function (i, t) {
+            return t = ""
+        });
     },
     events: '/Home/GetCalendarEvents',
     eventClick: updateEvent,
@@ -56,7 +59,6 @@ function updateEvent(event, element) {
     $('#eventModalLabel').html('Edit Event');
     $('#eventModalSave').html('Update Event');
     $('#CommunityId').val(event.communityId);
-    $('#Cycle').val(event.cycle);
     $('#isNewEvent').val(false);
 
     const start = formatDate(event.start);
@@ -127,7 +129,8 @@ function sendAddEvent(event) {
                 for (const [key, value] of Object.entries(events))
                 {
                     const newEvent = {
-                        start: value,
+                        start: value.date,
+                        community: value.community,
                         communityId: event.communityId,
                         eventId: key,
                     };
@@ -161,7 +164,8 @@ function sendUpdateEvent(event) {
             if (message === '') {
                 for (const [key, value] of Object.entries(events)) {
                     const newEvent = {
-                        start: value,
+                        start: value.date,
+                        community: value.community,
                         communityId: event.communityId,
                         eventId: key
                     };
@@ -185,7 +189,7 @@ $('#deleteEvent').click(() => {
             method: 'post',
             url: '/Home/DeleteEvent',
             data: {
-                "EventId": currentEvent.eventId
+                "EventId": currentEvent.id,
             }
         })
             .then(res => {

@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Order Pizza";
+    Layout = "_Layout";
+}
+@model HomePageViewModel
+@await Html.PartialAsync("../Shared/NavHomePartial.cshtml")
+<div class="order-section scrollable">
+    <div class="row" style="margin-top: 25px;">
+        <div class="form-group col-md-4 offset-md-4">
+            <h3 style="font-size: 36px; font-weight: 700; text-align: center">Order Menu</h3>
+        </div>
+    </div>
+    <div class="row">
+        @await Html.PartialAsync("../Shared/OrderPartial.cshtml")
+        <div class="col-3" style="margin-right:30px;">
+            @await Html.PartialAsync("../Shared/CartPartial.cshtml")
+        </div>
+    </div>
+    
+</div>
+@section Scripts
+    {
+    <script src="~/lib/signalr/signalr.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/chat.js"></script>
+}
