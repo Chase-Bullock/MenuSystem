@@ -69,7 +69,7 @@ namespace CathedralKitchen.Controllers
                     Note = order.Note,
                     Community = communityViewModel,
                     OrderItems = orderItemsViewModel[order.Id] != null ? orderItemsViewModel.First(x => x.Key == order.Id).Value : new List<OrderItemViewModel>(),
-                    Name = order.CustomerName,
+                    Name = order.CustomerFirstName + " " + order.CustomerLastName,
                     CreateTime = order.CreateTime,
                     CompleteTime = order.CompleteTime
                 };
@@ -118,7 +118,7 @@ namespace CathedralKitchen.Controllers
                 Community = communityViewModel,
                 Note = order.Note,
                 OrderItems = orderItemsViewModel,
-                Name = order.CustomerName,
+                Name = order.CustomerFirstName + " " + order.CustomerLastName,
                 CreateTime = order.CreateTime,
                 CompleteTime = order.CompleteTime
             };

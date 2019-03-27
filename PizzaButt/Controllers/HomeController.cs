@@ -168,7 +168,9 @@ namespace CathedralKitchen.Controllers
             var filteredTodaysSchedule = todaysSchedule.Where(x => x.Date.Date == DateTime.Today);
 
             var filteredScheduleConfigViewModel = new List<ScheduleConfigViewModel>();
-            var communities = new HashSet<CommunityViewModel>();
+            var allCommunities = new List<CommunityViewModel>();
+            var scheduledCommunties = new List<string>();
+            var communities = _ctx.Community.Where(x => x.Active == true).ToList();
 
             foreach (var config in filteredTodaysSchedule)
             {
@@ -193,15 +195,26 @@ namespace CathedralKitchen.Controllers
                     Active = config.Active
                 };
 
-                communities.Add(communityViewModel);
+                scheduledCommunties.Add(config.Community.Name);
 
                 filteredScheduleConfigViewModel.Add(scheduleViewModel);
             };
 
+            foreach(var community in communities)
+            {
+                var communityViewModel = new CommunityViewModel
+                {
+                    Id = community.Id,
+                    Name = community.Name
+                };
+                allCommunities.Add(communityViewModel);
+            }
+
             var cartViewModel = new CartViewModel
             {
                 TodaysSchedule = filteredScheduleConfigViewModel,
-                Communities = communities
+                ScheduledCommunities = scheduledCommunties,
+                Communities = allCommunities
             };
 
             //return RedirectToAction("OrderInfoForCustomer", "Orders");
@@ -229,10 +242,31 @@ namespace CathedralKitchen.Controllers
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
 
+            var person = _ctx.Person.FirstOrDefault(x => x.Email == cartViewModel.Email);
+
+            if (person == null) {
+
+                person = new Person
+                {
+                    Active = true,
+                    FirstName = cartViewModel.FirstName,
+                    LastName = cartViewModel.LastName,
+                    SendEmail = cartViewModel.EmailConsent,
+                    Email = cartViewModel.Email,
+                    CreateBy = 1,
+                    UpdateBy = 1,
+                    UpdateTime = DateTime.UtcNow,
+                    CreateTime = DateTime.UtcNow
+                };
+                _ctx.Person.Add(person);
+                _ctx.SaveChanges();
+            }
+
             var order = new Order
             {
                 OrderStatusId = _ctx.OrderStatus.SingleOrDefault(x => x.Status == "InProgress").Id,
-                CustomerName = cartViewModel.Name,
+                CustomerFirstName = cartViewModel.FirstName,
+                CustomerLastName = cartViewModel.LastName,
                 Note = cartViewModel.Note,
                 CommunityId = cartViewModel.CommunityId > 0 ? cartViewModel.CommunityId : 1,
                 AddressLine1 = cartViewModel.AddressLine1,

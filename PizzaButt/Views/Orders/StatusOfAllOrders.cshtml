@@ -104,7 +104,7 @@
                     @{var itemStartedCount = 0; }
                     @foreach (var item in Model)
                     {
-                        if (item.Status == "Started")
+                        if (item.Status == "Acknowledged")
                         {
                             itemStartedCount += 1;
                     <table class="table" style="width: 80%; margin: auto; table-layout: fixed; margin-bottom: 25px; @(itemStartedCount % 2 == 0 ? "background-color:#fefefe" :"") ">

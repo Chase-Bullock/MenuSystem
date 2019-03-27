@@ -16,13 +16,24 @@ namespace CathedralKitchen.ViewModels
 
         public bool IsEmployee { get; set; }
 
-        [StringLength(75)]
+        public bool EmailConsent { get; set; }
+
+        [StringLength(30)]
         [Required]
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+
+        [StringLength(45)]
+        [Required]
+        public string LastName { get; set; }
+
+        [StringLength(90)]
+        [Required]
+        public string Email { get; set; }
 
         public Order Order { get; set; }
 
-        public HashSet<CommunityViewModel> Communities { get; set; }
+        public List<CommunityViewModel> Communities { get; set; }
+        public List<String> ScheduledCommunities { get; set; }
 
         public long CommunityId { get; set; }
 

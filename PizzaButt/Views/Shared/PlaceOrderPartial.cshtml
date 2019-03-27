@@ -7,13 +7,47 @@
 <form style="margin-top: 70px;" class="orderForm col-8" id="checkoutForm" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     @**************************@
-    @*          NAME          *@
+    @*        FIRSTNAME       *@
     @**************************@
     <div class="row">
         <div class="form-group col-md-6 offset-md-4">
-            <label asp-for="Name" class="titleTag">Name</label>
-            <input asp-for="Name" type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" required />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <label asp-for="FirstName" class="titleTag">First Name</label>
+            <input asp-for="FirstName" type="text" class="form-control boxStyle" id="firstNameInput" aria-describedby="emailHelp" placeholder="Enter First Name" required />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+    </div>
+    @**************************@
+    @*        LASTNAME        *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4">
+            <label asp-for="LastName" class="titleTag">Last Name</label>
+            <input asp-for="LastName" type="text" class="form-control boxStyle" id="lastNameInput" aria-describedby="emailHelp" placeholder="Enter Last Name" required />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+    </div>
+    @**************************@
+    @*         EMAIL          *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4">
+            <label asp-for="Email" class="titleTag">Email</label>
+            <input asp-for="Email" type="text" class="form-control boxStyle" id="emailInput" aria-describedby="emailHelp" placeholder="Enter Email" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    @**************************@
+    @*      EMAILCONSENT      *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4">
+            <div class="pretty p-icon p-smooth">
+                <input asp-for="EmailConsent" id="emailConsent" class="emailConsent" type="checkbox" />
+                <div class="state p-primary">
+                    <label>I Agree to receive emails including updates to my order</label>
+                    <i class="icon fa fa-check"></i>
+                </div>
+            </div>
         </div>
     </div>
     @**************************@
@@ -40,7 +74,14 @@
                 <option value="" disabled selected hidden> -- </option>
                 @foreach (var community in Model.Communities)
                 {
-                    <option value=@community.Id>@community.Name</option>
+                    if (Model.ScheduledCommunities.Contains(community.Name))
+                    {
+                        <option value=@community.Id>@community.Name</option>
+                    }
+                    else
+                    {
+                        <option disabled value=@community.Id>@community.Name -Not Available Today-</option>
+                    }
                 }
             </select>
             <span asp-validation-for="CommunityId" class="text-danger"></span>

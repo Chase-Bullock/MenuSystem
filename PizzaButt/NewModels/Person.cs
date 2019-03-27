@@ -10,6 +10,7 @@ namespace CathedralKitchen.NewModels
         public string Work { get; set; }
         public string Cell { get; set; }
         public string Email { get; set; }
+        public bool? SendEmail { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public bool? Active { get; set; }
