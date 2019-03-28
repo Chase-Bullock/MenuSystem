@@ -10,6 +10,7 @@ using CathedralKitchen.NewModels;
 using CathedralKitchen.Security;
 using System;
 using System.Text;
+using CathedralKitchen.Services;
 
 namespace CathedralKitchen
 {
@@ -25,10 +26,12 @@ namespace CathedralKitchen
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IEmailNotificationService, EmailNotificationService>();
             services.AddSession();
-
             services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
 
             services.Configure<IdentityOptions>(options =>
             {

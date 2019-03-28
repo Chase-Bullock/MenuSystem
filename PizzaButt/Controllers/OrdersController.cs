@@ -16,9 +16,11 @@ namespace CathedralKitchen.Controllers
     {
         private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
         private readonly CathedralKitchenContext _ctx;
+        private readonly IEmailNotificationService _emailNotificationService;
 
-        public OrdersController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx)
+        public OrdersController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx, IEmailNotificationService emailNotificationService)
         {
+            _emailNotificationService = emailNotificationService;
             _cathedralKitchenRepository = cathedralKitchenRepository;
             _ctx = ctx;
         }
@@ -274,7 +276,12 @@ namespace CathedralKitchen.Controllers
 
         public IActionResult Complete([FromQuery] long orderId)
         {
-            var order = _cathedralKitchenRepository.GetOrder(orderId);
+            var order = _ctx.Order.FirstOrDefault(x => x.Id == orderId);
+            var person = _ctx.Person.FirstOrDefault(x => x.Email == order.CustomerEmail);
+            if (person.SendEmail == true)
+            {
+                _emailNotificationService.SendMail(person, 1);
+            }
             _cathedralKitchenRepository.CompleteOrder(order);
             return Redirect("StatusOfAllOrders");
         }
@@ -282,6 +289,12 @@ namespace CathedralKitchen.Controllers
         public IActionResult Start([FromQuery] long orderId)
         {
             _cathedralKitchenRepository.StartOrder(orderId);
+            var order = _ctx.Order.FirstOrDefault(x => x.Id == orderId);
+            var person = _ctx.Person.FirstOrDefault(x => x.Email == order.CustomerEmail);
+            if (person.SendEmail == true)
+            {
+                _emailNotificationService.SendMail(person, 0);
+            }
             return Redirect("StatusOfAllOrders");
         }
 

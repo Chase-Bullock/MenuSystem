@@ -14,6 +14,7 @@ using CathedralKitchen.Helpers;
 using CathedralKitchen.NewModels;
 using CathedralKitchen.ViewModels;
 using CathedralKitchen.ViewModels.AccountViewModels;
+using CathedralKitchen.Services;
 
 namespace CathedralKitchen.Controllers
 {
@@ -22,9 +23,11 @@ namespace CathedralKitchen.Controllers
         //private readonly IPizzaRepository pizzaRepository;
         private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
         private readonly CathedralKitchenContext _ctx;
+        private readonly IEmailNotificationService _emailNotificationService;
 
-        public HomeController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx)
+        public HomeController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx, IEmailNotificationService emailNotificationService)
         {
+            _emailNotificationService = emailNotificationService;
             _cathedralKitchenRepository = cathedralKitchenRepository;
             _ctx = ctx;
         }
@@ -152,7 +155,9 @@ namespace CathedralKitchen.Controllers
 
         public IActionResult Index()
         {
-          
+            var person = _ctx.Person.FirstOrDefault(x => x.Email == "ChaseRBullock@live.com");
+
+
             return View();
         }
 
@@ -239,6 +244,18 @@ namespace CathedralKitchen.Controllers
         {
             if (!ModelState.IsValid) return RedirectToAction("ShortendOrderView", "Home");
 
+            if (!cartViewModel.IsEmployee)
+            {
+                TimeSpan now = DateTime.Now.TimeOfDay;
+                TimeSpan start = new TimeSpan(06, 0, 0);
+                TimeSpan end = new TimeSpan(10, 0, 0);
+                TempData["ErrorMessage"] = "Delivery orders must be placed between 6 am and 10 am!";
+                if (now < start || now > end)
+                {
+                    return RedirectToAction("ShortendOrderView", "Home");
+                }
+            }
+
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
 
@@ -265,6 +282,7 @@ namespace CathedralKitchen.Controllers
             var order = new Order
             {
                 OrderStatusId = _ctx.OrderStatus.SingleOrDefault(x => x.Status == "InProgress").Id,
+                CustomerEmail = cartViewModel.Email,
                 CustomerFirstName = cartViewModel.FirstName,
                 CustomerLastName = cartViewModel.LastName,
                 Note = cartViewModel.Note,

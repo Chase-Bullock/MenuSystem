@@ -139,6 +139,8 @@ namespace CathedralKitchen.NewModels
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
+                entity.Property(e => e.CustomerEmail).HasMaxLength(100);
+
                 entity.Property(e => e.CustomerFirstName)
                     .IsRequired()
                     .HasMaxLength(75);

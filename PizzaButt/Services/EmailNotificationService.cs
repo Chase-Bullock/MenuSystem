@@ -6,9 +6,18 @@ using System.Threading.Tasks;
 
 namespace CathedralKitchen.Services
 {
-    public static class EmailNotificationService
+    public class EmailNotificationService : IEmailNotificationService
     {
-        public static void Mailer(Person person, dynamic title, dynamic messageToBePassed)
+        private readonly IEmailService _emailService;
+
+        public EmailNotificationService(IEmailService emailService)
+        {
+            _emailService = emailService;
+        }
+
+        public enum Status { Acknowledged, Complete }
+
+        public void Mailer(Person person, dynamic title, dynamic messageToBePassed)
         {
             var addressFrom = new List<EmailAddress>
             {
@@ -33,25 +42,37 @@ namespace CathedralKitchen.Services
                 Content = $"{messageToBePassed}",
                 Subject = Convert.ToString($"Hello, {person} {title}")
             };
-            EmailService.Send(message);
+            _emailService.Send(message);
         }
 
-        public static void SendMail(Person person)
+        public void SendMail(Person person, int status)
         {
+            var content = "";
+            switch ((Status)status)
+            {
+                case Status.Acknowledged:
+                    content = "Your order has been acknowledged. We'll let you know when it is on the way!";
+                    break;
+                case Status.Complete:
+                    content = "Your order is complete and on its way!";
+                    break;
+
+                default:
+                    break;
+            }
             var addressFrom = new List<EmailAddress>
             {
-                new EmailAddress {Address = "noreply@miviewis.com", Name = "🔥🔥MiView Squad Fam🔥🔥 👌😏"}
+                new EmailAddress {Address = "noreply@CathedralPlumbingKitchen.com", Name = "Cathedral Kitchen"}
             };
             var address = new List<EmailAddress> { new EmailAddress { Address = person.Email, Name = person.FirstName } };
             var message = new EmailMessage
             {
                 ToAddresses = address,
                 FromAddresses = addressFrom,
-                Content =
-                    $"This is a 🔥fire🔥 test message from the 🔥LIT🔥 mailer service. <br /> <br /> ⛔Don't⛔ forget to ✔check✔ my 🎶soundcloud🎶 for my latest 💯mixtape💯 it is 🔥fire🔥 ❌HATERS❌ 😤OUT😤  <br /> <br /> <br /> <br />  Smell ya later, <br />  🍤Lil' Shrimp🍤",
+                Content = content,
                 Subject = Convert.ToString($"Hello, {person.FirstName}")
             };
-            EmailService.Send(message);
+            _emailService.Send(message);
         }
     }
 }

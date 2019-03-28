@@ -18,6 +18,7 @@ namespace CathedralKitchen.NewModels
         public long? CityId { get; set; }
         public long OrderStatusId { get; set; }
         public DateTime? CompleteTime { get; set; }
+        public string CustomerEmail { get; set; }
         public string CustomerLastName { get; set; }
         public string CustomerFirstName { get; set; }
         public string Note { get; set; }

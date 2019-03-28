@@ -110,7 +110,7 @@ namespace CathedralKitchen.NewModels
                 var updateTime = DateTime.UtcNow;
                 var result = context.Order.SingleOrDefault(x => x.Id == orderId);
                 result.UpdateTime = updateTime;
-                result.OrderStatusId = context.OrderStatus.SingleOrDefault(x => x.Status == "Started").Id;
+                result.OrderStatusId = context.OrderStatus.SingleOrDefault(x => x.Status == "Acknowledged").Id;
                 context.SaveChanges();
                 return orderId.ToString();
             }
