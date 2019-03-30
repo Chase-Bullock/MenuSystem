@@ -179,12 +179,6 @@ namespace CathedralKitchen.Controllers
 
             foreach (var config in filteredTodaysSchedule)
             {
-                //var builderViewModel = new BuilderViewModel
-                //{
-                //    Id = config.Builder.Id,
-                //    Name = config.Builder.Name
-                //};
-
                 var communityViewModel = new CommunityViewModel
                 {
                     Id = config.Community.Id,
@@ -244,17 +238,18 @@ namespace CathedralKitchen.Controllers
         {
             if (!ModelState.IsValid) return RedirectToAction("ShortendOrderView", "Home");
 
-            if (!cartViewModel.IsEmployee)
-            {
-                TimeSpan now = DateTime.Now.TimeOfDay;
-                TimeSpan start = new TimeSpan(06, 0, 0);
-                TimeSpan end = new TimeSpan(10, 0, 0);
-                TempData["ErrorMessage"] = "Delivery orders must be placed between 6 am and 10 am!";
-                if (now < start || now > end)
-                {
-                    return RedirectToAction("ShortendOrderView", "Home");
-                }
-            }
+            //TODO REACTIVATE FOR PRODUCTION
+            //if (!cartViewModel.IsEmployee)
+            //{
+            //    TimeSpan now = DateTime.Now.TimeOfDay;
+            //    TimeSpan start = new TimeSpan(06, 0, 0);
+            //    TimeSpan end = new TimeSpan(10, 0, 0);
+            //    if (now < start || now > end)
+            //    {
+            //        TempData["ErrorMessage"] = "Delivery orders must be placed between 6 am and 10 am!";
+            //        return RedirectToAction("ShortendOrderView", "Home");
+            //    }
+            //}
 
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
@@ -300,7 +295,7 @@ namespace CathedralKitchen.Controllers
             _ctx.Order.Add(order);
             _ctx.SaveChanges();
         
-            if (SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "orderId") == null)
+            if (SessionHelper.GetObjectFromJson<long>(HttpContext.Session, "orderId") == 0)
             {
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "orderId", order.Id);
             }

@@ -41,10 +41,10 @@
                 @item.MenuItem.Name
             </td>
             <td colspan="4" style="word-wrap:normal">
-                @if (item.OrderItemTopping != null)
+                @if (item.OrderItemTopping.Count() > 0)
                 {
                     var last = item.OrderItemTopping.Last();
-                    foreach (var topping in item.OrderItemTopping)
+                    foreach (var topping in item?.OrderItemTopping)
                     {
                         if (topping == last)
                         {
@@ -55,6 +55,9 @@
                             <Text>@topping.Topping.ToppingName, </Text>
                         }
                     }
+                } else
+                {
+                    <Text>No Toppings</Text>
                 }
             </td>
             @if (item.Size != null)

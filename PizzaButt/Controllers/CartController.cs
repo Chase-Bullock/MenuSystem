@@ -266,18 +266,22 @@ namespace CathedralKitchen.Controllers
             var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
             var selectedItem = menuItems.First(x => x.Name == request.ItemName);
             var toppings = _ctx.Topping;
-            var selectedToppings = toppings.Where(x => request.Toppings.Contains(x.Id)).ToList();
             var selectedToppingsViewModels = new List<ToppingsViewModel>();
-
-            foreach (var selectedTopping in selectedToppings)
+            if (request.Toppings != null)
             {
-                ToppingsViewModel topping = new ToppingsViewModel
-                {
-                    Id = selectedTopping.Id,
-                    Name = selectedTopping.ToppingName
-                };
+                var selectedToppings = toppings?.Where(x => request.Toppings.Contains(x.Id)).ToList();
 
-                selectedToppingsViewModels.Add(topping);
+
+                foreach (var selectedTopping in selectedToppings)
+                {
+                    ToppingsViewModel topping = new ToppingsViewModel
+                    {
+                        Id = selectedTopping.Id,
+                        Name = selectedTopping.ToppingName
+                    };
+
+                    selectedToppingsViewModels.Add(topping);
+                }
             }
 
             MenuItemViewModel selectedItemViewModel = new MenuItemViewModel
@@ -315,8 +319,20 @@ namespace CathedralKitchen.Controllers
         {
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             var orderId = SessionHelper.GetObjectFromJson<long>(HttpContext.Session, "orderId");
+            var order = _ctx.Order.FirstOrDefault(x => x.Id == orderId);
+            var ordersForCustomerToday = _ctx.Order.Where(x => x.CustomerEmail == order.CustomerEmail
+                                                            && x.CreateTime.ToLocalTime().Day == DateTime.Today.Day
+                                                            && x.OrderStatusId != 2
+                                                            && x.CommunityId != 1);
+            if (ordersForCustomerToday.Count() > 1)
+            {
+                TempData["ErrorMessage"] = "Orders are limited to only one per day, cancel your last order if you must create a new one.";
+                return RedirectToAction("ShortendOrderView", "Home");
+            }
+
             ViewBag.cart = cart;
 
+            
 
             foreach (var item in cart)
             {

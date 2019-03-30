@@ -1,7 +1,4 @@
-﻿// Write your JavaScript code.
-
-
-//////////////////////////// MENUITEM SELECT ////////////////////////////
+﻿//////////////////////////// MENUITEM SELECT ////////////////////////////
 
 $('#menuSelect').on('change', function(e) {
     var val = $(this).val();
@@ -44,6 +41,7 @@ $('#menuSelect').on('change', function(e) {
         $('#sizesForPizza').fadeOut();
     }
 });
+
 
 //////////////////////////// SCROLL TO ORDER ////////////////////////////
 
