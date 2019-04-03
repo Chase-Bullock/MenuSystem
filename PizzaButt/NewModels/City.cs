@@ -5,11 +5,6 @@ namespace CathedralKitchen.NewModels
 {
     public partial class City
     {
-        public City()
-        {
-            Order = new HashSet<Order>();
-        }
-
         public long Id { get; set; }
         public string Name { get; set; }
         public bool? Active { get; set; }
@@ -19,7 +14,5 @@ namespace CathedralKitchen.NewModels
         public long UpdatedBy { get; set; }
         public long? DeleteBy { get; set; }
         public long? DeleteTime { get; set; }
-
-        public virtual ICollection<Order> Order { get; set; }
     }
 }

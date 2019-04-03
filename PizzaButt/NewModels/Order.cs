@@ -15,7 +15,7 @@ namespace CathedralKitchen.NewModels
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
         public string ZipCode { get; set; }
-        public long? CityId { get; set; }
+        public string City { get; set; }
         public long OrderStatusId { get; set; }
         public DateTime? CompleteTime { get; set; }
         public string CustomerEmail { get; set; }
@@ -30,7 +30,6 @@ namespace CathedralKitchen.NewModels
         public long? DeleteBy { get; set; }
         public bool? Active { get; set; }
 
-        public virtual City City { get; set; }
         public virtual Community Community { get; set; }
         public virtual OrderStatus OrderStatus { get; set; }
         public virtual ICollection<OrderItem> OrderItem { get; set; }

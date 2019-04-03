@@ -284,7 +284,7 @@ namespace CathedralKitchen.Controllers
                 CommunityId = cartViewModel.CommunityId > 0 ? cartViewModel.CommunityId : 1,
                 AddressLine1 = cartViewModel.AddressLine1,
                 AddressLine2 = cartViewModel.AddressLine2,
-                //TODO City = cartViewModel.City,
+                City = cartViewModel.City,
                 ZipCode = cartViewModel.Zipcode,
                 CreateBy = 1,
                 UpdateBy = 1,

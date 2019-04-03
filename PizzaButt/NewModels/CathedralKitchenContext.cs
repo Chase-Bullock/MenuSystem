@@ -75,6 +75,8 @@ namespace CathedralKitchen.NewModels
 
             modelBuilder.Entity<City>(entity =>
             {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
                 entity.Property(e => e.Active)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
@@ -135,6 +137,8 @@ namespace CathedralKitchen.NewModels
 
                 entity.Property(e => e.AddressLine2).HasMaxLength(255);
 
+                entity.Property(e => e.City).HasMaxLength(70);
+
                 entity.Property(e => e.CompleteTime).HasColumnType("datetime");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
@@ -156,11 +160,6 @@ namespace CathedralKitchen.NewModels
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.ZipCode).HasMaxLength(12);
-
-                entity.HasOne(d => d.City)
-                    .WithMany(p => p.Order)
-                    .HasForeignKey(d => d.CityId)
-                    .HasConstraintName("FK_Order_City");
 
                 entity.HasOne(d => d.Community)
                     .WithMany(p => p.Order)

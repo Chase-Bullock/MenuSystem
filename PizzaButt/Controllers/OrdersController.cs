@@ -72,6 +72,8 @@ namespace CathedralKitchen.Controllers
                     Community = communityViewModel,
                     OrderItems = orderItemsViewModel[order.Id] != null ? orderItemsViewModel.First(x => x.Key == order.Id).Value : new List<OrderItemViewModel>(),
                     Name = order.CustomerFirstName + " " + order.CustomerLastName,
+                    City = order.City,
+                    Address = order.AddressLine1 + " " + order.AddressLine2,
                     CreateTime = order.CreateTime,
                     CompleteTime = order.CompleteTime
                 };
