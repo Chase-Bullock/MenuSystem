@@ -260,8 +260,8 @@
                 <div class="row" style="margin-top: 6px; margin-bottom: 6px">
                     @{ var pizzaOtherCount = 0; }
                     @{ var pizzaOtherToppings = Model.PizzaToppings
-                              .Where(x => x.ToppingTypes.Any(y => y.MainValue == "Other"))
-                              .Where(z => z.ToppingTypes.Any(c => c.Name != "Pizza"));}
+                               .Where(x => x.ToppingTypes.Any(y => y.MainValue == "Other"))
+                               .Where(z => z.ToppingTypes.Any(c => c.Name != "Pizza"));}
                     @foreach (var item in pizzaOtherToppings)
                     {
                         pizzaOtherCount += 1;
@@ -314,8 +314,10 @@
     </div>
 </form>
 
-<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/js/site.js"></script>
-
+@section Scripts
+    {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/site.js"></script>
+    }
