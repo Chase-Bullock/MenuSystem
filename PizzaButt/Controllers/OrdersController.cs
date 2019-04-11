@@ -73,6 +73,7 @@ namespace CathedralKitchen.Controllers
                     OrderItems = orderItemsViewModel[order.Id] != null ? orderItemsViewModel.First(x => x.Key == order.Id).Value : new List<OrderItemViewModel>(),
                     Name = order.CustomerFirstName + " " + order.CustomerLastName,
                     City = order.City,
+                    Zipcode = order.ZipCode,
                     Address = order.AddressLine1 + " " + order.AddressLine2,
                     CreateTime = order.CreateTime,
                     CompleteTime = order.CompleteTime
@@ -88,8 +89,12 @@ namespace CathedralKitchen.Controllers
             SessionHelper.Remove(HttpContext.Session, "cart");
             var orderId = SessionHelper.GetObjectFromJson<long>(HttpContext.Session, "orderId");
 
+            if (orderId == 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var order = _ctx.Order.Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus).Include(c => c.Community).FirstOrDefault(x => x.Id == orderId);
-            //var orderItems = _ctx.OrderItem.Include(y => y.MenuItem).Include(y => y.OrderItemTopping).ThenInclude(y => y.Topping).Where(x => x.OrderOrderItem.Any(z => z.OrderId == order.Id)).ToList();
             var orderItemsViewModel = new List<OrderItemViewModel>();
 
             foreach (var orderItem in order.OrderItem)
@@ -182,8 +187,6 @@ namespace CathedralKitchen.Controllers
         {
             var items = _cathedralKitchenRepository.GetMenuItems();
             List<MenuItem> allItems = items.ToList();
-
-            //allItems.Where(x => selectedItems.MenuItemNames.Contains(x.Name) ? x.Active == true : x111.Active == false).ToList();
 
             foreach (var x in allItems)
             {

@@ -18,6 +18,8 @@ namespace CathedralKitchen.ViewModels
 
         public string City { get; set; }
 
+        public string Zipcode { get; set; }
+
         public long CommunityId { get; set; }
 
         public CommunityViewModel Community { get; set; }

@@ -20,9 +20,6 @@ html,body{
     height: 800px;
 }
 
-#calendar {
-}
-
 .fc-header-toolbar {
     padding-top: 1em;
     padding-left: 1em;
@@ -111,11 +108,11 @@ a:active {
 
 
 .order-section {
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
 }
 
 .order-status {
-    background-color: #e5e5e5;
+    background-color: #f2f2f2;
 }
 
 /*.order-section-bottom {

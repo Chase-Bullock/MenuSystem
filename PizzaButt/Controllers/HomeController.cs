@@ -300,6 +300,8 @@ namespace CathedralKitchen.Controllers
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "orderId", order.Id);
             }
 
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "isEmployee", cartViewModel.IsEmployee);
+
 
             return RedirectToAction("OrderMenu", "Cart");
 

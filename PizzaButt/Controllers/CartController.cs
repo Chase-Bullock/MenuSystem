@@ -155,6 +155,8 @@ namespace CathedralKitchen.Controllers
                 List<OrderItemViewModel> newCart = new List<OrderItemViewModel>();
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", newCart);
             }
+            var isEmployee = SessionHelper.GetObjectFromJson<bool>(HttpContext.Session, "isEmployee");
+
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
             //FIX ORDER VIEW MODEL
@@ -246,13 +248,14 @@ namespace CathedralKitchen.Controllers
                 allToppingsViewModel.Add(toppingViewModel);
             };
 
-            var orderView = new HomePageViewModel
+            var orderView = new CustomerOrderViewModel
             {
                 MenuItems = menuItems,
                 PizzaToppings = filteredPizzaToppingsViewModel,
                 TacoToppings = filteredTacoToppingsViewModel,
                 AllToppings = allToppingsViewModel,
-                TodaysSchedule = filteredScheduleConfigViewModel
+                TodaysSchedule = filteredScheduleConfigViewModel,
+                IsEmployee = isEmployee
             };
             return View(orderView);
         }
@@ -260,8 +263,12 @@ namespace CathedralKitchen.Controllers
 
         [Route("OrderMenu")]
         [HttpPost]
-        public IActionResult OrderMenu(HomePageViewModel request)
+        public IActionResult OrderMenu(CustomerOrderViewModel request)
         {
+            if(request.ItemName != "Pizza")
+            {
+                request.SizeId = 0;
+            }
             if (!ModelState.IsValid) return View();
             var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
             var selectedItem = menuItems.First(x => x.Name == request.ItemName);

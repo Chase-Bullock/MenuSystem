@@ -28,6 +28,7 @@ namespace CathedralKitchen.ViewModels
 
         [StringLength(90)]
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         public Order Order { get; set; }

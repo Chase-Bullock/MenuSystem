@@ -89,10 +89,10 @@
                         <td id="@item.Id-orderCommunity" colspan="1">@item.Community.Name</td>
                         <th colspan="1">Address</th>
                         <td id="@item.Id-orderAddress" colspan="4" style="word-wrap:break-word">
-                            @item.Address
+                            @item.Address @item.City Tx @item.Zipcode
                         </td>
                         <td colspan="1">
-                            <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Complete", "Orders", new { orderId = item.Id })'">Complete Order</button>
+                            <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Start", "Orders", new { orderId = item.Id })'">Start Order</button>
                         </td>
                     </tr>
                     <tr style="border-bottom:dotted;">
@@ -200,7 +200,7 @@
                         <td id="@item.Id-orderCommunity" colspan="1">@item.Community.Name</td>
                         <th colspan="1">Address</th>
                         <td id="@item.Id-orderAddress" colspan="4" style="word-wrap:break-word">
-                            @item.Address
+                            @item.Address @item.City Tx @item.Zipcode
                         </td>
                         <td colspan="1">
                             <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Complete", "Orders", new { orderId = item.Id })'">Complete Order</button>
@@ -312,10 +312,10 @@
                         <td id="@item.Id-orderCommunity" colspan="1">@item.Community.Name</td>
                         <th colspan="1">Address</th>
                         <td id="@item.Id-orderAddress" colspan="4" style="word-wrap:break-word">
-                            @item.Address
+                            @item.Address @item.City Tx @item.Zipcode
                         </td>
                         <td colspan="1">
-                            <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("ReOpen", "Orders", new { orderId = item.Id })'">Complete Order</button>
+                            <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("ReOpen", "Orders", new { orderId = item.Id })'">Re-open Order</button>
                         </td>
                     </tr>
                     <tr style="border-bottom:dotted;">

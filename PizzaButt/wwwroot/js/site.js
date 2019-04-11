@@ -42,6 +42,19 @@ $('#menuSelect').on('change', function(e) {
     }
 });
 
+function changeQuantityBasedOnItem(isEmployee) {
+    if (isEmployee === false) {
+        $('#qtyInputs').hide();
+        $('#sizes').hide();
+    }
+    var quantity = 1;
+    var size = null;
+    if (document.getElementById('menuSelect').value == "Taco") {
+        quantity = 4
+    }
+    document.getElementById('qtyInput').value = quantity
+;
+}
 
 //////////////////////////// SCROLL TO ORDER ////////////////////////////
 

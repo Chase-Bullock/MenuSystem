@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using CathedralKitchen.NewModels;
+using System.ComponentModel;
 
 namespace CathedralKitchen.ViewModels
 {
-    public class HomePageViewModel
+    public class CustomerOrderViewModel
     {
 
         public IEnumerable<MenuItem> MenuItems { get; set; }
@@ -24,6 +25,8 @@ namespace CathedralKitchen.ViewModels
         public long SizeId { get; set; }
         
         public List<long> Toppings { get; set; }
+
+        public bool IsEmployee { get; set; }
 
         [Range(1, 100)]
         [Required]
