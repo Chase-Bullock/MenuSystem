@@ -12,97 +12,95 @@
             if (item.Status == "Pending")
             {
                 itemCount += 1;
-                <table class="table" style="width: 80%; margin: auto; table-layout: fixed; margin-bottom: 25px; @(itemCount % 2 == 0 ? "background-color:#fefefe" : "") ">
-                    <tr style="border-bottom:double">
-                        <th colspan="1">Name</th>
-                        <td>@item.Name</td>
-                        <th colspan="1">Order Time</th>
-                        <td>@item.CreateTime.ToLocalTime().ToString("hh:mm tt")</td>
+        <table class="table" style="width: 80%; margin: auto; table-layout: fixed; margin-bottom: 25px; @(itemCount % 2 == 0 ? "background-color:#fefefe" : "") ">
+            <tr style="border-bottom:double">
+                <th colspan="1">Name</th>
+                <td>@item.Name</td>
+                <th colspan="1">Order Time</th>
+                <td>@item.CreateTime.ToLocalTime().ToString("hh:mm tt")</td>
 
-                        <th colspan="1">Complete Time</th>
-                        <td>
-                            @if (item.CompleteTime?.ToLocalTime() > item.CreateTime)
-                            {
-                                item.CompleteTime?.ToLocalTime().ToString("hh:mm tt");
-                            }
-                            else
-                            {
-                                <div>N/A</div>
-                            }
-                        </td>
-                        <th colspan="1">Status</th>
-                        <td>
-                            @item.Status
-                        </td>
-                    </tr>
-                    <tr>
-                        <th colspan="2">Order</th>
-                        <th colspan="4">Toppings</th>
-                        <th colspan="1">Size</th>
-                        <th colspan="1">Quantity</th>
-
-                    </tr>
-                    @foreach (var orderItem in item.OrderItems)
+                <th colspan="1">Complete Time</th>
+                <td>
+                    @if (item.CompleteTime?.ToLocalTime() > item.CreateTime)
                     {
-                        <tr>
+                        item.CompleteTime?.ToLocalTime().ToString("hh:mm tt");
+                    }
+                    else
+                    {
+                        <div>N/A</div>
+                    }
+                </td>
+                <th colspan="1">Status</th>
+                <td>
+                    @item.Status
+                </td>
+            </tr>
+            <tr>
+                <th colspan="1">Quantity</th>
+                <th colspan="1">Size</th>
+                <th colspan="2">Order</th>
+                <th colspan="4">Toppings</th>
 
-                            <td colspan="2">
-                                @orderItem.MenuItem.Name
-                            </td>
-                            <td colspan="4" style="word-wrap:normal">
-                                @if (orderItem.OrderItemTopping.Count() > 0)
-                                {
-                                    var last = orderItem.OrderItemTopping.Last();
-                                    foreach (var topping in orderItem.OrderItemTopping)
-                                    {
-                                        if (topping == last)
-                                        {
-                                            <Text>@topping.Topping.ToppingName</Text>
-                                        }
-                                        else
-                                        {
-                                            <Text>@topping.Topping.ToppingName, </Text>
-                                        }
-                                    }
-                                }
-                            </td>
-                            @if (orderItem.Size != null)
+            </tr>
+            @foreach (var orderItem in item.OrderItems)
+            {
+            <tr>
+                <td colspan="1">
+                    @orderItem.Quantity.ToString()
+                </td>
+                @if (orderItem.Size != null)
+                {
+                    <td colspan="1">
+                        @orderItem.Size.MainValue
+                    </td>
+                }
+                else
+                {
+                    <td colspan="1"></td>
+                }
+                <td colspan="2">
+                    @orderItem.MenuItem.Name
+                </td>
+                <td colspan="4" style="word-wrap:normal">
+                    @if (orderItem.OrderItemTopping.Count() > 0)
+                    {
+                        var last = orderItem.OrderItemTopping.Last();
+                        foreach (var topping in orderItem.OrderItemTopping)
+                        {
+                            if (topping == last)
                             {
-                                <td colspan="1">
-                                    @orderItem.Size.MainValue
-                                </td>
+                                <Text>@topping.Topping.ToppingName</Text>
                             }
                             else
                             {
-                                <td colspan="1"></td>
+                                <Text>@topping.Topping.ToppingName, </Text>
                             }
-                            <td colspan="1">
-                                @orderItem.Quantity.ToString()
-                            </td>
-
-                        </tr>
+                        }
                     }
-                    <tr style="border-top:double">
-                        <th colspan="1">
-                            Community
-                        </th>
-                        <td id="@item.Id-orderCommunity" colspan="1">@item.Community.Name</td>
-                        <th colspan="1">Address</th>
-                        <td id="@item.Id-orderAddress" colspan="4" style="word-wrap:break-word">
-                            @item.Address @item.City Tx @item.Zipcode
-                        </td>
-                        <td colspan="1">
-                            <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Start", "Orders", new { orderId = item.Id })'">Start Order</button>
-                        </td>
-                    </tr>
-                    <tr style="border-bottom:dotted;">
-                        <th colspan="1">Note</th>
-                        <td id="@item.Id-orderNote" colspan="6" style="word-wrap:break-word">
-                            @item.Note
-                        </td>
-                        <td colspan="1"></td>
-                    </tr>
-                </table>
+                </td>
+            </tr>
+            }
+            <tr style="border-top:double">
+                <th colspan="1">
+                    Community
+                </th>
+                <td id="@item.Id-orderCommunity" colspan="1">@item.Community.Name</td>
+                <th colspan="1">Address</th>
+                <td id="@item.Id-orderAddress" colspan="4" style="word-wrap:break-word">
+                    @item.Address @item.City Tx @item.Zipcode
+                </td>
+                <td colspan="1">
+                    <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Start", "Orders", new { orderId = item.Id })'">Start Order</button>
+                </td>
+            </tr>
+            <tr style="border-bottom:dotted;">
+                <th colspan="1">Note</th>
+                <td id="@item.Id-orderNote" colspan="6" style="word-wrap:break-word">
+                    @item.Note
+                </td>
+                <td colspan="1"></td>
+            </tr>
+        </table>
             }
         }
     </div>
@@ -119,103 +117,101 @@
             if (item.Status == "Acknowledged")
             {
                 itemStartedCount += 1;
-                <table id="@item.Id-printable" class="table" style="width: 80%; margin: auto; table-layout: fixed; margin-bottom: 25px; @(itemStartedCount % 2 == 0 ? "background-color:#fefefe" : "") ">
-                    <tr style="border-bottom:double">
-                        <th colspan="1">Name</th>
-                        <td id="@item.Id-customerName">@item.Name</td>
-                        <th colspan="1">Order Time</th>
-                        <td id="@item.Id-orderTime">@item.CreateTime.ToLocalTime().ToString("hh:mm tt")</td>
+        <table id="@item.Id-printable" class="table" style="width: 80%; margin: auto; table-layout: fixed; margin-bottom: 25px; @(itemStartedCount % 2 == 0 ? "background-color:#fefefe" : "") ">
+            <tr style="border-bottom:double">
+                <th colspan="1">Name</th>
+                <td id="@item.Id-customerName">@item.Name</td>
+                <th colspan="1">Order Time</th>
+                <td id="@item.Id-orderTime">@item.CreateTime.ToLocalTime().ToString("hh:mm tt")</td>
 
-                        <th colspan="1">Complete Time</th>
-                        <td>
-                            @if (item.CompleteTime?.ToLocalTime() > item.CreateTime)
-                            {
-                                item.CompleteTime?.ToLocalTime().ToString("hh:mm tt");
-                            }
-                            else
-                            {
-                                <div>N/A</div>
-                            }
-                        </td>
-                        <th colspan="1">Status</th>
-                        <td>
-                            @item.Status
-                        </td>
-                    </tr>
-                    <tr>
-                        <th colspan="2">Order</th>
-                        <th colspan="4">Toppings</th>
-                        <th colspan="1">Size</th>
-                        <th colspan="1">Quantity</th>
-
-                    </tr>
-                    @{
-                        var orderItemCount = 1;
-                    }
-                    @foreach (var orderItem in item.OrderItems)
+                <th colspan="1">Complete Time</th>
+                <td>
+                    @if (item.CompleteTime?.ToLocalTime() > item.CreateTime)
                     {
-                        <tr id="@item.Id-order-@orderItemCount">
-
-                            <td colspan="2">
-                                @orderItem.MenuItem.Name
-                            </td>
-                            <td colspan="4" style="word-wrap:normal">
-                                @if (orderItem.OrderItemTopping.Count() > 0)
-                                {
-                                    var last = orderItem.OrderItemTopping.Last();
-                                    foreach (var topping in orderItem.OrderItemTopping)
-                                    {
-                                        if (topping == last)
-                                        {
-                                            <Text>@topping.Topping.ToppingName</Text>
-                                        }
-                                        else
-                                        {
-                                            <Text>@topping.Topping.ToppingName, </Text>
-                                        }
-                                    }
-                                }
-                            </td>
-                            @if (orderItem.Size != null)
-                            {
-                                <td colspan="1">
-                                    @orderItem.Size.MainValue
-                                </td>
-                            }
-                            else
-                            {
-                                <td colspan="1"></td>
-                            }
-                            <td colspan="1">
-                                @orderItem.Quantity.ToString()
-                            </td>
-
-                        </tr>
-                        orderItemCount++;
+                        item.CompleteTime?.ToLocalTime().ToString("hh:mm tt");
                     }
-                    <tr style="border-top:double">
-                        <th colspan="1">
-                            Community
-                        </th>
-                        <td id="@item.Id-orderCommunity" colspan="1">@item.Community.Name</td>
-                        <th colspan="1">Address</th>
-                        <td id="@item.Id-orderAddress" colspan="4" style="word-wrap:break-word">
-                            @item.Address @item.City Tx @item.Zipcode
-                        </td>
+                    else
+                    {
+                        <div>N/A</div>
+                    }
+                </td>
+                <th colspan="1">Status</th>
+                <td>
+                    @item.Status
+                </td>
+            </tr>
+            <tr>
+                <th colspan="1">Quantity</th>
+                <th colspan="1">Size</th>
+                <th colspan="2">Order</th>
+                <th colspan="4">Toppings</th>
+
+            </tr>
+            @{
+                var orderItemCount = 1;
+            }
+            @foreach (var orderItem in item.OrderItems)
+            {
+                <tr id="@item.Id-order-@orderItemCount">
+                    <td colspan="1">
+                        @orderItem.Quantity.ToString()
+                    </td>
+                    @if (orderItem.Size != null)
+                    {
                         <td colspan="1">
-                            <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Complete", "Orders", new { orderId = item.Id })'">Complete Order</button>
+                            @orderItem.Size.MainValue
                         </td>
-                    </tr>
-                    <tr style="border-bottom:dotted;">
-                        <th colspan="1">Note</th>
-                        <td id="@item.Id-orderNote" colspan="6" style="word-wrap:break-word">
-                            @item.Note
-                        </td>
-                        <td colspan="1">
-                            <button type="button" class="btn btn-warning" typeof="submit" onclick="PrintDiv(@item.Id, @orderItemCount)">Print</button>
-                        </td>
-                    </tr>
-                </table>
+                    }
+                    else
+                    {
+                        <td colspan="1"></td>
+                    }
+                    <td colspan="2">
+                        @orderItem.MenuItem.Name
+                    </td>
+                    <td colspan="4" style="word-wrap:normal">
+                        @if (orderItem.OrderItemTopping.Count() > 0)
+                        {
+                            var last = orderItem.OrderItemTopping.Last();
+                            foreach (var topping in orderItem.OrderItemTopping)
+                            {
+                                if (topping == last)
+                                {
+                                    <Text>@topping.Topping.ToppingName</Text>
+                                }
+                                else
+                                {
+                                    <Text>@topping.Topping.ToppingName, </Text>
+                                }
+                            }
+                        }
+                    </td>
+                </tr>
+                orderItemCount++;
+                }
+                <tr style="border-top:double">
+                    <th colspan="1">
+                        Community
+                    </th>
+                    <td id="@item.Id-orderCommunity" colspan="1">@item.Community.Name</td>
+                    <th colspan="1">Address</th>
+                    <td id="@item.Id-orderAddress" colspan="4" style="word-wrap:break-word">
+                        @item.Address @item.City Tx @item.Zipcode
+                    </td>
+                    <td colspan="1">
+                        <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Complete", "Orders", new { orderId = item.Id })'">Complete Order</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom:dotted;">
+                    <th colspan="1">Note</th>
+                    <td id="@item.Id-orderNote" colspan="6" style="word-wrap:break-word">
+                        @item.Note
+                    </td>
+                    <td colspan="1">
+                        <button type="button" class="btn btn-warning" typeof="submit" onclick="PrintDiv(@item.Id, @orderItemCount)">Print</button>
+                    </td>
+                </tr>
+            </table>
             }
         }
     </div>
@@ -255,10 +251,10 @@
                         </td>
                     </tr>
                     <tr>
+                        <th colspan="1">Quantity</th>
+                        <th colspan="1">Size</th>
                         <th colspan="2">Order</th>
                         <th colspan="4">Toppings</th>
-                        <th colspan="1">Size</th>
-                        <th colspan="1">Quantity</th>
 
                     </tr>
                     @{
@@ -266,43 +262,42 @@
                     }
                     @foreach (var orderItem in item.OrderItems)
                     {
-                        <tr id="@item.Id-order">
-
-                            <td colspan="2">
-                                @orderItem.MenuItem.Name
+                    <tr id="@item.Id-order">
+                        <td colspan="1">
+                            @orderItem.Quantity.ToString()
+                        </td>
+                        @if (orderItem.Size != null)
+                        {
+                            <td colspan="1">
+                                @orderItem.Size.MainValue
                             </td>
-                            <td colspan="4" style="word-wrap:normal">
-                                @if (orderItem.OrderItemTopping.Count() > 0)
+                        }
+                        else
+                        {
+                            <td colspan="1"></td>
+                        }
+                        <td colspan="2">
+                            @orderItem.MenuItem.Name
+                        </td>
+                        <td colspan="4" style="word-wrap:normal">
+                            @if (orderItem.OrderItemTopping.Count() > 0)
+                            {
+                                var last = orderItem.OrderItemTopping.Last();
+                                foreach (var topping in orderItem.OrderItemTopping)
                                 {
-                                    var last = orderItem.OrderItemTopping.Last();
-                                    foreach (var topping in orderItem.OrderItemTopping)
+                                    if (topping == last)
                                     {
-                                        if (topping == last)
-                                        {
-                                            <Text>@topping.Topping.ToppingName</Text>
-                                        }
-                                        else
-                                        {
-                                            <Text>@topping.Topping.ToppingName, </Text>
-                                        }
+                                        <Text>@topping.Topping.ToppingName</Text>
+                                    }
+                                    else
+                                    {
+                                        <Text>@topping.Topping.ToppingName, </Text>
                                     }
                                 }
-                            </td>
-                            @if (orderItem.Size != null)
-                            {
-                                <td colspan="1">
-                                    @orderItem.Size.MainValue
-                                </td>
                             }
-                            else
-                            {
-                                <td colspan="1"></td>
-                            }
-                            <td colspan="1">
-                                @orderItem.Quantity.ToString()
-                            </td>
+                        </td>
 
-                        </tr>
+                    </tr>
                         completedOrderItemCount++;
                     }
                     <tr style="border-top:double">
