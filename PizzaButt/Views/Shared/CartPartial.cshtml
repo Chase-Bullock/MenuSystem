@@ -9,20 +9,26 @@
     <div style="display:flex; flex-direction: column; height:540px; justify-content: space-between;">
         <table style="flex:10; display:flex; justify-content:center;">
             @foreach (var item in ViewBag.cart)
-        {
-            <tr style="margin-bottom: 15px">
-                <td>@item.Quantity</td>
-                @foreach(var topping in item.Toppings)
+            {
+                var stringToppings = "";
+                if (item.Toppings != null)
                 {
-                <td>@topping.Name</td>
+                    stringToppings = string.Join(",", (IEnumerable<ToppingsViewModel>)item.Toppings.ToArray());
                 }
-                <td style="font-weight: 500" ;>@item.MenuItem.Name</td>
-                <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.MenuItem.Id">Remove</a></td>
-            </tr>
-        }
+                <tr style="margin-bottom: 15px">
+                    <td>@item.Quantity</td>
+                    @foreach (ToppingsViewModel topping in item.Toppings)
+                    {
+                        <td>@topping.Name</td>
+                    }
+                    <td style="font-weight: 500" ;>@item.MenuItem.Name</td>
+                    <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.MenuItem.Id" asp-route-toppings="@item.Toppings">Remove</a></td>
+                    @*<td><a href="@Url.Action("remove", "cart", new { id = item.MenuItem.Id, toppings = stringToppings })">Click</a></td>*@
+                </tr>
+            }
         </table>
         <div style="flex:1; display: flex; justify-content: center;">
-                <a style="color: #fff; height: 35px; font-size:16px;" asp-controller="cart" asp-action="checkout" class="btn btn-primary">Place order</a>
+            <a style="color: #fff; height: 35px; font-size:16px;" asp-controller="cart" asp-action="checkout" class="btn btn-primary">Place order</a>
         </div>
     </div>
 </div>

@@ -305,6 +305,11 @@ namespace CathedralKitchen.Controllers
             }
             else
             {
+                if(!request.IsEmployee && SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart").Count > 0)
+                {
+                    TempData["ErrorMessage"] = "You may only select one item, please remove your previous item to add a new one.";
+                    return RedirectToAction("OrderMenu", "Cart");
+                }
                 List<OrderItemViewModel> cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
                 long index = isExist(selectedItemViewModel.Id, selectedToppingsViewModels);
                 if (index != -1)
@@ -320,6 +325,24 @@ namespace CathedralKitchen.Controllers
 
             return RedirectToAction("OrderMenu", "Cart");
 
+        }
+
+        [Route("remove/{id}/{toppings}")]
+        public IActionResult Remove(long id, List<ToppingsViewModel> toppings)
+        {
+            List<OrderItem> cart = SessionHelper.GetObjectFromJson<List<OrderItem>>(HttpContext.Session, "cart");
+            //int index = isExist(id, toppings);
+            //if (index > 0)
+            //{
+            //    cart.RemoveAt(index);
+            //}
+            //else
+            //{
+            //    TempData["ErrorMessage"] = "Something went wrong, please try again.";
+            //    return RedirectToAction("OrderMenu", "Cart");
+            //}
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            return RedirectToAction("OrderMenu", "Cart");
         }
 
         public IActionResult Checkout()
