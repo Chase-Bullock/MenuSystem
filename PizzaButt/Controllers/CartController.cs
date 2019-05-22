@@ -327,25 +327,39 @@ namespace CathedralKitchen.Controllers
 
         }
 
-        [Route("remove/{id}/{toppings}")]
-        public IActionResult Remove(long id, List<ToppingsViewModel> toppings)
+        [Route("remove/{id}/{toppingIds}")]
+        public IActionResult Remove(long id, string toppingIds)
         {
+            string[] splitToppingIds = toppingIds.Split(",");
+            splitToppingIds = splitToppingIds.Where(x => x != "").ToArray();
+            var ids = splitToppingIds.Select(long.Parse).ToList();
             List<OrderItem> cart = SessionHelper.GetObjectFromJson<List<OrderItem>>(HttpContext.Session, "cart");
-            //int index = isExist(id, toppings);
-            //if (index > 0)
-            //{
-            //    cart.RemoveAt(index);
-            //}
-            //else
-            //{
-            //    TempData["ErrorMessage"] = "Something went wrong, please try again.";
-            //    return RedirectToAction("OrderMenu", "Cart");
-            //}
+            var toppings = _ctx.Topping.Where(r => ids.Contains(r.Id)).ToList();
+            var toppingsViewModels = new List<ToppingsViewModel>();
+            toppings.ForEach(x =>
+            {
+                var toppingsViewModel = new ToppingsViewModel
+                {
+                    Id = x.Id,
+                    Name = x.ToppingName,
+                };
+                toppingsViewModels.Add(toppingsViewModel);
+            });
+            int index = isExist(id, toppingsViewModels); //returns index in cart where item id = id and item toppings = toppings
+            if (index >= 0)
+            {
+                cart.RemoveAt(index);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Something went wrong, please try again.";
+                return RedirectToAction("OrderMenu", "Cart");
+            }
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("OrderMenu", "Cart");
         }
 
-        public IActionResult Checkout()
+        public IActionResult Checkout(string note)
         {
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             var orderId = SessionHelper.GetObjectFromJson<long>(HttpContext.Session, "orderId");
@@ -362,6 +376,8 @@ namespace CathedralKitchen.Controllers
 
             ViewBag.cart = cart;
 
+            order.Note = note;
+            _ctx.SaveChanges();
             
 
             foreach (var item in cart)
