@@ -15,9 +15,16 @@ function PrintDiv(id, count) {
     console.log(orderItems);
     var popupWin = window.open('', '_blank', 'width=800,height=800,location=no,left=200px');
     popupWin.document.open();
-    popupWin.document.write('<html><body onload="window.print()"> <div style="text-align:center"><div> <span style="font-weight:600">Order Number:</span> ' + id + '</div><div> <span style="font-weight:600">Name:</span> ' + customerName.innerHTML +
-        '</div><div> <span style="font-weight:600">Address:</span>' + orderAddress.innerHTML + '</div><div> <span style="font-weight:600">Community:</span> ' + orderCommunity.innerHTML + '</div> <div> <span style="font-weight:600">Order:</span>' + orderItems.map(i => { return '<div>' + i + '</div>' }).join("")
-        + '</div><div> <span style="font-weight: 600">Note:</span> ' + orderNote.innerHTML + '</div> <div>  <span style="font-weight:600">Order Time:</span> ' + orderTime.innerHTML + '</div> </html>');
+    popupWin.document.write('<html>'
+        + '<body style="font-size:26px;" onload="window.print()">'
+        + '<div style="text-align:center; display: flex; flex-direction: column; justify-content: space-evenly; align-items:center;">'
+        + '<img src="../images/cathedral.jpg" style="width:200px; height:200px;" />'
+        + '<div style="display: flex; width:100%; font-size:20px; margin-bottom:10px"> <div style="flex:1"><span style="font-weight:600;">Order Number: </span>' + id + '</div><div style="flex:1"> <span style="font-weight:600">Order Time:</span> ' + orderTime.innerHTML + '</div></div> '
+        + '<div style="display: flex; width:100%; font-size:20px; margin-bottom:10px"> <div style="margin-bottom:10px; width:100%;"> <span style="font-weight:600">Name:</span> ' + customerName.innerHTML + '</div>'
+        + '<div style="margin-bottom:10px; width:100%;"> <span style="font-weight:600">Community:</span> ' + orderCommunity.innerHTML + '</div></div>'
+        + '<div style="margin-bottom:10px; width:100%; font-size:18px;"> <span style="font-weight:600">Address:</span>' + orderAddress.innerHTML + '</div>'
+        +' <div style="margin-bottom:40px; width:100%;"> <span style="font-weight:600">Order:</span>' + orderItems.map(i => { return ' <div> ' + i + '</div > ' }).join("")
+        + '</div><div> <span style="font-weight: 600">Note:</span> ' + orderNote.innerHTML + '</div> </body> </html>');
     popupWin.document.close();
 
 }
