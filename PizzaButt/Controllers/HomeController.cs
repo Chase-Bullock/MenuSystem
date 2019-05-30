@@ -163,6 +163,11 @@ namespace CathedralKitchen.Controllers
                 };
                 _ctx.Person.Add(person);
                 _ctx.SaveChanges();
+            } else
+            {
+                person.SendEmail = cartViewModel.EmailConsent;
+                _ctx.Person.Update(person);
+                _ctx.SaveChanges();
             }
 
             var order = new Order
