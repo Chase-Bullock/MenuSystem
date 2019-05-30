@@ -12,13 +12,15 @@
         </div>
     </div>
     <div class="row">
+      <div class="col-md-3 col-sm-6 offset-md-3">
         @await Html.PartialAsync("../Shared/OrderPartial.cshtml")
-        <div class="col-3" style="margin-right:30px;">
-            @await Html.PartialAsync("../Shared/CartPartial.cshtml")
-        </div>
-    </div>
+      </div>
+      <div style="width: 100%" class="col-md-4 col-sm-6 offset-md-1">
+        @await Html.PartialAsync("../Shared/CartPartial.cshtml")
+      </div>
+      </div>
 
-</div>
+    </div>
 @section Scripts
     {
     <script src="~/lib/signalr/signalr.js"></script>
