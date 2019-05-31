@@ -1,6 +1,6 @@
 ﻿$(function () {
 
-    $("#btn").click(function (e) {
+    $("#placeOrder").click(function (e) {
         // Stop the normal navigation
         e.preventDefault();
 

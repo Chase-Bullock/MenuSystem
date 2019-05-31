@@ -86,7 +86,7 @@
             @Model.Note
         </td>
         <td colspan="1">
-            <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Cancel", "Orders", new { orderId = Model.Id })'">Cancel Order</button>
+            <button id="cancelOrder" type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Cancel", "Orders", new { orderId = Model.Id })'">Cancel Order</button>
         </td>
     </tr>
 </table>
