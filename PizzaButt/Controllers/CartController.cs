@@ -328,11 +328,17 @@ namespace CathedralKitchen.Controllers
         }
 
         [Route("remove/{id}/{toppingIds}")]
+        [Route("remove/{id}")]
         public IActionResult Remove(long id, string toppingIds)
         {
-            string[] splitToppingIds = toppingIds.Split(",");
-            splitToppingIds = splitToppingIds.Where(x => x != "").ToArray();
-            var ids = splitToppingIds.Select(long.Parse).ToList();
+            var ids = new List<long>();
+
+            if (toppingIds != null)
+            {
+                string[] splitToppingIds = toppingIds.Split(",");
+                splitToppingIds = splitToppingIds.Where(x => x != "").ToArray();
+                ids = splitToppingIds.Select(long.Parse).ToList();
+            }
             List<OrderItem> cart = SessionHelper.GetObjectFromJson<List<OrderItem>>(HttpContext.Session, "cart");
             var toppings = _ctx.Topping.Where(r => ids.Contains(r.Id)).ToList();
             var toppingsViewModels = new List<ToppingsViewModel>();

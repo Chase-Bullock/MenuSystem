@@ -90,7 +90,9 @@
                     @item.Address @item.City Tx @item.Zipcode
                 </td>
                 <td colspan="1">
-                    <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Start", "Orders", new { orderId = item.Id })'">Start Order</button>
+                  @*<button type="button" class="btn btn-warning statusChangeButton" typeof="submit" onclick="location.href = '@Url.Action("Start", "Orders", new { orderId = item.Id })'">Start Order</button>*@
+                  <a style="color: #fff; height: 35px; font-size:13.3px;" asp-controller="Orders" asp-action="Start" asp-route-orderId="@item.Id" class="btn btn-warning statusChangeButton">Place order</a>
+
                 </td>
             </tr>
             <tr style="border-bottom:dotted;">
@@ -199,7 +201,9 @@
                         @item.Address @item.City Tx @item.Zipcode
                     </td>
                     <td colspan="1">
-                        <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("Complete", "Orders", new { orderId = item.Id })'">Complete Order</button>
+                      @*<button type="button" class="btn btn-warning statusChangeButton" typeof="submit" onclick="location.href = '@Url.Action("Complete", "Orders", new { orderId = item.Id })'">Complete Order</button>*@
+                      <a style="color: #fff; height: 35px; font-size:13.3px;" asp-controller="Orders" asp-action="Complete" asp-route-orderId="@item.Id" class="btn btn-warning statusChangeButton">Complete order</a>
+
                     </td>
                 </tr>
                 <tr style="border-bottom:dotted;">
@@ -224,10 +228,10 @@
         @{var itemCompletedCount = 0; }
         @foreach (var item in Model)
         {
-            if (item.Status == "Complete" && item.CompleteTime?.AddHours(6) > DateTime.UtcNow)
+            if (item.Status == "Complete" && item.CompleteTime?.AddMinutes(15) > DateTime.UtcNow)
             {
                 itemCompletedCount += 1;
-                <table id="@item.Id" class="table" style="width: 80%; margin: auto; table-layout: fixed; margin-bottom: 25px; @(itemCompletedCount % 2 == 0 ? "background-color:#fefefe" : "") ">
+                <table id="@item.Id" class="table" style="width: 80%; margin: auto; table-layout: fixed; margin-bottom: 25px; @(itemCompletedCount % 2 == 0 ? "background-color:#fefefe" : "")">
                     <tr style="border-bottom:double">
                         <th colspan="1">Name</th>
                         <td id="@item.Id-customerName">@item.Name</td>
@@ -236,9 +240,9 @@
 
                         <th colspan="1">Complete Time</th>
                         <td>
-                            @if (item.CompleteTime?.ToLocalTime() > item.CreateTime)
+                            @if (item.CompleteTime > item.CreateTime)
                             {
-                                item.CompleteTime?.ToLocalTime().ToString("hh:mm tt");
+                              <div>@item.CompleteTime?.ToLocalTime().ToString("hh:mm tt")</div>
                             }
                             else
                             {
@@ -250,19 +254,19 @@
                             @item.Status
                         </td>
                     </tr>
-                    <tr>
+                    @*<tr>
                         <th colspan="1">Quantity</th>
                         <th colspan="1">Size</th>
                         <th colspan="2">Order</th>
                         <th colspan="4">Toppings</th>
 
-                    </tr>
+                    </tr>*@
                     @{
                         var completedOrderItemCount = 1;
                     }
                     @foreach (var orderItem in item.OrderItems)
                     {
-                    <tr id="@item.Id-order">
+                    @*<tr id="@item.Id-order">
                         <td colspan="1">
                             @orderItem.Quantity.ToString()
                         </td>
@@ -297,23 +301,28 @@
                             }
                         </td>
 
-                    </tr>
+                    </tr>*@
                         completedOrderItemCount++;
                     }
                     <tr style="border-top:double">
-                        <th colspan="1">
-                            Community
-                        </th>
-                        <td id="@item.Id-orderCommunity" colspan="1">@item.Community.Name</td>
-                        <th colspan="1">Address</th>
-                        <td id="@item.Id-orderAddress" colspan="4" style="word-wrap:break-word">
-                            @item.Address @item.City Tx @item.Zipcode
-                        </td>
-                        <td colspan="1">
-                            <button type="button" class="btn btn-warning" typeof="submit" onclick="location.href = '@Url.Action("ReOpen", "Orders", new { orderId = item.Id })'">Re-open Order</button>
-                        </td>
+                      <th colspan="1">
+                        Community
+                      </th>
+                      <td id="@item.Id-orderCommunity" colspan="1">@item.Community.Name</td>
+                      <th colspan="1">Address</th>
+                      <td id="@item.Id-orderAddress" colspan="4" style="word-wrap:break-word">
+                        @item.Address @item.City Tx @item.Zipcode
+                      </td>
+                      <td colspan="2">
+                        @*<button type="button" class="btn btn-warning statusChangeButton" onclick="location.href = '@Url.Action("ReOpen", "Orders", new { orderId = item.Id })'">Re-open Order</button>*@
+                        <a style="color: #fff; height: 35px; font-size:13.3px;" asp-controller="Orders" asp-action="ReOpen" asp-route-orderId="@item.Id" class="btn btn-warning statusChangeButton">Re-open order</a>
+
+                      </td>
+                      <td colspan="1">
+                        <button type="button" class="btn btn-warning" typeof="submit" onclick="PrintDiv(@item.Id, @completedOrderItemCount)">Print</button>
+                      </td>
                     </tr>
-                    <tr style="border-bottom:dotted;">
+                    @*<tr style="border-bottom:dotted;">
                         <th colspan="1">Note</th>
                         <td id="@item.Id-orderNote" colspan="6" style="word-wrap:break-word">
                             @item.Note
@@ -321,7 +330,7 @@
                         <td colspan="1">
                             <button type="button" class="btn btn-warning" typeof="submit" onclick="PrintDiv(@item.Id, @completedOrderItemCount)">Print</button>
                         </td>
-                    </tr>
+                    </tr>*@
                 </table>
             }
         }

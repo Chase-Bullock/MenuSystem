@@ -6,18 +6,18 @@ connection.start().catch(function (err) {
     return console.error(err.toString());
 });
 
-document.getElementById("activateNav").addEventListener("click", function (event) {
-    event.preventDefault();
-    $('.orderForm').submit();
+if (document.getElementById("cancelOrder") != null) {
+  document.getElementById("cancelOrder").addEventListener("click", function (event) {
     connection.invoke("UpdateOrder").catch(function (err) {
-        return console.error(err.toString());
+      return console.error(err.toString());
     });
-});
+  });
+}
 
-document.getElementById("activateNav").addEventListener("click", function (event) {
-    event.preventDefault();
-    $('.checkoutForm').submit();
+if (document.getElementById("placeOrder") != null) {
+  document.getElementById("placeOrder").addEventListener("click", function (event) {
     connection.invoke("UpdateOrder").catch(function (err) {
-        return console.error(err.toString());
+      return console.error(err.toString());
     });
-});
+  });
+}
