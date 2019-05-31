@@ -7,7 +7,7 @@
 <div style="background-color:#efefef; border-width: 1px; border-color:black; -webkit-box-shadow: 0px 0px 9px 1px rgba(0,0,0,0.75); -moz-box-shadow: 0px 0px 9px 1px rgba(0,0,0,0.75); box-shadow: 0px 0px 9px 1px rgba(0,0,0,0.75); height:600px ">
     <h3 style="font-size: 36px; font-weight: 700; text-align: center; border-bottom:solid;">Cart</h3>
     <div style="display:flex; flex-direction: column; height:540px; justify-content: space-between;">
-        <table style="flex:10; display:flex; justify-content:center;">
+        <div style="flex:12; display:flex; justify-content:center;">
             @foreach (var item in ViewBag.cart)
             {
                 var stringToppings = "";
@@ -20,22 +20,24 @@
                         idToppings += (topping.Id + ",");
                     }
                 }
-                <tr style="margin-bottom: 15px">
-                    <td>@item.Quantity</td>
-                    @foreach (ToppingsViewModel topping in item.Toppings)
-                    {
-                        <td>@topping.Name</td>
-                    }
-                    <td style="font-weight: 500" ;>@item.MenuItem.Name</td>
-                    @*<td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.MenuItem.Id" asp-route-toppingIds="@idToppings">Remove</a></td>*@
-                    <td><a href="@Url.Action("remove", "cart", new { id = item.MenuItem.Id, toppingIds = idToppings })">Click</a></td>
-                </tr>
+            <div>@item.Quantity &nbsp </div>
+            <div style="flex:9">
+              @foreach (ToppingsViewModel topping in item.Toppings)
+              {
+              <span>@topping.Name &nbsp </span>
+              } 
+              </div>
+              <div style="font-weight: 500; flex:2">@item.MenuItem.Name</div>
+              <div style="flex:2"><a href="@Url.Action("remove", "cart", new { id = item.MenuItem.Id, toppingIds = idToppings })">Remove</a></div>
             }
-        </table>
+        </div>
+      @if (ViewBag.cart.Count > 0)
+      {
         <div class="form-group">
             <label class="titleTag">Special instructions</label>
             <textarea id="note" class="form-control"></textarea>
         </div>
+      }
         <div style="flex:1; display: flex; justify-content: center;">
             <a id="btn" style="color: #fff; height: 35px; font-size:16px;" asp-controller="cart" asp-action="checkout" asp-route-note="replacethis" class="btn btn-primary">Place order</a>
         </div>
