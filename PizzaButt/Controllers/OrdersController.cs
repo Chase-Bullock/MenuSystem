@@ -152,7 +152,9 @@ namespace CathedralKitchen.Controllers
         [HttpPost]
         public IActionResult SelectActiveToppings(SelectToppingViewModel selectedItems)
         {
-            var items = _ctx.Topping;
+            //var items = _ctx.Topping;
+            var items = _ctx.Topping.Where(i => i.Active == true).Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
+
             List<Topping> allItems = items.ToList();
 
             foreach (var x in allItems)
@@ -160,10 +162,18 @@ namespace CathedralKitchen.Controllers
                 if (selectedItems.ToppingNames.Contains(x.ToppingName))
                 {
                     x.Active = true;
+                    foreach(var toppingSysRef in x.ToppingSystemReference)
+                    {
+                        toppingSysRef.Active = true;
+                    }
                 }
                 else
                 {
                     x.Active = false;
+                    foreach (var toppingSysRef in x.ToppingSystemReference)
+                    {
+                        toppingSysRef.Active = false;
+                    }
                 }
             };
 

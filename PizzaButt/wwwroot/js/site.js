@@ -4,7 +4,7 @@ $('#menuSelect').on('change', function(e) {
     var val = $(this).val();
     console.log(val);
     $('.toppings').prop('checked', false);
-    if (val === 'Taco') {
+    if(val.indexOf('Taco') >= 0) {
         $('#toppingsForPizza').fadeOut();
         $('#sizesForPizza').fadeOut();
         $('#extraSauceForOthers').fadeOut();
@@ -110,15 +110,15 @@ $('#isEmployee').on('change', function (e) {
 
 //////////////////////////// OLD WAY TO REFRESH PAGE(NEW WAY NOT IMPLEMENTED) ////////////////////////////
 
-//if (window.location.pathname === '/Orders/Status') {
-//    var time = new Date().getTime();
-//    $(document.body).bind("mousemove keypress", function () {
-//        time = new Date().getTime();
-//    });
+if (window.location.pathname === '/Orders/StatusOfAllOrders') {
+    var time = new Date().getTime();
+    $(document.body).bind("mousemove keypress", function () {
+        time = new Date().getTime();
+    });
 
-//    setInterval(function () {
-//        if (new Date().getTime() - time >= 12000) {
-//           window.location.reload(true);
-//        }
-//    }, 1000);
-//}
+    setInterval(function () {
+        if (new Date().getTime() - time >= 12000) {
+           window.location.reload(true);
+        }
+    }, 1000);
+}

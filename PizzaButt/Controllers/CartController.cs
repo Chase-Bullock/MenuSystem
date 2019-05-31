@@ -161,9 +161,9 @@ namespace CathedralKitchen.Controllers
             ViewBag.cart = cart;
             //FIX ORDER VIEW MODEL
             var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
-            var toppings = _ctx.Topping.Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
-            var filteredPizzaToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Pizza"));
-            var filteredTacoToppings = toppings.Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Taco"));
+            var toppings = _ctx.Topping.Where(i => i.Active == true).Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
+            var filteredPizzaToppings = toppings.Where(x => x.Active == true && x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Pizza"));
+            var filteredTacoToppings = toppings.Where(x => x.Active == true && x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Taco"));
             var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community);
             var filteredTodaysSchedule = todaysSchedule.Where(x => x.Date == DateTime.Today).Where(y => y.Active == true);
             bool isAuthenticated = User.Identity.IsAuthenticated;
