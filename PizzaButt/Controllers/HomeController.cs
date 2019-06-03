@@ -52,12 +52,19 @@ namespace CathedralKitchen.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult ShortendOrderView()
         {
             if (!ModelState.IsValid) return RedirectToAction("ShortendOrderView", "Home");
             var validated = SessionHelper.GetObjectFromJson<string>(HttpContext.Session, "validated");
             if (validated != _ctx.OrderCode.First(x => x.Active == true).Password) return RedirectToAction("Index", "Home");
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
+            var orderId = SessionHelper.GetObjectFromJson<long>(HttpContext.Session, "orderId");
+            if(orderId > 0)
+            {
+                TempData["ErrorMessage"] = "Orders are limited to only one per day, cancel your last order to create a new one.";
+                return RedirectToAction("OrderInfoForCustomer", "Orders");
+            }
             ViewBag.cart = cart;
 
             var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community);

@@ -20,26 +20,27 @@
                         idToppings += (topping.Id + ",");
                     }
                 }
-            <div>@item.Quantity &nbsp </div>
-            <div style="flex:9">
-              @foreach (ToppingsViewModel topping in item.Toppings)
-              {
-              <span>@topping.Name &nbsp </span>
-              } 
-              </div>
-              <div style="font-weight: 500; flex:2">@item.MenuItem.Name</div>
-              <div style="flex:2"><a href="@Url.Action("remove", "cart", new { id = item.MenuItem.Id, toppingIds = idToppings })">Remove</a></div>
+                <div>@item.Quantity &nbsp </div>
+                <div style="flex:9">
+                    @foreach (ToppingsViewModel topping in item.Toppings)
+                    {
+                        <span>@topping.Name &nbsp </span>
+                    }
+                </div>
+                <div style="font-weight: 500; flex:2">@item.MenuItem.Name</div>
+                <div style="flex:2"><a href="@Url.Action("remove", "cart", new { id = item.MenuItem.Id, toppingIds = idToppings })">Remove</a></div>
             }
         </div>
-      @if (ViewBag.cart.Count > 0)
-      {
-        <div class="form-group">
-            <label class="titleTag">Special instructions</label>
-            <textarea id="note" class="form-control"></textarea>
-        </div>
-      }
+        @if (ViewBag.cart.Count > 0)
+        {
+            <div class="form-group">
+                <label class="titleTag">Special instructions</label>
+                <textarea id="note" class="form-control"></textarea>
+            </div>
+
         <div style="flex:1; display: flex; justify-content: center;">
             <a id="placeOrder" style="color: #fff; height: 35px; font-size:16px;" asp-controller="cart" asp-action="checkout" asp-route-note="replacethis" class="btn btn-primary">Place order</a>
         </div>
+        }
     </div>
 </div>

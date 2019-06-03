@@ -332,6 +332,7 @@ namespace CathedralKitchen.Controllers
         public IActionResult Remove(long id, string toppingIds)
         {
             var ids = new List<long>();
+
             if (toppingIds != null)
             {
                 string[] splitToppingIds = toppingIds.Split(",");
