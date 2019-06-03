@@ -91,7 +91,7 @@
                 </td>
                 <td colspan="1">
                   @*<button type="button" class="btn btn-warning statusChangeButton" typeof="submit" onclick="location.href = '@Url.Action("Start", "Orders", new { orderId = item.Id })'">Start Order</button>*@
-                  <a style="color: #fff; height: 35px; font-size:13.3px;" asp-controller="Orders" asp-action="Start" asp-route-orderId="@item.Id" class="btn btn-warning statusChangeButton">Place order</a>
+                  <a style="color: #fff; height: 35px; font-size:13.3px;" asp-controller="Orders" asp-action="Start" asp-route-orderId="@item.Id" class="btn btn-warning statusChangeButton">Start order</a>
 
                 </td>
             </tr>
