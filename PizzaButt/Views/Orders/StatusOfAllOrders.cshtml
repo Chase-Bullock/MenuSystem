@@ -228,7 +228,7 @@
         @{var itemCompletedCount = 0; }
         @foreach (var item in Model)
         {
-            if (item.Status == "Complete" && item.CompleteTime?.AddHours(6) > DateTime.UtcNow)
+            if (item.Status == "Complete" && item.CompleteTime?.AddMinutes(10) > DateTime.UtcNow)
             {
                 itemCompletedCount += 1;
                 <table id="@item.Id" class="table" style="width: 80%; margin: auto; table-layout: fixed; margin-bottom: 25px; @(itemCompletedCount % 2 == 0 ? "background-color:#fefefe" : "") ">
@@ -338,6 +338,6 @@
 
     </div>
     <script src="~/lib/signalr/signalr.js"></script>
-    <script src="~/js/orders.js"></script>
+    <script src="~/js/orders.js?v=2"></script>
     <script src="~/js/print.js"></script>
 
