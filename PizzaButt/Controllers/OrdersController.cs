@@ -9,6 +9,9 @@ using CathedralKitchen.Helpers;
 using CathedralKitchen.NewModels;
 using CathedralKitchen.Services;
 using CathedralKitchen.ViewModels;
+using CathedralKitchen.ExtendedModels;
+using Microsoft.Extensions.Options;
+using CathedralKitchen.Utility;
 
 namespace CathedralKitchen.Controllers
 {
@@ -17,17 +20,26 @@ namespace CathedralKitchen.Controllers
         private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
         private readonly CathedralKitchenContext _ctx;
         private readonly IEmailNotificationService _emailNotificationService;
+        private readonly IOptions<SettingsModel> _options;
 
-        public OrdersController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx, IEmailNotificationService emailNotificationService)
+        public OrdersController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx, IEmailNotificationService emailNotificationService, IOptions<SettingsModel> options)
         {
             _emailNotificationService = emailNotificationService;
             _cathedralKitchenRepository = cathedralKitchenRepository;
             _ctx = ctx;
+            _options = options;
+            ApplicationSettings.WebApiUrl = _options.Value.WebApiBaseUrl;
+
         }
+
         [Authorize]
-        public IActionResult StatusOfAllOrders()
+        public async Task<IActionResult> StatusOfAllOrders()
         {
-            var orders = _ctx.Order.Where(x => x.OrderStatusId != 20002 && x.OrderStatusId != 2).Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus).Include(c => c.Community);
+            var orders = _ctx.Order.Where(x => x.OrderStatusId != 20002 && x.OrderStatusId != 2)
+    .Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping)
+    .Include(c => c.OrderItem).ThenInclude(w => w.MenuItem)
+    .Include(y => y.OrderStatus).Include(c => c.Community);
+
             //var orderItems = _ctx.OrderItem.Include(y => y.MenuItem).Include(y => y.OrderItemTopping).ThenInclude(y => y.Topping).ToList();
             var orderItemsViewModel = new Dictionary<long, List<OrderItemViewModel>>();
             var ordersViewModel = new List<OrderViewModel>();
@@ -51,7 +63,8 @@ namespace CathedralKitchen.Controllers
                     {
                         orderItemsViewModel[order.Id] = new List<OrderItemViewModel>();
                         orderItemsViewModel[order.Id].Add(orderItemViewModel);
-                    } else
+                    }
+                    else
                     {
                         orderItemsViewModel[order.Id].Add(orderItemViewModel);
                     };
@@ -79,8 +92,8 @@ namespace CathedralKitchen.Controllers
                     CompleteTime = order.CompleteTime
                 };
                 ordersViewModel.Add(orderViewModel);
-
             }
+
             return View(ordersViewModel);
         }
 

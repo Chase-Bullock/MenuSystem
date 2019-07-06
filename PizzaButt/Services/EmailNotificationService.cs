@@ -51,10 +51,10 @@ namespace CathedralKitchen.Services
             switch ((Status)status)
             {
                 case Status.Acknowledged:
-                    content = "Your order has been acknowledged. We'll let you know when it is on the way!";
+                    content = "Your order has been acknowledged. We'll let you know when it is done!";
                     break;
                 case Status.Complete:
-                    content = "Your order is complete and on its way!";
+                    content = "Your order is complete!";
                     break;
 
                 default:

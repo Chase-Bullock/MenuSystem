@@ -15,6 +15,10 @@ using CathedralKitchen.NewModels;
 using CathedralKitchen.ViewModels;
 using CathedralKitchen.ViewModels.AccountViewModels;
 using CathedralKitchen.Services;
+using CathedralKitchen.API;
+using CathedralKitchen.Utility;
+using CathedralKitchen.ExtendedModels;
+using CathedralKitchen.Factory;
 
 namespace CathedralKitchen.Controllers
 {
@@ -24,36 +28,25 @@ namespace CathedralKitchen.Controllers
         private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
         private readonly CathedralKitchenContext _ctx;
         private readonly IEmailNotificationService _emailNotificationService;
+        private readonly ScheduleController _scheduleController;
+        private readonly IOptions<SettingsModel> _options;
 
-        public HomeController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx, IEmailNotificationService emailNotificationService)
+        public HomeController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx, IEmailNotificationService emailNotificationService, IOptions<SettingsModel> options)
         {
             _emailNotificationService = emailNotificationService;
             _cathedralKitchenRepository = cathedralKitchenRepository;
             _ctx = ctx;
+            _options = options;
+            ApplicationSettings.WebApiUrl = _options.Value.WebApiBaseUrl;
         }
 
-        [HttpGet]
-        public IEnumerable<MenuItem> GetAllItems()
+        public async Task<IActionResult> Index()
         {
-            return _cathedralKitchenRepository.GetMenuItems();
-        }
-
-        [HttpGet("{id}")]
-        public MenuItem GetItemById(long id)
-        {
-            return _cathedralKitchenRepository.GetMenuItem(id) ?? new MenuItem();
-        }
-
-        public IActionResult Index()
-        {
-            var person = _ctx.Person.FirstOrDefault(x => x.Email == "ChaseRBullock@live.com");
-
-
             return View();
         }
 
         [HttpGet]
-        public IActionResult ShortendOrderView()
+        public async Task<IActionResult> ShortendOrderView()
         {
             if (!ModelState.IsValid) return RedirectToAction("ShortendOrderView", "Home");
             var validated = SessionHelper.GetObjectFromJson<string>(HttpContext.Session, "validated");
@@ -70,32 +63,8 @@ namespace CathedralKitchen.Controllers
             var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community);
             var filteredTodaysSchedule = todaysSchedule.Where(x => x.Date.Date == DateTime.Today);
 
-            var filteredScheduleConfigViewModel = new List<ScheduleConfigViewModel>();
             var allCommunities = new List<CommunityViewModel>();
-            var scheduledCommunties = new List<string>();
             var communities = _ctx.Community.Where(x => x.Active == true).ToList();
-
-            foreach (var config in filteredTodaysSchedule)
-            {
-                var communityViewModel = new CommunityViewModel
-                {
-                    Id = config.Community.Id,
-                    Name = config.Community.Name
-                };
-
-                var scheduleViewModel = new ScheduleConfigViewModel
-                {
-                    Id = config.Id,
-                    //Builder = builderViewModel,
-                    Community = communityViewModel,
-                    Date = config.Date,
-                    Active = config.Active
-                };
-
-                scheduledCommunties.Add(config.Community.Name);
-
-                filteredScheduleConfigViewModel.Add(scheduleViewModel);
-            };
 
             foreach(var community in communities)
             {
@@ -107,10 +76,13 @@ namespace CathedralKitchen.Controllers
                 allCommunities.Add(communityViewModel);
             }
 
+            var scheduleData = await ApiClientFactory.Instance.GetSchedule();
+            var scheduledCommunityData = await ApiClientFactory.Instance.GetScheduledCommunities();
+
             var cartViewModel = new CartViewModel
             {
-                TodaysSchedule = filteredScheduleConfigViewModel,
-                ScheduledCommunities = scheduledCommunties,
+                TodaysSchedule = scheduleData,
+                ScheduledCommunities = scheduledCommunityData,
                 Communities = allCommunities
             };
 
@@ -132,22 +104,21 @@ namespace CathedralKitchen.Controllers
         }
 
         [HttpPost]
-        public IActionResult ShortendOrderView(CartViewModel cartViewModel)
+        public async Task<IActionResult> ShortendOrderView(CartViewModel cartViewModel)
         {
             if (!ModelState.IsValid) return RedirectToAction("ShortendOrderView", "Home");
 
-            //TODO REACTIVATE FOR PRODUCTION
-            //if (!cartViewModel.IsEmployee)
-            //{
-            //    TimeSpan now = DateTime.Now.TimeOfDay;
-            //    TimeSpan start = new TimeSpan(06, 0, 0);
-            //    TimeSpan end = new TimeSpan(10, 0, 0);
-            //    if (now < start || now > end)
-            //    {
-            //        TempData["ErrorMessage"] = "Delivery orders must be placed between 6 am and 10 am!";
-            //        return RedirectToAction("ShortendOrderView", "Home");
-            //    }
-            //}
+            if (!cartViewModel.IsEmployee)
+            {
+                TimeSpan now = DateTime.Now.TimeOfDay;
+                TimeSpan start = new TimeSpan(06, 0, 0);
+                TimeSpan end = new TimeSpan(10, 0, 0);
+                if (now < start || now > end)
+                {
+                    TempData["ErrorMessage"] = "Delivery orders must be placed between 6 am and 10 am!";
+                    return RedirectToAction("ShortendOrderView", "Home");
+                }
+            }
 
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
@@ -156,25 +127,26 @@ namespace CathedralKitchen.Controllers
 
             if (person == null) {
 
-                person = new Person
+                var personToCreate = new PersonViewModel
                 {
-                    Active = true,
                     FirstName = cartViewModel.FirstName,
                     LastName = cartViewModel.LastName,
-                    SendEmail = cartViewModel.EmailConsent,
+                    SendEmail = cartViewModel.EmailConsent == true ? true : false,
                     Email = cartViewModel.Email,
-                    CreateBy = 1,
-                    UpdateBy = 1,
-                    UpdateTime = DateTime.UtcNow,
-                    CreateTime = DateTime.UtcNow
                 };
-                _ctx.Person.Add(person);
-                _ctx.SaveChanges();
+                await ApiClientFactory.Instance.CreatePerson(personToCreate);
             } else
             {
-                person.SendEmail = cartViewModel.EmailConsent;
-                _ctx.Person.Update(person);
-                _ctx.SaveChanges();
+                var personToUpdate = new PersonViewModel
+                {
+                    FirstName = cartViewModel.FirstName,
+                    LastName = cartViewModel.LastName,
+                    SendEmail = cartViewModel.EmailConsent == true ? true : false,
+                    Email = cartViewModel.Email,
+                };
+
+                await ApiClientFactory.Instance.UpdatePerson(person.Id, personToUpdate);
+
             }
 
             var order = new Order

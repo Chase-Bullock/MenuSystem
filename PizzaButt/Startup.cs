@@ -11,6 +11,7 @@ using CathedralKitchen.Security;
 using System;
 using System.Text;
 using CathedralKitchen.Services;
+using CathedralKitchen.ExtendedModels;
 
 namespace CathedralKitchen
 {
@@ -32,6 +33,15 @@ namespace CathedralKitchen
             services.AddSession();
             services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            services.Configure<SettingsModel>(Configuration.GetSection("MySettings"));
+
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowAnyOrigin();
+            }));
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -74,7 +84,7 @@ namespace CathedralKitchen
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseCors("CorsPolicy");
             app.UseSession();
             app.UseStaticFiles();
             app.UseAuthentication();

@@ -39,8 +39,8 @@ namespace CathedralKitchen.NewModels
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CathedralKitchen;Trusted_Connection=True;");
-                optionsBuilder.UseSqlServer("Server=CPT-SQL.cathedral.local;Database=CathedralKitchen;Persist Security Info=False;User Id=Chase.B;password=Finnava424;MultipleActiveResultSets=True;TrustServerCertificate=True;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CathedralKitchen;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Server=CPT-SQL.cathedral.local;Database=CathedralKitchen;Persist Security Info=False;User Id=Chase.B;password=Finnava424;MultipleActiveResultSets=True;TrustServerCertificate=True;Connection Timeout=30;");
                 
             }
         }

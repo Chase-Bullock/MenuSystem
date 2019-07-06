@@ -12,7 +12,7 @@ namespace CathedralKitchen.ViewModels
     {
         public long Id { get; set; }
 
-        public IEnumerable<ScheduleConfigViewModel> TodaysSchedule { get; set; }
+        public List<ScheduleConfigViewModel> TodaysSchedule { get; set; }
 
         public bool IsEmployee { get; set; }
 

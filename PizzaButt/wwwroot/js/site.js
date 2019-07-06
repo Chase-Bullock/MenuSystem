@@ -110,21 +110,20 @@ $('#isEmployee').on('change', function (e) {
 
 //////////////////////////// OLD WAY TO REFRESH PAGE(NEW WAY NOT IMPLEMENTED) ////////////////////////////
 
-//if (window.location.pathname === '/Orders/StatusOfAllOrders') {
+//if (window.location.pathname === '/Orders/OrderInfoForCustomer') {
 //    var time = new Date().getTime();
 //    $(document.body).bind("mousemove keypress", function () {
 //        time = new Date().getTime();
 //    });
 
 //    setInterval(function () {
-//        if (new Date().getTime() - time >= 12000) {
-//           window.location.reload(true);
+//        if (new Date().getTime() - time >= 30000) {
+//            window.location.reload(true);
 //        }
 //    }, 1000);
 //}
 
-
-//if (window.location.pathname === '/Orders/OrderInfoForCustomer') {
+//if (window.location.pathname === '/Orders/StatusOfAllOrders') {
 //    var time = new Date().getTime();
 //    $(document.body).bind("mousemove keypress", function () {
 //        time = new Date().getTime();

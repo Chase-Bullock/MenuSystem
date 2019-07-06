@@ -1,19 +1,19 @@
 ﻿
 @{
-  ViewData["Title"] = "OrderInfo";
+    ViewData["Title"] = "OrderInfo";
 }
 @model OrderViewModel
 
 <div class="order-status">
-  <h5 style="color:red; font-size: 24px; font-weight: 700; text-align: center">@TempData["ErrorMessage"]</h5>
-  <h1 style="margin: 30px 0; text-align: center;">Order Status</h1>
-  @await Html.PartialAsync("../Shared/OrderInfoPartial.cshtml")
+    <h5 style="color:red; font-size: 24px; font-weight: 700; text-align: center">@TempData["ErrorMessage"]</h5>
+    <h1 style="margin: 30px 0; text-align: center;">Order Status</h1>
+    @await Html.PartialAsync("../Shared/OrderInfoPartial.cshtml")
 </div>
 @section Scripts
     {
-    <script src="~/lib/signalr/signalr.js"></script>
-    <script src="~/js/chat.js?v=2"></script>
-    <script src="~/js/status.js?v=2"></script>
+   <script src="~/lib/signalr/signalr.js"></script>
+    <script src="~/js/chat.js?v=5"></script>
+    <script src="~/js/status.js?v=5"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
