@@ -1,5 +1,6 @@
 ﻿using CathedralKitchen.NewModels;
 using CathedralKitchen.ViewModels;
+using CathedralKitchen.ViewModels.AccountViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -42,12 +43,27 @@ namespace CathedralKitchen.API
             return await GetAsync<List<OrderViewModel>>(requestUrl);
         }
 
+        public async Task<OrderViewModel> GetOrderInfoForCustomer(long orderId)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "Orders/"+ orderId));
+            return await GetAsync<OrderViewModel>(requestUrl);
+        }
+
+        public async Task<PersonRegisterViewModel> Register(PersonRegisterViewModel person)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "Accounts"));
+            return await PostAsync(requestUrl, person);
+        }
+
         public async Task<List<MenuItem>> GetMenuItems()
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "Menu"));
             return await GetAsync<List<MenuItem>>(requestUrl);
         }
+
 
     }
 }

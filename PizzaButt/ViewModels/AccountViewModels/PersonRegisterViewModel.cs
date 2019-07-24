@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CathedralKitchen.ViewModels.AccountViewModels
 {
-    public class RegisterViewModel
+    public class PersonRegisterViewModel
     {
         [Required]
         [EmailAddress]
@@ -23,6 +23,20 @@ namespace CathedralKitchen.ViewModels.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public string Cell { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public long Builder { get; set; }
+
+        public bool SendEmail { get; set; }
 
     }
 }

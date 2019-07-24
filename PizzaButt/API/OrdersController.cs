@@ -23,9 +23,9 @@ namespace CathedralKitchen.API
             _cathedralKitchenRepository = cathedralKitchenRepository;
         }
 
-        
+
         [HttpGet]
-        public async Task<IActionResult> GetStatusOfAllOrders()
+        public IActionResult GetStatusOfAllOrders()
         {
             var orders = _ctx.Order.Where(x => x.OrderStatusId != 20002 && x.OrderStatusId != 2)
                 .Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping)
@@ -85,9 +85,52 @@ namespace CathedralKitchen.API
                 };
                 ordersViewModel.Add(orderViewModel);
             }
-                return Ok(ordersViewModel);
+            return Ok(ordersViewModel);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetOrderInfoForCustomer(long orderId)
+        {
+            var order = _ctx.Order.Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus).Include(c => c.Community).FirstOrDefault(x => x.Id == orderId);
+            var orderItemsViewModel = new List<OrderItemViewModel>();
+
+            foreach (var orderItem in order.OrderItem)
+            {
+                var orderItemViewModel = new OrderItemViewModel
+                {
+                    MenuItem = new MenuItemViewModel
+                    {
+                        Id = orderItem.MenuItem.Id,
+                        Name = orderItem.MenuItem.Name
+                    },
+                    OrderItemTopping = orderItem.OrderItemTopping.ToList(),
+                    Quantity = orderItem.Quantity,
+                    Size = _ctx.SystemReference.FirstOrDefault(x => x.Id == orderItem.SizeId)
+                };
+                orderItemsViewModel.Add(orderItemViewModel);
+            }
+
+            var communityViewModel = new CommunityViewModel
+            {
+                Id = order.Community.Id,
+                Name = order.Community.Name,
+                Active = order.Community.Active
+            };
+
+            var orderViewModel = new OrderViewModel
+            {
+                Id = order.Id,
+                Status = order.OrderStatus.Status,
+                Community = communityViewModel,
+                Note = order.Note,
+                OrderItems = orderItemsViewModel,
+                Name = order.CustomerFirstName + " " + order.CustomerLastName,
+                CreateTime = order.CreateTime,
+                CompleteTime = order.CompleteTime
+            };
+
+            return Ok(orderViewModel);
+        }
 
     }
 }

@@ -9,6 +9,7 @@
         <div class="form-group col-md-4 offset-md-4">
             <h3 style="font-size: 36px; font-weight: 700; text-align: center">Schedule Deliveries</h3>
         </div>
+        <div class="currentMonth"></div>
     </div>
     <div id="calendar-wrapper">
         <div id='calendar'></div>
@@ -17,46 +18,110 @@
 </div>
 
 <div class="modal fade" id="eventModal" role="dialog" aria-labelledby="eventModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" style="max-width: 900px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="eventModalLabel">Event</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form id="eventForm">
-                    <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Community</label>
-                        <div class="col-sm-9">
-                            <select asp-for="CommunityId" id="CommunityId" asp-items="@(new SelectList(Model.Communities,"Id", "Name"))" >
-                            </select>
+                <div style="display:flex; flex-direction:row;">
+                    <form id="eventForm" class="col-6">
+                        <div class="form-group row">
+                            <label for="" class="col-sm-3 col-form-label">Community</label>
+                            <div class="col-sm-9">
+                                <div style="display:flex; flex-direction: row">
+                                    <div>
+                                        <select multiple asp-for="CommunityId" id="CommunityId">
+                                            @foreach (var item in Model.Communities.OrderBy(x => x.Name))
+                                            {
+                                                <option value="@item.Id,@item.Name" label="@item.Name">@item.Name</option>
+                                            }
+                                        </select>
+                                        <button type="button" id="addButton" class="btn btn-primary">Add</button>
+
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Start Time</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="StartTime">
+                        <div class="form-group row">
+                            <label for="" class="col-sm-3 col-form-label">Start Time</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="StartTime">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Cycle</label>
-                        <div class="col-sm-9">
-                            <select asp-for="Cycle" id="Cycle">
-                                <option selected="selected" value="1">No Repeat</option>
-                                <option value="2">For Two Weeks</option>
-                                <option value="3">For Three Weeks</option>
-                                <option value="4">For One Month</option>
-                            </select>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-3 col-form-label">Cycle</label>
+                            <div class="col-sm-9">
+                                <select asp-for="Cycle" id="Cycle">
+                                    <option selected="selected" value="1">No Repeat</option>
+                                    <option value="2">For Two Weeks</option>
+                                    <option value="3">For Three Weeks</option>
+                                    <option value="4">For One Month</option>
+                                </select>
+                            </div>
                         </div>
+                        <input type="hidden" id="isNewEvent" />
+                    </form>
+                    <div class="col-6">
+                        <h5 style="text-align:center">Communities</h5>
+                        <select multiple style="border:double; max-height: 220px; min-height: 100px; width: 330px; overflow-y:auto;" id="communityList"></select>
+                        <ul hidden id="communityIdList"></ul>
                     </div>
-                    <input type="hidden" id="isNewEvent" />
-                </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="eventModalSave">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editEventModal" role="dialog" aria-labelledby="eventModalLabel">
+    <div class="modal-dialog" style="max-width: 900px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="editEventModalLabel">Event</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div style="display:flex; flex-direction:row;">
+                    <form id="editEventForm" class="col-6">
+                        <div class="form-group row">
+                            <label for="" class="col-sm-3 col-form-label">Community</label>
+                            <div class="col-sm-9">
+                                <select asp-for="CommunityId" id="editCommunityId" asp-items="@(new SelectList(Model.Communities,"Id", "Name"))"></select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-3 col-form-label">Start Time</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="editStartTime">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-3 col-form-label">Cycle</label>
+                            <div class="col-sm-9">
+                                <select asp-for="Cycle" id="editCycle">
+                                    <option selected="selected" value="1">No Repeat</option>
+                                    <option value="2">For Two Weeks</option>
+                                    <option value="3">For Three Weeks</option>
+                                    <option value="4">For One Month</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id="deleteEvent">Delete</button>
                 <div>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="eventModalSave">Save Changes</button>
+                    <button type="button" class="btn btn-primary" id="editEventModalSave">Save Changes</button>
                 </div>
             </div>
         </div>

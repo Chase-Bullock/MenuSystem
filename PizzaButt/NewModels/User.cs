@@ -10,6 +10,7 @@ namespace CathedralKitchen.NewModels
         public string Hash { get; set; }
         public bool HasTempPassword { get; set; }
         public long PersonId { get; set; }
+        public long? BuilderId { get; set; }
         public bool? Active { get; set; }
         public DateTime CreateTime { get; set; }
         public long CreateBy { get; set; }
@@ -23,4 +24,5 @@ namespace CathedralKitchen.NewModels
             Hash = hash;
         }
     }
+
 }

@@ -211,6 +211,34 @@ namespace CathedralKitchen.Controllers
             return View(scheduleViewModel);
         }
 
+        public IActionResult Calendar()
+        {
+
+            var communities = _ctx.Community.Where(x => x.Active == true).ToList();
+
+            var communityViewModels = new List<CommunityViewModel>();
+
+            foreach (var community in communities)
+            {
+                var communityViewModel = new CommunityViewModel
+                {
+                    Id = community.Id,
+                    Name = community.Name,
+                    Active = community.Active
+                };
+
+                communityViewModels.Add(communityViewModel);
+            }
+
+            ScheduleViewModel scheduleViewModel = new ScheduleViewModel
+            {
+                Communities = communityViewModels
+                //ScheduleConfigViewModels = events
+            };
+
+            return View(scheduleViewModel);
+        }
+
 
         [HttpGet]
         public IActionResult GetCalendarEvents(string start)
@@ -224,9 +252,10 @@ namespace CathedralKitchen.Controllers
         [HttpPost]
         public IActionResult AddEvent([FromBody] dynamic evt)
         {
+
             var cycle = 0;
             var events = new Dictionary<long, dynamic>();
-            long parentId = 0;
+            var parentIds = new List<long>();
             for (int i = 0; i < (int)evt.Cycle; i++)
             {
                 DateTime date = evt.Start;
@@ -236,41 +265,50 @@ namespace CathedralKitchen.Controllers
                 }
                 if (i == 0)
                 {
-                    var parentScheduleConfig = new ScheduleConfig
+                    foreach (var y in evt.CommunityId)
                     {
-                        CommunityId = evt.CommunityId,
-                        Date = date,
-                        Active = true,
-                        CreateBy = 2,
-                        CreateTime = DateTime.UtcNow,
-                        UpdateBy = 2,
-                        UpdateTime = DateTime.UtcNow
-                    };
-                    _ctx.ScheduleConfig.Add(parentScheduleConfig);
-                    _ctx.SaveChanges();
-                    parentId = parentScheduleConfig.Id;
-                    var community = _ctx.Community.FirstOrDefault(x => x.Id == parentScheduleConfig.CommunityId);
-                    events.Add(parentScheduleConfig.Id, new { parentScheduleConfig.Date, community });
+                        var parentScheduleConfig = new ScheduleConfig
+                        {
+                            CommunityId = y,
+                            Date = date,
+                            Active = true,
+                            CreateBy = 2,
+                            CreateTime = DateTime.UtcNow,
+                            UpdateBy = 2,
+                            UpdateTime = DateTime.UtcNow
+                        };
+                        _ctx.ScheduleConfig.Add(parentScheduleConfig);
+                        _ctx.SaveChanges();
+                        parentIds.Add(parentScheduleConfig.Id);
+                        var community = _ctx.Community.FirstOrDefault(x => x.Id == parentScheduleConfig.CommunityId);
+                        events.Add(parentScheduleConfig.Id, new { parentScheduleConfig.Date, community });
 
+                    }
                 }
                 else
                 {
-                    var scheduleConfig = new ScheduleConfig
+                    var index = 0;
+                    foreach (var y in evt.CommunityId)
                     {
-                        ParentId = parentId,
-                        CommunityId = evt.CommunityId,
-                        Date = date,
-                        Active = true,
-                        CreateBy = 2,
-                        CreateTime = DateTime.UtcNow,
-                        UpdateBy = 2,
-                        UpdateTime = DateTime.UtcNow
+                        
+                        var scheduleConfig = new ScheduleConfig
+                        {
+                            ParentId = parentIds[index],
+                            CommunityId = y,
+                            Date = date,
+                            Active = true,
+                            CreateBy = 2,
+                            CreateTime = DateTime.UtcNow,
+                            UpdateBy = 2,
+                            UpdateTime = DateTime.UtcNow
 
-                    };
-                    _ctx.ScheduleConfig.Add(scheduleConfig);
-                    _ctx.SaveChanges();
-                    var community = _ctx.Community.FirstOrDefault(x => x.Id == scheduleConfig.CommunityId);
-                    events.Add(scheduleConfig.Id, new { scheduleConfig.Date, community });
+                        };
+                        _ctx.ScheduleConfig.Add(scheduleConfig);
+                        _ctx.SaveChanges();
+                        var community = _ctx.Community.FirstOrDefault(x => x.Id == scheduleConfig.CommunityId);
+                        events.Add(scheduleConfig.Id, new { scheduleConfig.Date, community });
+                        index++;
+                    }
                 }
                 cycle += 1;
 
@@ -301,8 +339,10 @@ namespace CathedralKitchen.Controllers
             TimeSpan dateDifference;
             var events = new Dictionary<long, DateTime>();
             var eventSchedule = _ctx.ScheduleConfig.First(x => x.Id == eventId);
+
             ScheduleConfig parentSchedule = _ctx.ScheduleConfig.FirstOrDefault(x => x.Id == eventSchedule.ParentId);
-            if(parentSchedule != null) {
+            if (parentSchedule != null)
+            {
                 dateDifference = parentSchedule.Date.Subtract(eventSchedule.Date);
                 eventSchedule = parentSchedule;
                 InitialDate = InitialDate.Add(dateDifference);
@@ -325,6 +365,7 @@ namespace CathedralKitchen.Controllers
                     oldDate = oldDate.AddDays(7);
                     newDate = newDate.AddDays(7);
                 }
+
                 ScheduleConfig scheduledDate = schedules.Where(x => x.Date == oldDate).FirstOrDefault(x => x.CommunityId == eventSchedule.CommunityId);
                 if (scheduledDate != null)
                 {

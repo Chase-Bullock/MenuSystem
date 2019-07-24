@@ -4,6 +4,10 @@ const fpStartTime = flatpickr("#StartTime", {
     dateFormat: "m/d/Y"
 });
 
+const editFpStartTime = flatpickr("#editStartTime", {
+    dateFormat: "m/d/Y"
+});
+
 $('#calendar').fullCalendar({
     themeSystem: 'bootstrap4',
     defaultView: 'month',
@@ -56,18 +60,17 @@ function updateEvent(event, element) {
 
     if ($(this).data("qtip")) $(this).qtip("hide");
 
-    $('#eventModalLabel').html('Edit Event');
-    $('#eventModalSave').html('Update Event');
-    $('#CommunityId').val(event.communityId);
-    $('#isNewEvent').val(false);
+    $('#editEventModalLabel').html('Edit Event');
+    $('#editEventModalSave').html('Update Event');
+    $('#editCommunityId').val(event.communityId);
 
     const start = formatDate(event.start);
 
-    fpStartTime.setDate(start);
+    editFpStartTime.setDate(start);
 
-    $('#StartTime').val(start);
+    $('#editStartTime').val(start);
 
-    $('#eventModal').modal('show');
+    $('#editEventModal').modal('show');
 }
 
 function addEvent(start) {
@@ -89,11 +92,38 @@ function addEvent(start) {
  * */
 
 $('#eventModalSave').click(() => {
-    const communityId = $('#CommunityId').val();
+    var communityId = [];
+    var communityIds = $('#CommunityId').val();
+    communityIds.forEach((x) => {
+        communityId.push(x.split(",")[0])
+    })
     const cycle = $('#Cycle').val();
     const startTime = moment($('#StartTime').val());
     const isNewEvent = $('#isNewEvent').val() === 'true' ? true : false;
 
+    if (!startTime.isValid()) {
+        alert('Please enter Start Time');
+        return;
+    }
+
+    const event = {
+        communityId,
+        cycle,
+        startTime: startTime._i,
+    };
+
+    if (isNewEvent) {
+        sendAddEvent(event);
+    } else {
+        sendUpdateEvent(event);
+    }
+});
+
+$('#editEventModalSave').click(() => {
+    const communityId = $('#editCommunityId').val();
+    const cycle = $('#editCycle').val();
+    const startTime = moment($('#editStartTime').val());
+    var isNewEvent = false;
     if (!startTime.isValid()) {
         alert('Please enter Start Time');
         return;
@@ -205,3 +235,19 @@ $('#deleteEvent').click(() => {
             .catch(err => alert(`Something went wrong: ${err}`));
     }
 });
+
+$("#addButton").click(function () {
+    console.log($('#CommunityId').val()[0].split(","));
+    $('#CommunityId').val().forEach((x, index) => 
+    {
+        console.log(index);
+        var values = $('#CommunityId').val()[index].split(",");
+        var comunityName = values[1];
+        console.log(values);
+
+        $('#communityList').append('<option value="">' + comunityName + '</option>')
+        $('#communityIdList').append('<li value="">' + values[0] + '</li>')
+        console.log($('#communityIdList'))
+    });
+
+}); 
