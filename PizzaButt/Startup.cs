@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PizzaButt.Models;
+using Microsoft.IdentityModel.Tokens;
+using CathedralKitchen.Hubs;
+using CathedralKitchen.NewModels;
+using CathedralKitchen.Security;
+using System;
+using System.Text;
+using CathedralKitchen.Services;
 
-namespace PizzaButt
+namespace CathedralKitchen
 {
     public class Startup
     {
@@ -22,17 +26,41 @@ namespace PizzaButt
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IEmailNotificationService, EmailNotificationService>();
+            services.AddSession();
+            services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.Configure<Settings>(options =>
+
+            services.Configure<IdentityOptions>(options =>
             {
-                options.ConnectionString
-                    = Configuration.GetSection("MongoConnection:ConnectionString").Value;
-                options.Database
-                    = Configuration.GetSection("MongoConnection:Database").Value;
-            });
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
 
-            services.AddTransient<IPizzaRepository, PizzaRepository>();
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+            });
+            services.AddTransient<IUserStore<User>, UserStore>();
+            services.AddTransient<IRoleStore<Role>, RoleStore>();
+            services.AddIdentity<User, Role>()
+                .AddDefaultTokenProviders();
+
+            services.AddTransient<ICathedralKitchenRepository, CathedralKitchenRepository>();
+            services.AddTransient<CathedralKitchenContext, CathedralKitchenContext>();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +68,6 @@ namespace PizzaButt
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -48,7 +75,14 @@ namespace PizzaButt
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseSession();
             app.UseStaticFiles();
+            app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
 
             app.UseMvc(routes =>
             {

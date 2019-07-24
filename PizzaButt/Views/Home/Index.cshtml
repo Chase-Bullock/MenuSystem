@@ -1,145 +1,72 @@
 ﻿@{
     ViewData["Title"] = "Order Pizza";
+    Layout = "_Layout";
 }
-@model IEnumerable<MenuItem>
+@model CodeViewModel
+<header>
+    @await Html.PartialAsync("../Shared/NavHomePartial.cshtml")
+    @*<div style="display: flex; flex-direction:row; justify-content:space-between">
+        <div style="display: flex; flex-direction:column;">
+            <img class="animated fadeInLeft builder1" src="~/images/lennar.jpg" style="width:85px; height:85px; margin: 35px; margin-bottom: 55px" />
+            <img class="animated fadeInLeft builder2" src="~/images/beazer.jpg" style="width:85px; height:85px; margin: 35px; margin-bottom: 55px" />
+            <img class="animated fadeInLeft builder3" src="~/images/default.jpg" style="width:85px; height:85px; margin: 35px; margin-bottom: 55px" />
+            <img class="animated fadeInLeft builder4" src="~/images/lennar.jpg" style="width:85px; height:85px; margin: 35px; margin-bottom: 40px" />
 
-<div>
+            <div style="display: flex; flex-direction:row">
+                <img class="animated fadeInUp builder5" src="~/images/beazer.jpg" style="width:85px; height:85px; margin-top:35px; margin-left:35px; margin-right:85px; margin-bottom: 10px;" />
+                <img class="animated fadeInUp builder6" src="~/images/default.jpg" style="width:85px; height:85px; margin-top:35px; margin-left:85px; margin-right:85px; margin-bottom: 10px;" />
+                <img class="animated fadeInUp builder7" src="~/images/lennar.jpg" style="width:85px; height:85px; margin-top:35px; margin-left:85px; margin-right:85px; margin-bottom: 10px;" />
+                <img class="animated fadeInUp builder8" src="~/images/beazer.jpg" style="width:85px; height:85px; margin-top:35px; margin-left:85px; margin-right:85px; margin-bottom: 10px;" />
+                <img class="animated fadeInUp builder9" src="~/images/default.jpg" style="width:85px; height:85px; margin-top:35px; margin-left:85px; margin-right:85px; margin-bottom: 10px;" />
+                <img class="animated fadeInUp builder10" src="~/images/lennar.jpg" style="width:85px; height:85px; margin-top:35px; margin-left:85px; margin-right:85px; margin-bottom: 10px;" />
+                <img class="animated fadeInUp builder11" src="~/images/beazer.jpg" style="width:85px; height:85px; margin-top:35px; margin-left:85px; margin-right:85px; margin-bottom: 10px;" />
+
+            </div>
+        </div>
+        <div style="display: flex; flex-direction:column">
+            <img class="animated fadeInRight builder12" src="~/images/default.jpg" style="width:85px; height:85px; margin: 35px; margin-bottom: 55px" />
+            <img class="animated fadeInRight builder13" src="~/images/lennar.jpg" style="width:85px; height:85px; margin: 35px; margin-bottom: 55px" />
+            <img class="animated fadeInRight builder14" src="~/images/beazer.jpg" style="width:85px; height:85px; margin: 35px; margin-bottom: 55px" />
+            <img class="animated fadeInRight builder15" src="~/images/default.jpg" style="width:85px; height:85px; margin: 35px; margin-bottom: 40px" />
+            <img class="animated fadeInRight builder16" src="~/images/lennar.jpg" style="width:85px; height:85px; margin: 35px; margin-bottom: 55px" />
+
+        </div>
+    </div>*@
+        <div class="hero-text-box">
+            <h1 style="color: #fff; font-size: 72px; font-weight: 300" class="animated fadeInLeft">Cathedral Bites</h1>
+            <h2 style="color: #fff; font-weight: 300;" class="animated fadeInLeft">Thank you for being a part of our team</h2>
+            <button type="button" class="btn btn-primary btn-lg js--scroll-to-order animated fadeIn" style="margin-top: 10px; position: relative; top: 50%; left: 33%;" href="#">Place order</button>
+        </div>
+</header>
+<div class="order-section scrollable js--order-section">
     <div class="row" style="margin-top: 25px;">
         <div class="form-group col-md-4 offset-md-4">
-            <header style="font-size: 36px; font-weight: 700; text-align: center">Place an order </header>
+            <h3 style="font-size: 36px; font-weight: 700; text-align: center">Enter Daily Code</h3>
         </div>
     </div>
-
-    <form style="margin-top: 25px;" method="post">
-    @**************************@
-    @*          NAME          *@
-    @**************************@
     <div class="row">
-        <div class="form-group offset-md-4 col-md-4">
-            <label class="titleTag"for="nameInput">Name</label>
-            <input type="text" class="form-control" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Name" name="name"/>
-            @Html.ValidationMessage("This field is required")
-        </div>
-    </div>
-    @**************************@
-    @*       MENUITEMS        *@
-    @**************************@
-    <div class="row">
-        <div class="form-group offset-md-4 col-md-4">
-            <label class="titleTag" for="menuSelect">Menu</label>
-            <select class="form-control" id="menuSelect" name="order">
-                <option>--</option>
-                @foreach (var item in Model)
-                {
-                    <option value="@item.Name">@Html.DisplayFor(model => item.Name)</option>
-                }
-            </select>
-        </div>
-    </div>
-    @**************************@
-    @*      TACOSAUCES        *@
-    @**************************@
-    <div class="row">
-        <div id="sauceForTaco" class="form-group offset-md-4 col-md-4">
-            <label class="titleTag">Taco Sauces</label>
+        <form style="margin-top: 70px;" class="orderForm col-8" id="checkoutForm" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
-                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Hot Sauce"/>Hot Sauce (VERY HOT!)</label>
-                <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Salsa Verde"/>Salsa Verde</label>
-            </div>
-        </div>
-    </div>
-    @**************************@
-    @*      TACOEXTRAS        *@
-    @**************************@
-    <div class="row">
-        <div id="extrasForTaco" class="form-group offset-md-4 col-md-4">
-            <label class="titleTag">Taco Extras</label>
-            <div class="row">
-                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Cheese"/>Cheese</label>
-                <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Lettuce"/>Lettuce</label>
-            </div>
-            <div class="row">
-                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Jalepenos"/>Jalapeños</label>
-            </div>
-        </div>
-    </div>
-    @**************************@
-    @*        PIZZASIZE       *@
-    @**************************@
-    <div class="row">
-        <div id="sizesForPizza" class="form-group offset-md-4 col-md-4">
-            <label class="titleTag" for="sizesForPizza">Pizza Size</label>
-            <div class="row">
-                <label class="radio-inline offset-md-1 col-md-3"><input value="Small" type="radio" name="size"/>Small</label>
-                <label class="radio-inline col-md-4"><input value="Medium" type="radio" name="size"/>Medium</label>
-                <label class="radio-inline col-md-4"><input value="Large" type="radio" name="size"/>Large</label>
-            </div>
-        </div>
-    </div>
-    @**************************@
-    @*     PIZZATOPPINGS      *@
-    @**************************@
-    <div class="row">
-        <div id="toppingsForPizza" class="form-group offset-md-4 col-md-4">
-            <label class="titleTag">Pizza Toppings</label>
-            <label class="titleTag">Meats</label>
-            <div class="row">
-                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Extra Cheese"/>Extra Cheese</label>
-                <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Pepperoni"/>Pepperoni</label>
-            </div>
-            <div class="row">
-                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Beef"/>Beef</label>
-                <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Canadian Bacon"/>Canadian Bacon</label>
-            </div>
-            <div class="row">
-                <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Bacon"/>Bacon</label>
-            </div>
-            <div>
-                <label class="titleTag">Non-meats</label>
-                <div class="row">
-                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Pineapple"/>Pineapple</label>
-                    <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Jalepenos"/>Jalapeños</label>
-                </div>
-                <div class="row">
-                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Hot Sauce"/>Hot Sauce (VERY HOT!)</label>
-                    <label class="checkbox-inline col-md-5"><input name="toppings" type="checkbox" value="Salsa Verde"/>Salsa Verde</label>
-                </div>
-                <div class="row">
-                    <label class="checkbox-inline offset-md-1 col-md-5"><input name="toppings" type="checkbox" value="Onions"/>Onions</label>
+                <div class="form-group col-md-6 offset-md-6">
+                    <div style="color:red;">@Html.ValidationMessage("error")</div>
+                    <input asp-for="Code" type="text" class="form-control boxStyle" id="nameInput" placeholder="Enter Code" required />
+                    <span asp-validation-for="Code" class="text-danger"></span>
                 </div>
             </div>
-        </div>
-    </div>
-@**************************@
-@*       QUANTITY         *@
-@**************************@
-<div class="row">
-    <div class="form-group offset-md-4 col-md-4">
-        <label class="titleTag" for="qtyInput">Qty.</label>
-        <input type="number" minValue="1" class="form-control" id="qtyInput" aria-describedby="emailHelp" name="quantity"/>
-        @Html.ValidationMessage("This field is required")
+            <div class="row">
+                <div class="form-group col-md-6 offset-md-6">
+                    <button type="submit" id="activateNav" class="btn btn-primary activateNav">Submit code</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-@**************************@
-@*        COMMENTS        *@
-@**************************@
-<div class="row">
-    <div class="form-group offset-md-4 col-md-4">
-        <div class="form-group">
-            <label class="titleTag" for="specialInstructionsInput">Special Instructions</label>
-            <textarea class="form-control" id="specialInstructionsInput" aria-describedby="emailHelp" name="specialInstructions">
-        </textarea>
-            @Html.ValidationMessage("This field is required")
-        </div>
-    </div>
-</div>
-@**************************@
-@*        SUBMIT          *@
-@**************************@
-<div class="row">
-    <div class="form-group offset-md-4 col-md-4">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-</div>
-</form>
-</div>
+@section Scripts
+    {
+    <script src="~/lib/signalr/signalr.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/chat.js"></script>
+}

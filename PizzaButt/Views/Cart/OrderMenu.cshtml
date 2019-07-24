@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Order Pizza";
+    Layout = "_Layout";
+}
+@model CustomerOrderViewModel
+@await Html.PartialAsync("../Shared/NavHomePartial.cshtml")
+<div class="order-section scrollable">
+    <div class="row" style="margin-top: 25px;">
+        <div class="form-group col-md-4 offset-md-4">
+            <h3 style="font-size: 36px; font-weight: 700; text-align: center">Order Menu</h3>
+            <h5 style="color:red; font-size: 24px; font-weight: 700; text-align: center">@TempData["ErrorMessage"]</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-sm-6 offset-md-3">
+            @await Html.PartialAsync("../Shared/OrderPartial.cshtml")
+        </div>
+        <div style="width: 100%" class="col-md-4 col-sm-6 offset-md-1">
+            @await Html.PartialAsync("../Shared/CartPartial.cshtml")
+        </div>
+    </div>
+
+</div>
+@section Scripts
+    {
+    <script src="~/lib/signalr/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
+    <script src="~/js/cart.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.5/waypoints.min.js"></script>
+}

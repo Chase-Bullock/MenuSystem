@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PizzaButt.Models
+namespace CathedralKitchen.Models
 {
     public class PizzaContext
     {
@@ -18,20 +18,8 @@ namespace PizzaButt.Models
                 _database = client.GetDatabase(settings.Value.Database);
         }
 
-        public IMongoCollection<MenuItem> MenuItems
-        {
-            get
-            {
-                return _database.GetCollection<MenuItem>("MenuItem");
-            }
-        }
+        public IMongoCollection<MenuItem> MenuItems => _database.GetCollection<MenuItem>("MenuItem");
 
-        public IMongoCollection<OrderModel> Orders
-        {
-            get
-            {
-                return _database.GetCollection<OrderModel>("Order");
-            }
-        }
+        public IMongoCollection<OrderModel> Orders => _database.GetCollection<OrderModel>("Order");
     }
 }

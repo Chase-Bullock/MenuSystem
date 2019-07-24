@@ -1,0 +1,72 @@
+﻿@{
+  ViewData["Title"] = "OrderInfo";
+}
+@model CreateToppingViewModel
+
+<div class="order-status">
+
+  <h1 style="margin: 30px 0; text-align: center;">Add a new topping to the menu</h1>
+  @if (ViewBag.Create != null)
+  {<h2>@ViewBag.Create has been added to the menu</h2>}
+  <form style="margin-top: 75px;" class="orderForm" id="orderForm" method="post">
+      <div id="selectMenuItems" class="form-group offset-md-4 col-md-4">
+          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+          <div class="row">
+              <div class="form-group offset-md-3 col-md-4">
+                  <label asp-for="Name" class="titleTag">Item Name</label>
+                  <input asp-for="Name" type="text" class="form-control boxStyle" id="nameInput" placeholder="Enter Item Name" required />
+                  <span asp-validation-for="Name" class="text-danger"></span>
+              </div>
+          </div>
+              <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+                  @{ var toppingCount = 0; }
+                  @foreach (var item in Model.ToppingTypes)
+                  {
+                      toppingCount += 1;
+                      @if (toppingCount % 2 == 0)
+                      {
+                          <div class="col-md-5">
+                              <div class="pretty p-icon p-smooth">
+                                  <input name="toppingTypeIds" class="toppings" type="checkbox" value="@item.Id" />
+                                  <div class="state p-primary">
+                                      <i class="icon fa fa-check"></i>
+                                      <label>@item.Name -- @item.MainValue</label>
+                                  </div>
+                              </div>
+                          </div>
+                      }
+                      else
+                      {
+                          <div class="offset-1 col-md-5">
+                              <div class="pretty p-icon p-smooth">
+                                  <input name="toppingTypeIds" class="toppings" type="checkbox" value="@item.Id" />
+                                  <div class="state p-primary">
+                                      <i class="icon fa fa-check"></i>
+                                      <label>@item.Name -- @item.MainValue</label>
+                                  </div>
+                              </div>
+                          </div>
+                      }
+                  }
+              </div>
+          <div class="row" style="margin-top: 6px; margin-bottom: 6px">
+              <div class="offset-md-3 col-md-4">
+                  <div class="pretty p-icon p-smooth">
+                      <input name="active" class="active" type="checkbox" value="true" />
+                      <div class="state p-primary">
+                          <i class="icon fa fa-check"></i>
+                          <label>On menu today</label>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    <div style="margin-top: 50px" class="row">
+      <div class="form-group offset-md-6 col-md-4">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+<script src="~/lib/signalr/signalr.js"></script>
+<script src="~/js/status.js"></script>

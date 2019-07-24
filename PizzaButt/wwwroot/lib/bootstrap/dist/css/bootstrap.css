@@ -25,7 +25,7 @@
   --white: #fff;
   --gray: #868e96;
   --gray-dark: #343a40;
-  --primary: #593196;
+  --primary: #54075B;
   --secondary: #A991D4;
   --success: #13B955;
   --info: #009CDC;
@@ -2476,11 +2476,12 @@ textarea.form-control {
   padding: 0.375rem 0.75rem;
   font-size: 0.875rem;
   line-height: 1.5;
-  border-radius: 0;
+  border-radius: 1rem;
   -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
@@ -2515,14 +2516,14 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #593196;
-  border-color: #593196;
+  background-color: #53075B;
+  border-color: #53075B;
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #482879;
-  border-color: #422470;
+  background-color: #3C0142;
+  border-color: #3C0142;
 }
 
 .btn-primary:focus, .btn-primary.focus {
@@ -2586,15 +2587,15 @@ fieldset:disabled a.btn {
 }
 
 .btn-success {
-  color: #fff;
-  background-color: #13B955;
-  border-color: #13B955;
+  color: #f9f9f9;
+  background-color: #7AB63D;
+  border-color: #7AB63D;
 }
 
 .btn-success:hover {
-  color: #fff;
-  background-color: #0f9645;
-  border-color: #0e8b40;
+  color: #f9f9f9;
+  background-color: #5E9B1F;
+  border-color: #5E9B1F;
 }
 
 .btn-success:focus, .btn-success.focus {
@@ -3118,7 +3119,7 @@ fieldset:disabled a.btn {
   padding: 0.5rem 1rem;
   font-size: 1.09375rem;
   line-height: 1.5;
-  border-radius: 0;
+  border-radius: 2rem;
 }
 
 .btn-sm, .btn-group-sm > .btn {

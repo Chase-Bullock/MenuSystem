@@ -1,0 +1,139 @@
+﻿@{
+    ViewData["Title"] = "Order Pizza";
+}
+@model CartViewModel
+
+
+<form style="margin-top: 70px;" class="orderForm col-7 offset-md-2" id="checkoutForm" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @**************************@
+    @*        FIRSTNAME       *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4">
+            <label asp-for="FirstName" class="titleTag">First Name</label>
+            <input asp-for="FirstName" type="text" class="form-control boxStyle" id="firstNameInput" aria-describedby="emailHelp" placeholder="Enter First Name" required />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+    </div>
+    @**************************@
+    @*        LASTNAME        *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4">
+            <label asp-for="LastName" class="titleTag">Last Name</label>
+            <input asp-for="LastName" type="text" class="form-control boxStyle" id="lastNameInput" aria-describedby="emailHelp" placeholder="Enter Last Name" required />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+    </div>
+    @**************************@
+    @*         EMAIL          *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4">
+            <label asp-for="Email" class="titleTag">Email</label>
+            <input asp-for="Email" type="text" class="form-control boxStyle" id="emailInput" aria-describedby="emailHelp" placeholder="Enter Email" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    @**************************@
+    @*      EMAILCONSENT      *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4">
+            <div class="pretty p-icon p-smooth">
+                <input asp-for="EmailConsent" id="emailConsent" class="emailConsent" type="checkbox" />
+                <div class="state p-primary">
+                    <label>I want to receive emails including updates to my order</label>
+                    <i class="icon fa fa-check"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    @**************************@
+    @*       ISBUILDER        *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4">
+            <div class="pretty p-icon p-smooth">
+                <input asp-for="IsEmployee" id="isEmployee" class="isEmployee" type="checkbox" />
+                <div class="state p-primary">
+                    <label>Are you a Cathedral Employee?</label>
+                    <i class="icon fa fa-check"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    @**************************@
+    @*       COMMUNITY        *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4" id="community">
+            <label asp-for="CommunityId" class="titleTag" for="communityId">Community</label>
+            <select asp-for="CommunityId" class="form-control" id="communityId">
+                <option value="" disabled selected hidden> -- </option>
+                @foreach (var community in Model.Communities)
+                {
+                    if (Model.ScheduledCommunities.Contains(community.Name))
+                    {
+                        <option value=@community.Id>@community.Name</option>
+                    }
+                    else
+                    {
+                        <option disabled value=@community.Id>@community.Name -Not Available Today-</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="CommunityId" class="text-danger"></span>
+        </div>
+    </div>
+    @**************************@
+    @*      ADDRESSLINE1      *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4" id="addressLine1">
+            <label asp-for="AddressLine1" class="titleTag">Address Line 1</label>
+            <input asp-for="AddressLine1" type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Address" required />
+            <span asp-validation-for="AddressLine1" class="text-danger"></span>
+        </div>
+    </div>
+    @**************************@
+    @*      ADDRESSLINE2      *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4" id="addressLine2">
+            <label asp-for="AddressLine2" class="titleTag">Address Line 2</label>
+            <input asp-for="AddressLine2" type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Address" />
+            <span asp-validation-for="AddressLine2" class="text-danger"></span>
+        </div>
+    </div>
+    @**************************@
+    @*          CITY          *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4" id="city">
+            <label asp-for="City" class="titleTag">City</label>
+            <input asp-for="City" type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter City" required />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+    </div>
+    @*************************@
+    @*        ZIPCODE        *@
+    @*************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4" id="zipcode">
+            <label asp-for="Zipcode" class="titleTag">Zipcode</label>
+            <input asp-for="Zipcode" type="text" class="form-control boxStyle" id="nameInput" aria-describedby="emailHelp" placeholder="Enter Zipcode" required />
+            <span asp-validation-for="Zipcode" class="text-danger"></span>
+        </div>
+    </div>
+    @**************************@
+    @*        SUBMIT          *@
+    @**************************@
+    <div class="row">
+        <div class="form-group col-md-6 offset-md-4">
+            <button type="submit" id="activateNav" class="btn btn-primary activateNav">Continue</button>
+        </div>
+    </div>
+</form>
+
