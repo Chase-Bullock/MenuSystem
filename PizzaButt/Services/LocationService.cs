@@ -8,22 +8,18 @@ using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace CathedralKitchen.API
+namespace CathedralKitchen.Service
 {
-    [Route("api")]
-    public class LocationsController : Controller
+    public class LocationService : ILocationService
     {
         private readonly CathedralKitchenContext _ctx;
-        private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
 
-        public LocationsController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx)
+        public LocationService(CathedralKitchenContext ctx)
         {
             _ctx = ctx;
-            _cathedralKitchenRepository = cathedralKitchenRepository;
         }
 
-        [HttpGet("communities")]
-        public IActionResult GetCommunities()
+        public List<CommunityViewModel> GetCommunities()
         {
             var data = new List<CommunityViewModel>();
 
@@ -40,11 +36,10 @@ namespace CathedralKitchen.API
             }
 
 
-            return Json(data);
+            return data;
         }
 
-        [HttpPost("communities/missing/{communityName}")]
-        public IActionResult MissingCommunity(string communityName)
+        public void MissingCommunity(string communityName)
         {
             _ctx.Add(new CommunityRequest
             {
@@ -55,17 +50,14 @@ namespace CathedralKitchen.API
 
             _ctx.SaveChanges();
 
-
-            return Ok();
         }
 
 
-        [HttpGet("{id}")]
-        public IActionResult GetItemById(long id)
+        public MenuItem GetItemById(long id)
         {
-            var data = _ctx.MenuItem.Where(x => x.Active == true && x.Id == id);
+            var data = _ctx.MenuItem.FirstOrDefault(x => x.Active == true && x.Id == id);
 
-            return Json(data);
+            return data;
         }
 
     }

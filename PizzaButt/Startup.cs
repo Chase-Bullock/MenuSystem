@@ -12,6 +12,7 @@ using System;
 using System.Text;
 using CathedralKitchen.Services;
 using CathedralKitchen.ExtendedModels;
+using CathedralKitchen.Service;
 
 namespace CathedralKitchen
 {
@@ -70,6 +71,9 @@ namespace CathedralKitchen
 
             services.AddTransient<ICathedralKitchenRepository, CathedralKitchenRepository>();
             services.AddTransient<CathedralKitchenContext, CathedralKitchenContext>();
+
+            services.AddScoped<ILocationService, LocationService>();
+            services.AddScoped<IScheduleService, ScheduleService>();
             services.AddSignalR();
         }
 

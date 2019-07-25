@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CathedralKitchen.NewModels;
+using CathedralKitchen.Service;
 using CathedralKitchen.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,41 +16,20 @@ namespace CathedralKitchen.API
     public class ScheduleController : Controller
     {
         private readonly CathedralKitchenContext _ctx;
-        private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
+        private readonly ILocationService _locationService;
+        private readonly IScheduleService _scheduleService;
 
-        public ScheduleController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx)
+        public ScheduleController(CathedralKitchenContext ctx, ILocationService locationService, IScheduleService scheduleService)
         {
             _ctx = ctx;
-            _cathedralKitchenRepository = cathedralKitchenRepository;
+            _locationService = locationService;
+            _scheduleService = scheduleService;
         }
 
         [HttpGet("")]
         public IActionResult GetScheduling()
         {
-            var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community).Where(x => x.Date.Date == DateTime.Today);
-            var filteredScheduleConfigViewModel = new List<ScheduleConfigViewModel>();
-            var scheduledCommunties = new List<string>();
-
-            foreach (var config in todaysSchedule)
-            {
-                var communityViewModel = new CommunityViewModel
-                {
-                    Id = config.Community.Id,
-                    Name = config.Community.Name
-                };
-
-                var scheduleViewModel = new ScheduleConfigViewModel
-                {
-                    Id = config.Id,
-                    //Builder = builderViewModel,
-                    Community = communityViewModel,
-                    Date = config.Date,
-                    Active = config.Active
-                };
-
-                filteredScheduleConfigViewModel.Add(scheduleViewModel);
-            };
-
+            var filteredScheduleConfigViewModel = _scheduleService.GetScheduledCommunities();
 
             return Ok(filteredScheduleConfigViewModel);
         }
@@ -57,31 +37,12 @@ namespace CathedralKitchen.API
         [HttpGet("communities")]
         public IActionResult GetScheduledCommunities()
         {
-            var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community).Where(x => x.Date.Date == DateTime.Today);
-            var scheduledCommunties = new List<string>();
-
-            foreach (var config in todaysSchedule)
-            {
-                scheduledCommunties.Add(config.Community.Name);
-            };
+            var scheduledCommunties = _scheduleService.GetTodaysScheduledCommunities();
 
             return Ok(scheduledCommunties);
         }
 
 
-        [HttpGet("{id}")]
-        public IActionResult GetItemById(long id)
-        {
-            var data = _ctx.MenuItem.Where(x => x.Active == true && x.Id == id);
 
-            return Json(data);
-        }
-
-    }
-
-    public class ScheduleReturnData
-    {
-        public List<ScheduleConfigViewModel> scheduleConfigs { get; set; }
-        public List<string> scheduledCommunities { get; set; }
     }
 }

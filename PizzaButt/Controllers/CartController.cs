@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using CathedralKitchen.Helpers;
 using CathedralKitchen.NewModels;
 using CathedralKitchen.ViewModels;
+using CathedralKitchen.Service;
 
 namespace CathedralKitchen.Controllers
 {
@@ -14,13 +15,13 @@ namespace CathedralKitchen.Controllers
     public class CartController : Controller
     {
 
-        private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
         private readonly CathedralKitchenContext _ctx;
+        private readonly IScheduleService _scheduleService;
 
-        public CartController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx)
+        public CartController(CathedralKitchenContext ctx, IScheduleService scheduleService)
         {
-            _cathedralKitchenRepository = cathedralKitchenRepository;
             _ctx = ctx;
+            _scheduleService = scheduleService;
         }
 
         [Route("OrderMenu")]
@@ -40,38 +41,16 @@ namespace CathedralKitchen.Controllers
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
             //FIX ORDER VIEW MODEL
-            var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
+            var menuItems = _ctx.MenuItem.Where(x => x.Active == true);
             var toppings = _ctx.Topping.Where(i => i.Active == true).Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
             var filteredPizzaToppings = toppings.Where(x => x.Active == true && x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Pizza"));
             var filteredTacoToppings = toppings.Where(x => x.Active == true && x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Taco"));
-            var todaysSchedule = _ctx.ScheduleConfig.Include(y => y.Community);
-            var filteredTodaysSchedule = todaysSchedule.Where(x => x.Date == DateTime.Today).Where(y => y.Active == true);
+
             bool isAuthenticated = User.Identity.IsAuthenticated;
 
             var filteredPizzaToppingsViewModel = new List<ToppingsViewModel>();
             var filteredTacoToppingsViewModel = new List<ToppingsViewModel>();
             var allToppingsViewModel = new List<ToppingsViewModel>();
-            var filteredScheduleConfigViewModel = new List<ScheduleConfigViewModel>();
-
-            foreach (var config in filteredTodaysSchedule)
-            {
-
-                var communityViewModel = new CommunityViewModel
-                {
-                    Id = config.Community.Id,
-                    Name = config.Community.Name
-                };
-
-                var scheduleViewModel = new ScheduleConfigViewModel
-                {
-                    Id = config.Id,
-                    Community = communityViewModel,
-                    Date = config.Date,
-                    Active = config.Active
-                };
-
-                filteredScheduleConfigViewModel.Add(scheduleViewModel);
-            };
 
             foreach (var topping in filteredPizzaToppings)
             {
@@ -134,7 +113,6 @@ namespace CathedralKitchen.Controllers
                 PizzaToppings = filteredPizzaToppingsViewModel,
                 TacoToppings = filteredTacoToppingsViewModel,
                 AllToppings = allToppingsViewModel,
-                TodaysSchedule = filteredScheduleConfigViewModel,
                 IsEmployee = isEmployee
             };
             return View(orderView);
@@ -150,7 +128,7 @@ namespace CathedralKitchen.Controllers
                 request.SizeId = 0;
             }
             if (!ModelState.IsValid) return View();
-            var menuItems = _cathedralKitchenRepository.GetActiveMenuItems();
+            var menuItems = _ctx.MenuItem.Where(x => x.Active == true);
             var selectedItem = menuItems.First(x => x.Name == request.ItemName);
             var toppings = _ctx.Topping;
             var selectedToppingsViewModels = new List<ToppingsViewModel>();

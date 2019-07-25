@@ -19,6 +19,7 @@ namespace CathedralKitchen.NewModels
         public virtual DbSet<BuilderCommunity> BuilderCommunity { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Community> Community { get; set; }
+        public virtual DbSet<CommunityRequest> CommunityRequest { get; set; }
         public virtual DbSet<MenuItem> MenuItem { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderCode> OrderCode { get; set; }
@@ -45,7 +46,7 @@ namespace CathedralKitchen.NewModels
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.2-servicing-10034");
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
             modelBuilder.Entity<Builder>(entity =>
             {
@@ -110,6 +111,23 @@ namespace CathedralKitchen.NewModels
                     .WithMany(p => p.Community)
                     .HasForeignKey(d => d.RegionId)
                     .HasConstraintName("FK_Community_Region");
+            });
+
+            modelBuilder.Entity<CommunityRequest>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<MenuItem>(entity =>

@@ -183,6 +183,7 @@ namespace CathedralKitchen.Controllers
 
         }
 
+        [HttpGet]
         public IActionResult Schedule()
         {
 
@@ -246,6 +247,21 @@ namespace CathedralKitchen.Controllers
             List<ScheduleConfig> events = _ctx.ScheduleConfig.Where(x => x.Active == true).Include(y => y.Community).ToList();
 
             return Json(events);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MissingCommunity([FromBody]string communityName)
+        {
+            await ApiClientFactory.Instance.MissingCommunity(communityName);
+
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult MissingCommunity()
+        {
+            return View();
         }
 
 

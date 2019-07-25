@@ -64,6 +64,14 @@ namespace CathedralKitchen.API
             return await GetAsync<List<MenuItem>>(requestUrl);
         }
 
+        public async Task<string> MissingCommunity(string communityName)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "Schedule/missingcommunities"));
+            return await PostAsync(requestUrl, communityName);
+
+        }
+
 
     }
 }
