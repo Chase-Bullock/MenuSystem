@@ -37,7 +37,9 @@ namespace CathedralKitchen.Controllers
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", newCart);
             }
             var isEmployee = SessionHelper.GetObjectFromJson<bool>(HttpContext.Session, "isEmployee");
-
+            var test1 = _ctx.SystemReference;
+            var test2 = _ctx.ToppingSystemReference;
+            var test3 = _ctx.Topping;
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
             //FIX ORDER VIEW MODEL

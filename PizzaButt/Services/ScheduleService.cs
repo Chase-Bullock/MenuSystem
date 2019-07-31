@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CathedralKitchen.Service
 {
-    public class ScheduleService : Controller, IScheduleService
+    public class ScheduleService : IScheduleService
     {
         private readonly CathedralKitchenContext _ctx;
 

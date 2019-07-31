@@ -20,16 +20,12 @@ namespace CathedralKitchen.Controllers
         private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
         private readonly CathedralKitchenContext _ctx;
         private readonly IEmailNotificationService _emailNotificationService;
-        private readonly IOptions<SettingsModel> _options;
 
         public OrdersController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx, IEmailNotificationService emailNotificationService, IOptions<SettingsModel> options)
         {
             _emailNotificationService = emailNotificationService;
             _cathedralKitchenRepository = cathedralKitchenRepository;
             _ctx = ctx;
-            _options = options;
-            ApplicationSettings.WebApiUrl = _options.Value.WebApiBaseUrl;
-
         }
 
         [Authorize]

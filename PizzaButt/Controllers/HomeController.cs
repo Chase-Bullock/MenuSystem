@@ -19,6 +19,7 @@ using CathedralKitchen.API;
 using CathedralKitchen.Utility;
 using CathedralKitchen.ExtendedModels;
 using CathedralKitchen.Factory;
+using CathedralKitchen.Service;
 
 namespace CathedralKitchen.Controllers
 {
@@ -30,14 +31,23 @@ namespace CathedralKitchen.Controllers
         private readonly IEmailNotificationService _emailNotificationService;
         private readonly ScheduleController _scheduleController;
         private readonly IOptions<SettingsModel> _options;
+        private readonly IScheduleService _scheduleService;
+        private readonly IPersonService _personService;
+        private readonly ILocationService _locationService;
 
-        public HomeController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx, IEmailNotificationService emailNotificationService, IOptions<SettingsModel> options)
+        public HomeController(ICathedralKitchenRepository cathedralKitchenRepository,
+            CathedralKitchenContext ctx, IEmailNotificationService emailNotificationService,
+            IScheduleService scheduleService,
+            IPersonService personService,
+            ILocationService locationService
+            )
         {
             _emailNotificationService = emailNotificationService;
             _cathedralKitchenRepository = cathedralKitchenRepository;
             _ctx = ctx;
-            _options = options;
-            ApplicationSettings.WebApiUrl = _options.Value.WebApiBaseUrl;
+            _scheduleService = scheduleService;
+            _personService = personService;
+            _locationService = locationService;
         }
 
         public async Task<IActionResult> Index()
@@ -76,8 +86,8 @@ namespace CathedralKitchen.Controllers
                 allCommunities.Add(communityViewModel);
             }
 
-            var scheduleData = await ApiClientFactory.Instance.GetSchedule();
-            var scheduledCommunityData = await ApiClientFactory.Instance.GetScheduledCommunities();
+            var scheduleData = _scheduleService.GetScheduledCommunities();
+            var scheduledCommunityData = _scheduleService.GetTodaysScheduledCommunities();
 
             var cartViewModel = new CartViewModel
             {
@@ -134,7 +144,7 @@ namespace CathedralKitchen.Controllers
                     SendEmail = cartViewModel.EmailConsent == true ? true : false,
                     Email = cartViewModel.Email,
                 };
-                await ApiClientFactory.Instance.CreatePerson(personToCreate);
+                await _personService.CreatePerson(personToCreate);
             } else
             {
                 var personToUpdate = new PersonViewModel
@@ -145,7 +155,7 @@ namespace CathedralKitchen.Controllers
                     Email = cartViewModel.Email,
                 };
 
-                await ApiClientFactory.Instance.UpdatePerson(person.Id, personToUpdate);
+                await _personService.UpdatePerson(personToUpdate, person.Id);
 
             }
 
@@ -156,7 +166,7 @@ namespace CathedralKitchen.Controllers
                 CustomerFirstName = cartViewModel.FirstName,
                 CustomerLastName = cartViewModel.LastName,
                 Note = cartViewModel.Note,
-                CommunityId = cartViewModel.CommunityId > 0 ? cartViewModel.CommunityId : 1,
+                CommunityId = cartViewModel.CommunityId > 0 ? cartViewModel.CommunityId : _ctx.Community.First(x => x.Name == "Cathedral").Id,
                 AddressLine1 = cartViewModel.AddressLine1,
                 AddressLine2 = cartViewModel.AddressLine2,
                 City = cartViewModel.City,
@@ -252,7 +262,7 @@ namespace CathedralKitchen.Controllers
         [HttpPost]
         public async Task<IActionResult> MissingCommunity([FromBody]string communityName)
         {
-            await ApiClientFactory.Instance.MissingCommunity(communityName);
+            _locationService.MissingCommunity(communityName);
 
 
             return View();

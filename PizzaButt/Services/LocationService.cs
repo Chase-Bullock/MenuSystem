@@ -53,12 +53,5 @@ namespace CathedralKitchen.Service
         }
 
 
-        public MenuItem GetItemById(long id)
-        {
-            var data = _ctx.MenuItem.FirstOrDefault(x => x.Active == true && x.Id == id);
-
-            return data;
-        }
-
     }
 }

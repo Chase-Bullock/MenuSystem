@@ -40,7 +40,7 @@ namespace CathedralKitchen.NewModels
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CathedralKitchen;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=tcp:cathedralbites.database.windows.net,1433;Initial Catalog=CathedralKitchen;Persist Security Info=False;User ID=chase.b;Password=p1ZZAbuTT!!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
@@ -197,15 +197,9 @@ namespace CathedralKitchen.NewModels
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.CreateTime).HasColumnType("datetime");
-
-                entity.Property(e => e.DeleteTime).HasColumnType("datetime");
-
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<OrderItem>(entity =>

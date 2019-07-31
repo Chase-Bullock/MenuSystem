@@ -30,6 +30,9 @@ namespace CathedralKitchen
         {
             services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<ILocationService, LocationService>();
+            services.AddTransient<IScheduleService, ScheduleService>();
+            services.AddTransient<IPersonService, PersonService>();
             services.AddTransient<IEmailNotificationService, EmailNotificationService>();
             services.AddSession();
             services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -72,8 +75,6 @@ namespace CathedralKitchen
             services.AddTransient<ICathedralKitchenRepository, CathedralKitchenRepository>();
             services.AddTransient<CathedralKitchenContext, CathedralKitchenContext>();
 
-            services.AddScoped<ILocationService, LocationService>();
-            services.AddScoped<IScheduleService, ScheduleService>();
             services.AddSignalR();
         }
 

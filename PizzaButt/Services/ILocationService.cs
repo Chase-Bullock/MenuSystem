@@ -7,7 +7,6 @@ namespace CathedralKitchen.Service
     public interface ILocationService
     {
         List<CommunityViewModel> GetCommunities();
-        MenuItem GetItemById(long id);
         void MissingCommunity(string communityName);
     }
 }
