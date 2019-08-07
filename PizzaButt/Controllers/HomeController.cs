@@ -16,9 +16,7 @@ using CathedralKitchen.ViewModels;
 using CathedralKitchen.ViewModels.AccountViewModels;
 using CathedralKitchen.Services;
 using CathedralKitchen.API;
-using CathedralKitchen.Utility;
 using CathedralKitchen.ExtendedModels;
-using CathedralKitchen.Factory;
 using CathedralKitchen.Service;
 
 namespace CathedralKitchen.Controllers

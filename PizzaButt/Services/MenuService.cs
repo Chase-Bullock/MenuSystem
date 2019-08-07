@@ -20,9 +20,16 @@ namespace CathedralKitchen.Service
             _ctx = ctx;
         }
 
-        public List<MenuItem> GetAllItems()
+        public List<MenuItem> GetActiveItems()
         {
             var data = _ctx.MenuItem.Where(x => x.Active == true);
+
+            return data.ToList();
+        }
+
+        public List<MenuItem> GetAllItems()
+        {
+            var data = _ctx.MenuItem;
 
             return data.ToList();
         }

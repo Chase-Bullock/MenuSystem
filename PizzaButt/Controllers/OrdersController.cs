@@ -11,7 +11,6 @@ using CathedralKitchen.Services;
 using CathedralKitchen.ViewModels;
 using CathedralKitchen.ExtendedModels;
 using Microsoft.Extensions.Options;
-using CathedralKitchen.Utility;
 
 namespace CathedralKitchen.Controllers
 {

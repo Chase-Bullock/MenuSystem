@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CathedralKitchen.NewModels;
+using CathedralKitchen.Service;
 using CathedralKitchen.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,58 +15,31 @@ namespace CathedralKitchen.API
     public class LocationsController : Controller
     {
         private readonly CathedralKitchenContext _ctx;
+        private readonly ILocationService _locationService;
         private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
 
-        public LocationsController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx)
+        public LocationsController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx, ILocationService locationService)
         {
             _ctx = ctx;
+            _locationService = locationService;
             _cathedralKitchenRepository = cathedralKitchenRepository;
         }
 
         [HttpGet("communities")]
         public IActionResult GetCommunities()
         {
-            var data = new List<CommunityViewModel>();
-
-            var communities = _ctx.Community.Where(x => x.Active == true);
-
-            foreach (var community in communities)
-            {
-                var communityViewModel = new CommunityViewModel
-                {
-                    Id = community.Id,
-                    Name = community.Name
-                };
-                data.Add(communityViewModel);
-            }
+            var data = _locationService.GetCommunities();
 
 
-            return Json(data);
+            return Ok(data);
         }
 
         [HttpPost("communities/missing/{communityName}")]
         public IActionResult MissingCommunity(string communityName)
         {
-            _ctx.Add(new CommunityRequest
-            {
-                Name = communityName,
-                Active = true,
-                CreateTime = DateTime.UtcNow
-            });
-
-            _ctx.SaveChanges();
-
+            _locationService.MissingCommunity(communityName);
 
             return Ok();
-        }
-
-
-        [HttpGet("{id}")]
-        public IActionResult GetItemById(long id)
-        {
-            var data = _ctx.MenuItem.Where(x => x.Active == true && x.Id == id);
-
-            return Json(data);
         }
 
     }

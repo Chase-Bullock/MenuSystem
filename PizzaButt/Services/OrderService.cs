@@ -20,7 +20,8 @@ namespace CathedralKitchen.Service
 
         public List<OrderViewModel> GetStatusOfAllOrders()
         {
-            var orders = _ctx.Order.Where(x => x.OrderStatusId != 20002 && x.OrderStatusId != 2)
+            var orderStatusesToIgnore = _ctx.OrderStatus.Where(x => x.Status == "Canceled" || x.Status == "InProgress").Select(x => x.Id);
+            var orders = _ctx.Order.Where(x => !orderStatusesToIgnore.Contains(x.OrderStatusId))
                 .Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping)
                 .Include(c => c.OrderItem).ThenInclude(w => w.MenuItem)
                 .Include(y => y.OrderStatus).Include(c => c.Community);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CathedralKitchen.NewModels;
+using CathedralKitchen.Service;
 using CathedralKitchen.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,56 +16,27 @@ namespace CathedralKitchen.API
     public class PersonController : Controller
     {
         private readonly CathedralKitchenContext _ctx;
-        private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
+        private readonly IPersonService _personService;
 
-        public PersonController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx)
+        public PersonController(CathedralKitchenContext ctx, IPersonService personService)
         {
             _ctx = ctx;
-            _cathedralKitchenRepository = cathedralKitchenRepository;
+            _personService = personService;
         }
 
         [HttpPost("")]
         public async Task<IActionResult> CreatePerson([FromBody] PersonViewModel person)
         {
-            var personToCreate = new Person
-            {
-                Email = person.Email,
-                Active = true,
-                Cell = person.Cell,
-                Home = person.Home,
-                Work = person.Work,
-                SendEmail = person.SendEmail,
-                FirstName = person.FirstName,
-                LastName = person.LastName,
-                CreateBy = 1,
-                CreateTime = DateTime.UtcNow,
-                UpdateBy = 1,
-                UpdateTime = DateTime.UtcNow
+            var personId = await _personService.CreatePerson(person);
 
-            };
-
-            await _ctx.Person.AddAsync(personToCreate);
-            await _ctx.SaveChangesAsync();
-
-            return Ok();
+            return Ok(personId);
         }
 
         [HttpPost("{id}")]
         public async Task<IActionResult> UpdatePerson([FromBody] PersonViewModel request, long id)
         {
 
-            var person = _ctx.Person.FirstOrDefault(x => x.Id == id);
-
-            person.FirstName = request.FirstName;
-            person.LastName = request.LastName;
-            person.Email = request.Email;
-            person.Cell = request.Cell;
-            person.Home = request.Home;
-            person.Work = request.Work;
-            person.SendEmail = request.SendEmail;
-
-            _ctx.Update(person);
-            await _ctx.SaveChangesAsync();
+            await _personService.UpdatePerson(request, id);
 
             return Ok();
 

@@ -26,6 +26,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Utility\" />
     <Folder Include="wwwroot\lib\%40aspnet\" />
   </ItemGroup>
   <ItemGroup>
