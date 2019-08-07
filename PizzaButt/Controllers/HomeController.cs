@@ -51,6 +51,7 @@ namespace CathedralKitchen.Controllers
             _menuService = menuService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             return View();
@@ -220,6 +221,7 @@ namespace CathedralKitchen.Controllers
             return View(scheduleViewModel);
         }
 
+        [HttpGet]
         public IActionResult Calendar()
         {
 
@@ -427,6 +429,7 @@ namespace CathedralKitchen.Controllers
             return Json(new { message, events });
         }
 
+        [HttpGet]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

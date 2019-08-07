@@ -13,6 +13,16 @@ using System.Text;
 using CathedralKitchen.Services;
 using CathedralKitchen.ExtendedModels;
 using CathedralKitchen.Service;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using System.Reflection;
+using System.IO;
+using System.Collections.Generic;
 
 namespace CathedralKitchen
 {
@@ -80,6 +90,10 @@ namespace CathedralKitchen
             services.AddTransient<CathedralKitchenContext, CathedralKitchenContext>();
 
             services.AddSignalR();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cathedral Bites", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,6 +122,14 @@ namespace CathedralKitchen
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cathedral Bites V1");
+                c.RoutePrefix = "api/swagger";
             });
         }
     }

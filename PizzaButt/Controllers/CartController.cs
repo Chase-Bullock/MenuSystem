@@ -30,6 +30,7 @@ namespace CathedralKitchen.Controllers
         }
 
         [Route("OrderMenu")]
+        [HttpGet]
         public IActionResult OrderMenu()
         {
             if (SessionHelper.GetObjectFromJson<long>(HttpContext.Session, "orderId") == 0)
@@ -129,6 +130,7 @@ namespace CathedralKitchen.Controllers
 
         [Route("remove/{id}/{toppingIds}")]
         [Route("remove/{id}")]
+        [HttpPost]
         public IActionResult Remove(long id, string toppingIds)
         {
             var ids = new List<long>();

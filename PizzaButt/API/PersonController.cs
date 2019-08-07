@@ -24,7 +24,7 @@ namespace CathedralKitchen.API
             _personService = personService;
         }
 
-        [HttpPost("")]
+        [HttpPost]
         public async Task<IActionResult> CreatePerson([FromBody] PersonViewModel person)
         {
             var personId = await _personService.CreatePerson(person);

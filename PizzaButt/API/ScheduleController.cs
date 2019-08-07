@@ -26,7 +26,7 @@ namespace CathedralKitchen.API
             _scheduleService = scheduleService;
         }
 
-        [HttpGet("")]
+        [HttpGet]
         public IActionResult GetScheduling()
         {
             var filteredScheduleConfigViewModel = _scheduleService.GetScheduledCommunities();

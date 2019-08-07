@@ -27,6 +27,7 @@ namespace CathedralKitchen.Controllers
             _ctx = ctx;
         }
 
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> StatusOfAllOrders()
         {
@@ -98,6 +99,7 @@ namespace CathedralKitchen.Controllers
             return View(ordersViewModel);
         }
 
+        [HttpGet]
         public IActionResult OrderInfoForCustomer()
         {
             SessionHelper.Remove(HttpContext.Session, "cart");
@@ -149,6 +151,7 @@ namespace CathedralKitchen.Controllers
             return View(orderViewModel);
         }
 
+        [HttpGet]
         [Authorize]
         public IActionResult SelectActiveToppings()
         {
@@ -195,6 +198,7 @@ namespace CathedralKitchen.Controllers
             return Redirect("SelectActiveToppings");
         }
 
+        [HttpGet]
         [Authorize]
         public IActionResult SelectActiveMenuItems()
         {
@@ -303,6 +307,7 @@ namespace CathedralKitchen.Controllers
             return Redirect("CreateTopping");
         }
 
+        [HttpPost]
         public IActionResult Complete([FromQuery] long orderId)
         {
             var order = _ctx.Order.FirstOrDefault(x => x.Id == orderId);
@@ -315,6 +320,7 @@ namespace CathedralKitchen.Controllers
             return Redirect("StatusOfAllOrders");
         }
 
+        [HttpPost]
         public IActionResult Start([FromQuery] long orderId)
         {
             _cathedralKitchenRepository.StartOrder(orderId);
@@ -327,13 +333,14 @@ namespace CathedralKitchen.Controllers
             return Redirect("StatusOfAllOrders");
         }
 
+        [HttpPost]
         public IActionResult ReOpen([FromQuery] long orderId)
         {
             _cathedralKitchenRepository.StartOrder(orderId);
             return Redirect("StatusOfAllOrders");
         }
 
-
+        [HttpPost]
         public IActionResult Cancel([FromQuery] long orderId)
         {
             _cathedralKitchenRepository.CancelOrder(orderId);

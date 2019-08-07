@@ -24,7 +24,7 @@ namespace CathedralKitchen.API
             _cathedralKitchenRepository = cathedralKitchenRepository;
         }
 
-        [HttpGet]
+        [HttpGet("Active")]
         public IActionResult GeActiveItems()
         {
             var data = _menuService.GetActiveItems();
