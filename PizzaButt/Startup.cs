@@ -29,11 +29,15 @@ namespace CathedralKitchen
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IScheduleService, ScheduleService>();
             services.AddTransient<IPersonService, PersonService>();
+            services.AddTransient<IMenuService, MenuService>();
+            services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IEmailNotificationService, EmailNotificationService>();
+
             services.AddSession();
             services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 

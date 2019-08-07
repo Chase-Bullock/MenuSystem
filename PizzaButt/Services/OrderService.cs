@@ -7,28 +7,20 @@ using CathedralKitchen.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace CathedralKitchen.API
+namespace CathedralKitchen.Service
 {
-    [Route("api/[controller]")]
-    public class OrdersController : Controller
+    public class OrderService : IOrderService
     {
         private readonly CathedralKitchenContext _ctx;
-        private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
 
-        public OrdersController(ICathedralKitchenRepository cathedralKitchenRepository, CathedralKitchenContext ctx)
+        public OrderService(CathedralKitchenContext ctx)
         {
             _ctx = ctx;
-            _cathedralKitchenRepository = cathedralKitchenRepository;
         }
 
-
-        [HttpGet]
-        public IActionResult GetStatusOfAllOrders()
+        public List<OrderViewModel> GetStatusOfAllOrders()
         {
-            var orderStatusesToIgnore = _ctx.OrderStatus.Where(x => x.Status == "Canceled" || x.Status == "InProgress").Select(x => x.Id);
-            var orders = _ctx.Order.Where(x => !orderStatusesToIgnore.Contains(x.OrderStatusId))
+            var orders = _ctx.Order.Where(x => x.OrderStatusId != 20002 && x.OrderStatusId != 2)
                 .Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping)
                 .Include(c => c.OrderItem).ThenInclude(w => w.MenuItem)
                 .Include(y => y.OrderStatus).Include(c => c.Community);
@@ -86,11 +78,10 @@ namespace CathedralKitchen.API
                 };
                 ordersViewModel.Add(orderViewModel);
             }
-            return Ok(ordersViewModel);
+            return ordersViewModel;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetOrderInfoForCustomer(long orderId)
+        public OrderViewModel GetOrderInfoForCustomer(long orderId)
         {
             var order = _ctx.Order.Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping).Include(c => c.OrderItem).ThenInclude(w => w.MenuItem).Include(y => y.OrderStatus).Include(c => c.Community).FirstOrDefault(x => x.Id == orderId);
             var orderItemsViewModel = new List<OrderItemViewModel>();
@@ -130,7 +121,7 @@ namespace CathedralKitchen.API
                 CompleteTime = order.CompleteTime
             };
 
-            return Ok(orderViewModel);
+            return orderViewModel;
         }
 
     }

@@ -17,11 +17,16 @@ namespace CathedralKitchen.Controllers
 
         private readonly CathedralKitchenContext _ctx;
         private readonly IScheduleService _scheduleService;
+        private readonly IMenuService _menuService;
 
-        public CartController(CathedralKitchenContext ctx, IScheduleService scheduleService)
+        public CartController(
+            CathedralKitchenContext ctx,
+            IScheduleService scheduleService,
+            IMenuService menuService)
         {
             _ctx = ctx;
             _scheduleService = scheduleService;
+            _menuService = menuService;
         }
 
         [Route("OrderMenu")]
@@ -37,77 +42,13 @@ namespace CathedralKitchen.Controllers
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", newCart);
             }
             var isEmployee = SessionHelper.GetObjectFromJson<bool>(HttpContext.Session, "isEmployee");
-            var test1 = _ctx.SystemReference;
-            var test2 = _ctx.ToppingSystemReference;
-            var test3 = _ctx.Topping;
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
-            //FIX ORDER VIEW MODEL
-            var menuItems = _ctx.MenuItem.Where(x => x.Active == true);
-            var toppings = _ctx.Topping.Where(i => i.Active == true).Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType);
-            var filteredPizzaToppings = toppings.Where(x => x.Active == true && x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Pizza"));
-            var filteredTacoToppings = toppings.Where(x => x.Active == true && x.ToppingSystemReference.Any(y => y.ToppingType.Name == "Taco"));
 
-            bool isAuthenticated = User.Identity.IsAuthenticated;
-
-            var filteredPizzaToppingsViewModel = new List<ToppingsViewModel>();
-            var filteredTacoToppingsViewModel = new List<ToppingsViewModel>();
-            var allToppingsViewModel = new List<ToppingsViewModel>();
-
-            foreach (var topping in filteredPizzaToppings)
-            {
-                var toppingTypes = new List<SystemReference>();
-
-                foreach (var sysref in topping.ToppingSystemReference)
-                {
-                    toppingTypes.Add(sysref.ToppingType);
-                }
-                var toppingViewModel = new ToppingsViewModel
-                {
-                    Name = topping.ToppingName,
-                    ToppingTypes = toppingTypes,
-                    Id = topping.Id
-                };
-
-                filteredPizzaToppingsViewModel.Add(toppingViewModel);
-            };
-
-
-            foreach (var topping in filteredTacoToppings)
-            {
-                var toppingTypes = new List<SystemReference>();
-
-                foreach (var sysref in topping.ToppingSystemReference)
-                {
-                    toppingTypes.Add(sysref.ToppingType);
-                }
-                var toppingViewModel = new ToppingsViewModel
-                {
-                    Name = topping.ToppingName,
-                    ToppingTypes = toppingTypes,
-                    Id = topping.Id
-                };
-
-                filteredTacoToppingsViewModel.Add(toppingViewModel);
-            };
-
-            foreach (var topping in toppings)
-            {
-                var toppingTypes = new List<SystemReference>();
-
-                foreach (var sysref in topping.ToppingSystemReference)
-                {
-                    toppingTypes.Add(sysref.ToppingType);
-                }
-                var toppingViewModel = new ToppingsViewModel
-                {
-                    Name = topping.ToppingName,
-                    ToppingTypes = toppingTypes,
-                    Id = topping.Id
-                };
-
-                allToppingsViewModel.Add(toppingViewModel);
-            };
+            var menuItems = _menuService.GetAllItems();
+            var allToppingsViewModel = _menuService.GetToppings();
+            var filteredPizzaToppingsViewModel = _menuService.GetToppings("Pizza");
+            var filteredTacoToppingsViewModel = _menuService.GetToppings("Taco");
 
             var orderView = new CustomerOrderViewModel
             {
@@ -130,8 +71,7 @@ namespace CathedralKitchen.Controllers
                 request.SizeId = 0;
             }
             if (!ModelState.IsValid) return View();
-            var menuItems = _ctx.MenuItem.Where(x => x.Active == true);
-            var selectedItem = menuItems.First(x => x.Name == request.ItemName);
+            var selectedItem = _ctx.MenuItem.FirstOrDefault(x => x.Name == request.ItemName);
             var toppings = _ctx.Topping;
             var selectedToppingsViewModels = new List<ToppingsViewModel>();
             if (request.Toppings != null)
@@ -201,16 +141,7 @@ namespace CathedralKitchen.Controllers
             }
             List<OrderItem> cart = SessionHelper.GetObjectFromJson<List<OrderItem>>(HttpContext.Session, "cart");
             var toppings = _ctx.Topping.Where(r => ids.Contains(r.Id)).ToList();
-            var toppingsViewModels = new List<ToppingsViewModel>();
-            toppings.ForEach(x =>
-            {
-                var toppingsViewModel = new ToppingsViewModel
-                {
-                    Id = x.Id,
-                    Name = x.ToppingName,
-                };
-                toppingsViewModels.Add(toppingsViewModel);
-            });
+            var toppingsViewModels = _menuService.ConvertToViewModel(toppings);
             int index = isExist(id, toppingsViewModels); //returns index in cart where item id = id and item toppings = toppings
             if (index >= 0)
             {
@@ -224,8 +155,7 @@ namespace CathedralKitchen.Controllers
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("OrderMenu", "Cart");
         }
-
-        //TODO CHECK ORDERSFORCUSTOMERTODAY
+        [HttpPost]
         public IActionResult Checkout(string note)
         {
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
@@ -233,8 +163,9 @@ namespace CathedralKitchen.Controllers
             var order = _ctx.Order.FirstOrDefault(x => x.Id == orderId);
             var ordersForCustomerToday = _ctx.Order.Where(x => x.CustomerEmail == order.CustomerEmail
                                                             && x.CreateTime.ToLocalTime().Day == DateTime.Today.Day
-                                                            && x.OrderStatusId != 2
-                                                            && x.CommunityId != 1);
+                                                            && x.OrderStatusId != _ctx.OrderStatus.First(y => y.Status == "Canceled").Id
+                                                            && x.OrderStatusId != _ctx.OrderStatus.First(y => y.Status == "InProgress").Id
+                                                            && x.CommunityId != _ctx.Community.First(y => y.Name == "Cathedral").Id);
             if (ordersForCustomerToday.Count() > 1)
             {
                 TempData["ErrorMessage"] = "Orders are limited to only one per day, cancel your last order by clicking the cancel button below.";

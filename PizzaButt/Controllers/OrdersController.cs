@@ -31,15 +31,21 @@ namespace CathedralKitchen.Controllers
         [Authorize]
         public async Task<IActionResult> StatusOfAllOrders()
         {
-            var orders = _ctx.Order.Where(x => x.OrderStatusId != 20002 && x.OrderStatusId != 2)
-    .Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping)
-    .Include(c => c.OrderItem).ThenInclude(w => w.MenuItem)
-    .Include(y => y.OrderStatus).Include(c => c.Community);
+            var orderStatusesToIgnore = _ctx.OrderStatus.Where(x => x.Status == "Canceled" || x.Status == "InProgress").Select(x => x.Id);
+            var orders1 = _ctx.Order
+                .Include(y => y.OrderItem).ThenInclude(z => z.OrderItemTopping).ThenInclude(v => v.Topping)
+                .Include(c => c.OrderItem).ThenInclude(w => w.MenuItem)
+                .Include(y => y.OrderStatus)
+                .Include(c => c.Community);
+            var orders = orders1.Where(x => !orderStatusesToIgnore.Contains(x.OrderStatusId)).ToList();
 
             //var orderItems = _ctx.OrderItem.Include(y => y.MenuItem).Include(y => y.OrderItemTopping).ThenInclude(y => y.Topping).ToList();
             var orderItemsViewModel = new Dictionary<long, List<OrderItemViewModel>>();
             var ordersViewModel = new List<OrderViewModel>();
-
+            if (orders == null)
+            {
+                return BadRequest();
+            }
             foreach (var order in orders)
             {
                 foreach (var orderItem in order.OrderItem)
