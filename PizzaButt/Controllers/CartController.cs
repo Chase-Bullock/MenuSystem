@@ -157,7 +157,7 @@ namespace CathedralKitchen.Controllers
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("OrderMenu", "Cart");
         }
-        [HttpPost]
+        [HttpGet]
         public IActionResult Checkout(string note)
         {
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
