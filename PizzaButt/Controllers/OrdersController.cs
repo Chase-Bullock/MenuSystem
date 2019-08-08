@@ -307,7 +307,7 @@ namespace CathedralKitchen.Controllers
             return Redirect("CreateTopping");
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Complete([FromQuery] long orderId)
         {
             var order = _ctx.Order.FirstOrDefault(x => x.Id == orderId);
@@ -320,7 +320,7 @@ namespace CathedralKitchen.Controllers
             return Redirect("StatusOfAllOrders");
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Start([FromQuery] long orderId)
         {
             _cathedralKitchenRepository.StartOrder(orderId);
@@ -333,14 +333,14 @@ namespace CathedralKitchen.Controllers
             return Redirect("StatusOfAllOrders");
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult ReOpen([FromQuery] long orderId)
         {
             _cathedralKitchenRepository.StartOrder(orderId);
             return Redirect("StatusOfAllOrders");
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Cancel([FromQuery] long orderId)
         {
             _cathedralKitchenRepository.CancelOrder(orderId);
