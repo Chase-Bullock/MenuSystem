@@ -62,7 +62,7 @@ namespace CathedralKitchen.Services
             }
             var addressFrom = new List<EmailAddress>
             {
-                new EmailAddress {Address = "noreply@CathedralBites.com", Name = "Cathedral Bites"}
+                new EmailAddress {Address = "pizza@miviewis.com", Name = "Cathedral Bites"}
             };
             var address = new List<EmailAddress> { new EmailAddress { Address = person.Email, Name = person.FirstName } };
             var message = new EmailMessage

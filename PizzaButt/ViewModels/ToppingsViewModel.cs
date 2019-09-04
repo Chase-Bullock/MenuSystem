@@ -8,6 +8,7 @@ namespace CathedralKitchen.ViewModels
         public long Id { get; set; }
         public string Name { get; set; }
         public List<SystemReference> ToppingTypes { get; set; }
+        public SystemReference ToppingType { get; set; }
 
         public override bool Equals(System.Object obj)
         {

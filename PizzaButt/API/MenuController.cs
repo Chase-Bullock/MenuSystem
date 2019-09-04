@@ -40,6 +40,14 @@ namespace CathedralKitchen.API
             return Json(data);
         }
 
+        [HttpGet("{menuItem}/toppings/{toppingsType}")]
+        public IActionResult GetToppingsForMenuItem(string menuItem, string toppingsType)
+        {
+            var data = _menuService.GetTopping(menuItem, toppingsType);
+
+            return Json(data);
+        }
+
         [HttpGet("{id}")]
         public IActionResult GetItemById(long id)
         {

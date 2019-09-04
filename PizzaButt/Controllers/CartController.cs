@@ -46,7 +46,7 @@ namespace CathedralKitchen.Controllers
             var cart = SessionHelper.GetObjectFromJson<List<OrderItemViewModel>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
 
-            var menuItems = _menuService.GetAllItems();
+            var menuItems = _menuService.GetActiveItems();
             var allToppingsViewModel = _menuService.GetToppings();
             var filteredPizzaToppingsViewModel = _menuService.GetToppings("Pizza");
             var filteredTacoToppingsViewModel = _menuService.GetToppings("Taco");
@@ -211,8 +211,9 @@ namespace CathedralKitchen.Controllers
                     _ctx.OrderItemTopping.Add(toppingItem);
                 }
 
-                var orderToUpdate = _ctx.Order.First(x => x.Id == orderId);
-                orderToUpdate.OrderStatusId = _ctx.OrderStatus.SingleOrDefault(x => x.Status == "Pending").Id;
+                order.OrderStatusId = _ctx.OrderStatus.SingleOrDefault(x => x.Status == "Pending").Id;
+
+                _ctx.Update(order);
 
                 _ctx.SaveChanges();
             }

@@ -10,6 +10,7 @@ namespace CathedralKitchen.Service
         List<MenuItem> GetAllItems();
         List<MenuItem> GetActiveItems();
         MenuItem GetItemById(long id);
-        List<ToppingsViewModel> GetToppings(string type = null);
+        List<ToppingsViewModel> GetTopping(string menuItem, string toppingsType);
+        List<ToppingsViewModel> GetToppings(string menuItem = null);
     }
 }

@@ -69,7 +69,7 @@ function updateEvent(event, element) {
     editFpStartTime.setDate(start);
 
     $('#editStartTime').val(start);
-
+    
     $('#editEventModal').modal('show');
 }
 
@@ -168,6 +168,9 @@ function sendAddEvent(event) {
                     $('#calendar').fullCalendar('renderEvent', newEvent);
                 }
                 $('#calendar').fullCalendar('unselect');
+                console.log(document.getElementById("communityIdList"))
+                $('#communityIdList').empty();
+                $('#communityList').empty();
 
                 $('#eventModal').modal('hide');
             } else {
@@ -204,7 +207,8 @@ function sendUpdateEvent(event) {
                     $('#calendar').fullCalendar('refetchEvents');
                 }
                 $('#calendar').fullCalendar('unselect');
-
+                $('#communityIdList').empty();
+                $('#communityList').empty();
                 $('#eventModal').modal('hide');
             } else {
                 alert(`Something went wrong: ${message}`);
@@ -227,6 +231,8 @@ $('#deleteEvent').click(() => {
 
                 if (message === '') {
                     $('#calendar').fullCalendar('removeEvents', currentEvent._id);
+                    $('#communityIdList').empty();
+                    $('#communityList').empty();
                     $('#eventModal').modal('hide');
                 } else {
                     alert(`Something went wrong: ${message}`);
@@ -246,7 +252,7 @@ $("#addButton").click(function () {
         console.log(values);
 
         $('#communityList').append('<option value="">' + comunityName + '</option>')
-        $('#communityIdList').append('<li value="">' + values[0] + '</li>')
+        $('<li value="">' + values[0] + '</li>').appendTo('#communityIdList')
         console.log($('#communityIdList'))
     });
 

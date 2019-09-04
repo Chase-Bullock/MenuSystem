@@ -121,7 +121,7 @@ namespace CathedralKitchen.Controllers
             {
                 TimeSpan now = DateTime.Now.TimeOfDay;
                 TimeSpan start = new TimeSpan(06, 0, 0);
-                TimeSpan end = new TimeSpan(10, 0, 0);
+                TimeSpan end = new TimeSpan(24, 0, 0);
                 if (now < start || now > end)
                 {
                     TempData["ErrorMessage"] = "Delivery orders must be placed between 6 am and 10 am!";
@@ -361,10 +361,14 @@ namespace CathedralKitchen.Controllers
         public IActionResult UpdateEvent([FromBody] dynamic evt)
         {
             DateTime InitialDate = evt.Start;
+            var message = "";
             long eventId = (long)evt.EventId;
+            long communityId = (long)evt.CommunityId;
             TimeSpan dateDifference;
             var events = new Dictionary<long, DateTime>();
             var eventSchedule = _ctx.ScheduleConfig.First(x => x.Id == eventId);
+
+            var daysSchedule = new ScheduleConfig();
 
             ScheduleConfig parentSchedule = _ctx.ScheduleConfig.FirstOrDefault(x => x.Id == eventSchedule.ParentId);
             if (parentSchedule != null)
@@ -392,7 +396,13 @@ namespace CathedralKitchen.Controllers
                     newDate = newDate.AddDays(7);
                 }
 
-                ScheduleConfig scheduledDate = schedules.Where(x => x.Date == oldDate).FirstOrDefault(x => x.CommunityId == eventSchedule.CommunityId);
+                ScheduleConfig scheduledDate = schedules.FirstOrDefault(x => x.CommunityId == eventSchedule.CommunityId && x.Date == oldDate);
+                daysSchedule = _ctx.ScheduleConfig.FirstOrDefault(x => x.CommunityId == communityId && x.Date == newDate.Date);
+                if (daysSchedule != null)
+                {
+                    message = "This community is already scheduled on " + newDate.Date.Date;
+                    return Json(new { message, events });
+                }
                 if (scheduledDate != null)
                 {
                     scheduledDate.ParentId = parentId;
@@ -402,7 +412,6 @@ namespace CathedralKitchen.Controllers
                     scheduledDate.UpdateBy = 2;
                     scheduledDate.UpdateTime = DateTime.UtcNow;
                     events.Add(scheduledDate.Id, scheduledDate.Date);
-                    _ctx.SaveChanges();
                 }
                 else
                 {
@@ -419,13 +428,13 @@ namespace CathedralKitchen.Controllers
 
                     };
                     _ctx.ScheduleConfig.Add(scheduleConfig);
-                    _ctx.SaveChanges();
                     events.Add(scheduleConfig.Id, scheduleConfig.Date);
                 }
                 cycle += 1;
             }
+            _ctx.SaveChanges();
 
-            var message = "";
+
             return Json(new { message, events });
         }
 

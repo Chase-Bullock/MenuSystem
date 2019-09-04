@@ -82,6 +82,47 @@ namespace CathedralKitchen.Service
 
         }
 
+        public List<ToppingsViewModel> GetTopping(string menuItem, string toppingType)
+        {
+            menuItem = menuItem.ToLower();
+            toppingType = toppingType.ToLower();
+            var toppings = new List<Topping>();
+            var toppingsViewModel = new List<ToppingsViewModel>();
+
+            if (menuItem == null || menuItem.ToLower() != "pizza" && menuItem.ToLower() != "taco")
+            {
+                toppings = _ctx.Topping
+                    .Where(i => i.Active == true)
+                    .Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType)
+                    .Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name.ToLower() == "other" && y.ToppingType.MainValue == toppingType)).ToList();
+
+            }
+            else if (menuItem.ToLower() == "pizza" || menuItem.ToLower() == "taco")
+            {
+                toppings = _ctx.Topping
+                    .Where(i => i.Active == true)
+                    .Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType)
+                    .Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == menuItem && y.ToppingType.MainValue == toppingType)).ToList();
+            }
+
+            foreach (var topping in toppings)
+            {
+                var selectedToppingType = topping.ToppingSystemReference.First(x => x.ToppingType.MainValue.ToLower() == toppingType).ToppingType;
+
+                var toppingViewModel = new ToppingsViewModel
+                {
+                    Name = topping.ToppingName,
+                    ToppingType = selectedToppingType,
+                    Id = topping.Id
+                };
+
+                toppingsViewModel.Add(toppingViewModel);
+            };
+
+            return toppingsViewModel;
+
+        }
+
         public List<ToppingsViewModel> ConvertToViewModel(List<Topping> toppings)
         {
             List<ToppingsViewModel> toppingsViewModels = new List<ToppingsViewModel>();

@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/CathedralKitchen",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:50221/",
       "sslPort": 0
@@ -21,6 +25,17 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:50222/"
+    },
+    "Starbucks": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://172.31.98.127:5001/"
+    },
+    "WhiteRock": {
+      "commandName": "Project",
+      "applicationUrl": "http://192.168.1.197:5001/"
     }
   }
 }

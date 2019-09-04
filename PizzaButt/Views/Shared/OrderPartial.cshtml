@@ -22,7 +22,7 @@
             <label class="titleTag">Taco Sauces</label>
             <div class="row" style="margin-top: 6px; margin-bottom: 6px">
                 @{ var tacoSauceCount = 0; }
-                @{ var tacoSauces = Model.TacoToppings.Where(x => x.ToppingTypes.Any(y => y.MainValue == "Sauce")); }
+                @{ var tacoSauces = Model.TacoToppings.Where(x => x.ToppingTypes.Any(y => y.MainValue.ToLower() == "sauce")); }
                 @foreach (var item in tacoSauces)
                 {
                     tacoSauceCount += 1;
@@ -104,7 +104,7 @@
             <label class="titleTag">Extras</label>
             <div class="row" style="margin-top: 6px; margin-bottom: 6px">
                 @{ var otherCount = 0; }
-                @{ var toppings = Model.AllToppings.Where(x => x.ToppingTypes.Any(y => y.MainValue != "Sauce")); }
+                @{ var toppings = Model.AllToppings.Where(x => x.ToppingTypes.Any(y => y.MainValue != "Sauce" && y.Name == "All")); }
                 @foreach (var item in toppings)
                 {
                     otherCount += 1;
