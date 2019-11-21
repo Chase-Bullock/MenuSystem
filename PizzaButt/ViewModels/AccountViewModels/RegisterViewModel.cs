@@ -24,5 +24,14 @@ namespace CathedralKitchen.ViewModels.AccountViewModels
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public long? CityId { get; set; }
+        public string Zipcode { get; set; }
+        public string Number { get; set; }
+        public long? BuilderId { get; set; }
+
     }
 }

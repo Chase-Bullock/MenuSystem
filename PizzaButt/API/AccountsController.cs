@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CathedralKitchen.NewModels;
+using CathedralKitchen.Service;
 using CathedralKitchen.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +21,7 @@ namespace CathedralKitchen.API
         private readonly ICathedralKitchenRepository _cathedralKitchenRepository;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IAccountService _accountService;
         private readonly ILogger _logger;
 
         public AccountsController(
@@ -27,56 +29,53 @@ namespace CathedralKitchen.API
             CathedralKitchenContext ctx,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
+            IAccountService accountService,
             ILogger<AccountsController> logger)
         {
             _ctx = ctx;
             _cathedralKitchenRepository = cathedralKitchenRepository;
             _userManager = userManager;
             _signInManager = signInManager;
+            _accountService = accountService;
             _logger = logger;
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] PersonRegisterViewModel model)
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var person = new Person
+                var user = new User
                 {
+                    Email = model.Email.ToUpper(),
+                    AddressLine1 = model.AddressLine1,
+                    AddressLine2 = model.AddressLine2,
+                    BuilderId = model.BuilderId,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    Cell = model.Cell,
-                    Active = true,
-                    CreateBy = 1,
-                    CreateTime = DateTime.UtcNow,
-                    Email = model.Email,
-                    SendEmail = model.SendEmail,
-                    UpdateBy = 1,
-                    UpdateTime = DateTime.UtcNow
+                    Zipcode = model.Zipcode,
+                    CityId = model.CityId,
+                    Number = model.Number,
+
                 };
-
-                await _ctx.AddAsync(person);
-                await _ctx.SaveChangesAsync();
-
-                var user = new User { Email = model.Email.ToUpper(), PersonId = person.Id };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    var loginModel = new LoginViewModel
+                    {
+                        Email = model.Email,
+                        Password = model.Password
+                    };
 
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    var createdUser =  await _accountService.Login(loginModel);
+                    if (createdUser.Email != null)
+                    {
+                        return Ok(createdUser);
+                    }
+                }
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest();
-                }
+                return Ok(result.Errors);
             }
             return BadRequest();
         }
@@ -85,30 +84,9 @@ namespace CathedralKitchen.API
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody]LoginViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email.ToUpper(), model.Password, true, false);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in.");
-                    return Ok();
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return BadRequest();
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Ok(model);
-                }
-            }
+            var user = await _accountService.Login(model);
 
-            // If we got this far, something failed, redisplay form
-            return Ok(model);
+            return Json(user);
         }
 
         [HttpPost("{id}")]

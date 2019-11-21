@@ -5,6 +5,11 @@ namespace CathedralKitchen.NewModels
 {
     public partial class City
     {
+        public City()
+        {
+            User = new HashSet<User>();
+        }
+
         public long Id { get; set; }
         public string Name { get; set; }
         public bool? Active { get; set; }
@@ -14,5 +19,7 @@ namespace CathedralKitchen.NewModels
         public long UpdatedBy { get; set; }
         public long? DeleteBy { get; set; }
         public long? DeleteTime { get; set; }
+
+        public virtual ICollection<User> User { get; set; }
     }
 }

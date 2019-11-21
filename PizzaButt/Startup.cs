@@ -42,10 +42,12 @@ namespace CathedralKitchen
 
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<ILocationService, LocationService>();
+            services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IScheduleService, ScheduleService>();
             services.AddTransient<IPersonService, PersonService>();
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IBuilderService, BuilderService>();
             services.AddTransient<IEmailNotificationService, EmailNotificationService>();
 
             services.AddSession();
@@ -85,6 +87,28 @@ namespace CathedralKitchen
             services.AddTransient<IRoleStore<Role>, RoleStore>();
             services.AddIdentity<User, Role>()
                 .AddDefaultTokenProviders();
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            })
+            .AddJwtBearer(options =>
+            {
+                options.ClaimsIssuer = Configuration["Jwt:Issuer"];
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SecurityKey"])),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
 
             services.AddTransient<ICathedralKitchenRepository, CathedralKitchenRepository>();
             services.AddTransient<CathedralKitchenContext, CathedralKitchenContext>();

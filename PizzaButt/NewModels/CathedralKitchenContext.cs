@@ -10,11 +10,6 @@ namespace CathedralKitchen.NewModels
         {
         }
 
-        public CathedralKitchenContext(DbContextOptions<CathedralKitchenContext> options)
-            : base(options)
-        {
-        }
-
         public virtual DbSet<Builder> Builder { get; set; }
         public virtual DbSet<BuilderCommunity> BuilderCommunity { get; set; }
         public virtual DbSet<City> City { get; set; }
@@ -40,9 +35,7 @@ namespace CathedralKitchen.NewModels
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                //optionsBuilder.UseSqlServer("Server=tcp:cathedralbites.database.windows.net,1433;Initial Catalog=CathedralKitchen;Persist Security Info=False;User ID=chase.b;Password=p1ZZAbuTT!!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
                 optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=CathedralKitchen;Trusted_Connection=True;");
-                //optionsBuilder.UseSqlServer("Server=CPT-SQL.cathedral.local;Database=CathedralKitchen;Persist Security Info=False;User Id=Chase.B;password=Finnava424;MultipleActiveResultSets=True;TrustServerCertificate=True;Connection Timeout=30;");
             }
         }
 
@@ -423,15 +416,37 @@ namespace CathedralKitchen.NewModels
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
+                entity.Property(e => e.AddressLine1).HasMaxLength(100);
+
+                entity.Property(e => e.AddressLine2).HasMaxLength(100);
+
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.DeleteTime).HasColumnType("datetime");
 
                 entity.Property(e => e.Email).HasMaxLength(255);
 
+                entity.Property(e => e.FirstName).HasMaxLength(50);
+
                 entity.Property(e => e.Hash).HasMaxLength(255);
 
+                entity.Property(e => e.LastName).HasMaxLength(50);
+
+                entity.Property(e => e.Number).HasMaxLength(20);
+
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Zipcode).HasMaxLength(20);
+
+                entity.HasOne(d => d.Builder)
+                    .WithMany(p => p.User)
+                    .HasForeignKey(d => d.BuilderId)
+                    .HasConstraintName("FK_User_Builder");
+
+                entity.HasOne(d => d.City)
+                    .WithMany(p => p.User)
+                    .HasForeignKey(d => d.CityId)
+                    .HasConstraintName("FK_User_City");
             });
         }
     }

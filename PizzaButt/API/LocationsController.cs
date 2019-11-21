@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CathedralKitchen.API
 {
-    [Route("api")]
+    [Route("api/[controller]")]
     public class LocationsController : Controller
     {
         private readonly CathedralKitchenContext _ctx;
@@ -30,6 +30,21 @@ namespace CathedralKitchen.API
         {
             var data = _locationService.GetCommunities();
 
+            return Ok(data);
+        }
+
+        [HttpGet("communities/today")]
+        public IActionResult GetTodaysCommunities()
+        {
+            var data = _locationService.GetTodaysCommunities();
+
+            return Ok(data);
+        }
+
+        [HttpGet("cities")]
+        public IActionResult GetCities()
+        {
+            var data = _locationService.GetCities();
 
             return Ok(data);
         }

@@ -102,7 +102,7 @@ namespace CathedralKitchen.Service
                 toppings = _ctx.Topping
                     .Where(i => i.Active == true)
                     .Include(y => y.ToppingSystemReference).ThenInclude(x => x.ToppingType)
-                    .Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name == menuItem && y.ToppingType.MainValue == toppingType)).ToList();
+                    .Where(x => x.ToppingSystemReference.Any(y => y.ToppingType.Name.ToLower() == menuItem && y.ToppingType.MainValue == toppingType)).ToList();
             }
 
             foreach (var topping in toppings)

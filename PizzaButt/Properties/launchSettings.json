@@ -24,18 +24,25 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:50222/"
+      "applicationUrl": "http://localhost:5001/"
     },
     "Starbucks": {
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://172.31.98.127:5001/"
+      "applicationUrl": "http://172.31.99.10:5001/"
     },
     "WhiteRock": {
       "commandName": "Project",
       "applicationUrl": "http://192.168.1.197:5001/"
+    },
+    "Parks": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://192.168.100.43:5001/"
     }
   }
 }

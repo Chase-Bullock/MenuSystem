@@ -57,6 +57,8 @@ namespace CathedralKitchen.ViewModels
 
         [StringLength(500)]
         public string Note { get; set; }
+
+        public long CityId { get; set; }
        
     }
 }

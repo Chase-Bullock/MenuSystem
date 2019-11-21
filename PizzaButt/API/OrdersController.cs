@@ -44,5 +44,65 @@ namespace CathedralKitchen.API
             return Ok(orderViewModel);
         }
 
+        [HttpPost("")]
+        public IActionResult SubmitOrder([FromBody]SubmitOrderViewModel submitOrderViewModel)
+        {
+            var order = new Order
+            {
+                OrderStatusId = _ctx.OrderStatus.SingleOrDefault(x => x.Status == "InProgress").Id,
+                CustomerEmail = submitOrderViewModel.Order.Email,
+                CustomerFirstName = submitOrderViewModel.Order.FirstName,
+                CustomerLastName = submitOrderViewModel.Order.LastName,
+                Note = submitOrderViewModel.Order.Note,
+                CommunityId = submitOrderViewModel.Order.CommunityId > 0 ? submitOrderViewModel.Order.CommunityId : _ctx.Community.First(x => x.Name == "Cathedral").Id,
+                AddressLine1 = submitOrderViewModel.Order.AddressLine1,
+                AddressLine2 = submitOrderViewModel.Order.AddressLine2,
+                City = submitOrderViewModel.Order.City,
+                ZipCode = submitOrderViewModel.Order.Zipcode,
+                CreateBy = 1,
+                UpdateBy = 1,
+                CreateTime = DateTime.UtcNow,
+                UpdateTime = DateTime.UtcNow,
+            };
+
+            order.OrderStatusId = _ctx.OrderStatus.SingleOrDefault(x => x.Status == "Pending").Id;
+            _ctx.Add(order);
+
+            foreach (var item in submitOrderViewModel.OrderItems)
+            {
+                var orderItem = new OrderItem
+                {
+                    MenuItemId = item.MenuItem.Id,
+                    Quantity = item.Quantity,
+                    SizeId = item.SizeId,
+                    CreateBy = 1,
+                    UpdateBy = 1,
+                    CreateTime = DateTime.UtcNow,
+                    UpdateTime = DateTime.UtcNow,
+                    Order = order
+
+                };
+
+                _ctx.OrderItem.Add(orderItem);
+
+                foreach (var topping in item.Toppings)
+                {
+                    var toppingItem = new OrderItemTopping
+                    {
+                        OrderItem = orderItem,
+                        ToppingId = topping.Id,
+                        CreateBy = 1,
+                        UpdateBy = 1,
+                        CreateTime = DateTime.UtcNow,
+                        UpdateTime = DateTime.UtcNow
+                    };
+                    _ctx.OrderItemTopping.Add(toppingItem);
+                }
+            }
+            _ctx.SaveChanges();
+
+            return Ok();
+        }
+
     }
 }
