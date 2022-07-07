@@ -16,7 +16,7 @@
     "animate.css": "^3.7.0",
     "flatpickr": "^4.5.7",
     "fullcalendar": "^3.10.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "pretty-checkbox": "^3.0.3",
     "waypoints": "^4.0.1"
   }
